@@ -3292,7 +3292,7 @@ PrefabInstance:
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onClicked
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
@@ -3832,7 +3832,7 @@ PrefabInstance:
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onClicked
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
@@ -4629,7 +4629,7 @@ GameObject:
   - component: {fileID: 1038557580}
   - component: {fileID: 1038557581}
   m_Layer: 0
-  m_Name: My Position
+  m_Name: Player Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4980,7 +4980,7 @@ PrefabInstance:
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onClicked
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
@@ -5195,7 +5195,7 @@ GameObject:
   - component: {fileID: 1152563406}
   - component: {fileID: 1152563407}
   m_Layer: 5
-  m_Name: My Digimon HUD
+  m_Name: Player Digimon HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8055,7 +8055,7 @@ PrefabInstance:
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onClicked
+      value: OnClick
       objectReference: {fileID: 0}
     - target: {fileID: 1861994181114181470, guid: 8a498890bffbb3d41b44c253e243d22b,
         type: 3}

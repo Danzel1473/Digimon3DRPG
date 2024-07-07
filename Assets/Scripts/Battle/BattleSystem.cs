@@ -1,29 +1,25 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.PlasticSCM.Editor.WebApi;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using System.Linq;
+using System.Collections.Generic;
 
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] BattleEntity playerBattleEntity;
-    [SerializeField] BattleEntity enemyBattleEntity;
+    [SerializeField] private BattleEntity playerBattleEntity;
+    [SerializeField] private BattleEntity enemyBattleEntity;
 
-    [SerializeField] BattleHUD playerHUD;
-    [SerializeField] BattleHUD enemyHUD;
-    [SerializeField] GameObject rootMenu;
-    [SerializeField] GameObject moveMenu;
-    [SerializeField] List<Button> moveButtons;
+    [SerializeField] private BattleHUD playerHUD;
+    [SerializeField] private BattleHUD enemyHUD;
+    [SerializeField] private GameObject rootMenu;
+    [SerializeField] private GameObject moveMenu;
+    [SerializeField] private List<Button> moveButtons;
 
     public GameObject currentMenu;
 
-    int currentAction;
-    Move currentMove;
-
-    Button currentButton;
-
+    private Move playerMove;
+    private Move enemyMove;
+    private bool isPlayerTurn;
 
     private void Start()
     {
@@ -35,118 +31,143 @@ public class BattleSystem : MonoBehaviour
     {
         playerBattleEntity.SetUp();
         enemyBattleEntity.SetUp();
-        playerHUD.SetData(playerBattleEntity.digimon);
-        enemyHUD.SetData(enemyBattleEntity.digimon);
+        playerHUD.SetData(playerBattleEntity.Digimon);
+        enemyHUD.SetData(enemyBattleEntity.Digimon);
 
-        playerHUD.SetMoveNames(playerBattleEntity.digimon.Moves);
+        playerHUD.SetMoveNames(playerBattleEntity.Digimon.Moves);
         yield return new WaitForSeconds(1f);
+
+        PlayerTurn();
     }
 
     public void PlayerMove(Move move)
     {
-        currentMove = move;
-        StartCoroutine(PerformPlayerMove());
+        playerMove = move;
+        isPlayerTurn = true;
+        currentMenu.SetActive(false);
+        StartCoroutine(PerformBattle());
     }
 
-    IEnumerator PerformPlayerMove()
+    private IEnumerator PerformBattle()
     {
-        yield return AttackAnimation(currentMove, playerBattleEntity);
-        //AfterAttackTiming();
+        enemyMove = enemyBattleEntity.Digimon.Moves[Random.Range(0, enemyBattleEntity.Digimon.Moves.Count)];
+        
+        var battleQueue = GetBattleOrder(playerBattleEntity, enemyBattleEntity, playerMove, enemyMove);
+        foreach (var (attacker, move, defender) in battleQueue)
+        {
+            yield return StartCoroutine(PerformMove(attacker, move, defender));
+            yield return new WaitForSeconds(1f);
+            if (defender.Digimon.HP <= 0) break;
+        }
+
+        if (playerBattleEntity.Digimon.HP > 0 && enemyBattleEntity.Digimon.HP > 0)
+        {
+            PlayerTurn();
+        }
     }
 
-    public void AfterAttackTiming()
+    private IEnumerator PerformMove(BattleEntity attacker, Move move, BattleEntity defender)
     {
-        bool isFainted = TakeDamage(currentMove, playerBattleEntity, enemyBattleEntity);
-        playerHUD.SetData(playerBattleEntity.digimon);
-        enemyHUD.SetData(enemyBattleEntity.digimon);
+        yield return StartCoroutine(AttackAnimation(move, attacker));
+        yield return new WaitForSeconds(1f);
 
+        bool isFainted = TakeDamage(move, attacker, defender);
+        UpdateHUD(defender);
 
         if (isFainted)
         {
-            print(enemyBattleEntity.digimon.digimonBase.DigimonName + "은(는) 쓰러졌다.");
-        }
-        else
-        {
-            StartCoroutine(EnemyMove());
+            Debug.Log($"{defender.Digimon.digimonBase.DigimonName} 은(는) 쓰러졌다.");
         }
     }
 
-    IEnumerator AttackAnimation(Move move, BattleEntity Attacker)
+    private IEnumerator AttackAnimation(Move move, BattleEntity attacker)
     {
-        if (move.moveBase.IsSpecial)
-        {
-            Attacker.GetComponentInChildren<Animator>().SetBool("isSPAttack", true);
-        }
-        else
-        {
-            Attacker.GetComponentInChildren<Animator>().SetBool("isSPAttack", false);
-        }
-        Attacker.GetComponentInChildren<Animator>().SetTrigger("attack");
+        Animator animator = attacker.GetComponentInChildren<Animator>();
 
-        yield return null;
+        animator.SetBool("isSPAttack", move.moveBase.IsSpecial);
+        animator.SetTrigger("attack");
+
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
     }
 
     public bool TakeDamage(Move move, BattleEntity attacker, BattleEntity defender)
     {
-        float modifiers = UnityEngine.Random.Range(0.85f, 1f);
-        float a = (2 * attacker.digimon.level + 10) / 250f;
-        float d = a * move.moveBase.Power * ((float)attacker.digimon.Attack / defender.digimon.Defense) + 2;
-        int damage = Mathf.FloorToInt(d * modifiers);
-
-        int randomValue = UnityEngine.Random.Range(0, 100);
-        if (move.moveBase.Accuracy < randomValue)
+        int damage = CalculateDamage(move, attacker, defender);
+        if (damage <= 0)
         {
-            print("명중률: " + move.moveBase.Accuracy + " 랜덤밸류: " + randomValue + "감나빗");
+            Debug.Log("Attack missed!");
             return false;
         }
 
-        defender.digimon.HP -= Mathf.Min(defender.digimon.HP, damage);
-        StartCoroutine(EnemyDamagedAnimation(defender));
+        defender.Digimon.HP -= Mathf.Min(defender.Digimon.HP, damage);
+        StartCoroutine(DefenderDamageAnimation(defender));
 
-        if (defender.digimon.HP <= 0)
+        return defender.Digimon.HP <= 0;
+    }
+
+    private int CalculateDamage(Move move, BattleEntity attacker, BattleEntity defender)
+    {
+        if (UnityEngine.Random.Range(0, 100) >= move.moveBase.Accuracy)
         {
-            print("Dead");
-            return true;
+            return 0; // Attack missed
+        }
+
+        float modifiers = UnityEngine.Random.Range(0.85f, 1f);
+        float a = (2 * attacker.Digimon.level + 10) / 250f;
+        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) + 2;
+        return Mathf.FloorToInt(d * modifiers);
+    }
+
+    private void UpdateHUD(BattleEntity entity)
+    {
+        if (entity == playerBattleEntity)
+        {
+            playerHUD.SetData(playerBattleEntity.Digimon);
         }
         else
         {
-            print("Alive");
-            return false;
+            enemyHUD.SetData(enemyBattleEntity.Digimon);
         }
     }
 
-    IEnumerator EnemyDamagedAnimation(BattleEntity defender)
+    private IEnumerable<(BattleEntity, Move, BattleEntity)> GetBattleOrder(BattleEntity player, BattleEntity enemy, Move playerMove, Move enemyMove)
+    {
+        var playerSpeed = player.Digimon.Speed;
+        var enemySpeed = enemy.Digimon.Speed;
+
+        if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
+        {
+            yield return (player, playerMove, enemy);
+            if (enemy.Digimon.HP > 0) yield return (enemy, enemyMove, player);
+        }
+        else
+        {
+            yield return (enemy, enemyMove, player);
+            if (player.Digimon.HP > 0) yield return (player, playerMove, enemy);
+        }
+    }
+
+    private IEnumerator DefenderDamageAnimation(BattleEntity defender)
     {
         defender.GetComponentInChildren<Animator>().SetTrigger("damaged");
         yield return null;
     }
 
-    IEnumerator EnemyMove()
+    private void PlayerTurn()
     {
-        yield return 0;
+        currentMenu.SetActive(true);
+        rootMenu.SetActive(true);
+        isPlayerTurn = true;
     }
 
     private void Update()
     {
-        
-        if(Input.GetKeyDown(KeyCode.X))
+        if (Input.GetKeyDown(KeyCode.X))
         {
-            if(currentMenu == rootMenu) return;
-            
+            if (currentMenu == rootMenu) return;
+
             currentMenu.SetActive(false);
             rootMenu.SetActive(true);
-        }
-    }
-
-    void HandleActionSelection()
-    {
-        if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            if(currentAction < 1) ++currentAction;
-        }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            if(currentAction > 0) --currentAction;
         }
     }
 }

@@ -1,17 +1,19 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleAnimation : MonoBehaviour
 {
-    BattleSystem battleSystem;
+    private BattleSystem battleSystem;
 
-    public void Start()
+    private void Start()
     {
         battleSystem = GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
     }
-    
+
     public void AttackTiming()
     {
-        battleSystem.AfterAttackTiming();
+    }
+
+    public void DefenseTiming()
+    {
     }
 }

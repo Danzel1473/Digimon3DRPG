@@ -2,20 +2,23 @@ using UnityEngine;
 
 public class MoveButton : MonoBehaviour
 {
-    [SerializeField] BattleSystem battleSystem;
-    Move move;
+    private BattleSystem battleSystem;
+    private Move move;
 
-    
-    public void SetUp(MoveBase moveb)
+    public void Start()
     {
-        if(moveb == null) return;
-        move = new Move(moveb);
+        battleSystem = GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
     }
 
-    public void onClicked()
+    public void SetUp(MoveBase moveBase)
     {
-        if(move == null) return;
+        if (moveBase == null) return;
+        move = new Move(moveBase);
+    }
+
+    public void OnClick()
+    {
+        if (move == null) return;
         battleSystem.PlayerMove(move);
     }
-
 }

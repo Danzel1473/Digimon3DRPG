@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class BattleEntity : MonoBehaviour
 {
-    [SerializeField] DigimonBase digimonBase;
-    [SerializeField] int level;
-    [SerializeField] bool isPlayerUnit;
-    Animator animator;
+    [SerializeField] private DigimonBase digimonBase;
+    [SerializeField] private int level;
+    [SerializeField] private bool isPlayerUnit;
+    private Animator animator;
 
-    public Digimon digimon;
+    public Digimon Digimon { get; private set; }
 
     public void SetUp()
     {
-        if(digimonBase == null) return;
-        digimon = new Digimon(digimonBase, level);
+        if (digimonBase == null) return;
+        Digimon = new Digimon(digimonBase, level);
         Instantiate(digimonBase.DigimonModel, transform);
     }
 }
