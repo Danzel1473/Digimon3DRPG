@@ -25,8 +25,8 @@ MonoBehaviour:
     \uD558\uB2E4. \uD544\uC0B4\uAE30\uB294 \uC785\uC5D0\uC11C \uD654\uC5FC\uC758
     \uC228\uACB0\uC744 \uB0B4\uBFDC\uC5B4 \uC801\uC744 \uACF5\uACA9\uD558\uB294 \"\uAF2C\uB9C8
     \uBD88\uAF43\"\uC774\uB2E4."
-  digimonType1: 0
-  elementType1: 1
+  digimonType1: 2
+  elementType1: 0
   elementType2: 0
   maxHP: 20
   attack: 10
@@ -34,7 +34,7 @@ MonoBehaviour:
   spAttack: 10
   spDefense: 10
   speed: 10
-  digimonSprite: {fileID: 0}
+  digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}
   digimonMedel: {fileID: 1087451850464615608, guid: 3a808a6cd4beaa14baf2838021a76ad3,
     type: 3}
   learnableMoves:
@@ -42,3 +42,5 @@ MonoBehaviour:
     level: 1
   - moveBase: {fileID: 11400000, guid: 98c3604668bf4b242a5662e8c3118ffa, type: 2}
     level: 5
+  digimonSpriteAnimator: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a,
+    type: 2}

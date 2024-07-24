@@ -1,53 +1,30 @@
 using UnityEngine;
 
-
-[CreateAssetMenu(fileName = "New Move", menuName = "Digimon/Create new Move")]
+[CreateAssetMenu(fileName = "New Move", menuName = "Digimon/Create New Move")]
 public class MoveBase : ScriptableObject
 {
-    [SerializeField] string moveName;
+    [SerializeField] private string moveName;
+    [SerializeField] private string description;
+    [SerializeField] private int power;
+    [SerializeField] private int accuracy;
+    [SerializeField] private int pp;
+    [SerializeField] private ElementType moveType;
+    [SerializeField] private MoveCategory moveCategory;
+    [SerializeField] private GameObject particlePrefab;
 
-    [SerializeField] string description;
+    public string MoveName => moveName;
+    public string Description => description;
+    public int Power => power;
+    public int Accuracy => accuracy;
+    public int PP => pp;
+    public ElementType MoveType => moveType;
+    public MoveCategory MoveCategory => moveCategory;
+    public GameObject ParticlePrefab => particlePrefab;
+}
 
-    [SerializeField] ElementType type;
-
-    [SerializeField] int power;
-    [SerializeField] int accuracy;
-    [SerializeField] int pp; //기술의 사용 가능 횟수
-    [SerializeField] bool isSpecial;
-
-    public string MoveName
-    {
-        get { return moveName; }
-    }
-    
-    public string Description
-    {
-        get { return description; }
-    }
-    
-    public ElementType Type
-    {
-        get { return type; }
-    }
-    
-    public int Power
-    {
-        get { return power; }
-    }
-    
-    public int Accuracy
-    {
-        get { return accuracy; }
-    }
-    
-    public int PP
-    {
-        get { return pp; }
-    }
-
-    public bool IsSpecial
-    {
-        get { return isSpecial; }
-    }
-    
+public enum MoveCategory
+{
+    Physical,
+    Special,
+    Status
 }

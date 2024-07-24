@@ -14,11 +14,9 @@ public class BattleHUD : MonoBehaviour
     public void SetData(Digimon digimon)
     {
         nameText.text = digimon.digimonBase.DigimonName;
-        levelText.text = digimon.level.ToString();
-        hpBar.value = (float)digimon.HP / digimon.digimonBase.MaxHP;
-        HPText.text = $"{digimon.HP}/{digimon.digimonBase.MaxHP}";
-
-        Debug.Log(digimon.HP);
+        levelText.text = digimon.Level.ToString();
+        hpBar.value = (float)digimon.CurrentHP / digimon.digimonBase.MaxHP;
+        HPText.text = $"{digimon.CurrentHP}/{digimon.digimonBase.MaxHP}";
     }
 
     public void SetMoveNames(List<Move> moves)
@@ -37,5 +35,10 @@ public class BattleHUD : MonoBehaviour
                 moveButtons[i].GetComponentInChildren<TMP_Text>().text = "";
             }
         }
+    }
+
+    public void ShowHUD(bool show)
+    {
+        gameObject.SetActive(show);
     }
 }

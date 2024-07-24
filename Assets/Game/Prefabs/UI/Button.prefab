@@ -147,7 +147,7 @@ GameObject:
   - component: {fileID: 1197007018141546340}
   - component: {fileID: 1738622846529405738}
   - component: {fileID: 1861994181114181470}
-  - component: {fileID: 2946745796063877384}
+  - component: {fileID: 6947559380692716049}
   m_Layer: 5
   m_Name: Button
   m_TagString: SelectableButton
@@ -269,7 +269,7 @@ MonoBehaviour:
           m_StringArgument: PerformAction
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &2946745796063877384
+--- !u!114 &6947559380692716049
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -278,7 +278,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9148208134191876623}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 082970573a66f4d479b0ee5e66266460, type: 3}
+  m_Script: {fileID: 11500000, guid: 1d4dedb12b1c39f40a1ada4ad49c2253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveb: {fileID: 0}
+  battleSystem: {fileID: 0}
+  activeMenu: {fileID: 0}

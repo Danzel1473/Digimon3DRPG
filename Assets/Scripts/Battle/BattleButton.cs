@@ -6,11 +6,9 @@ public class BattleButton : MonoBehaviour
     [SerializeField] private Move move;
     [SerializeField] private GameObject activeMenu;
 
-    public void ActiveMenu()
+    public void ActivateMenu()
     {
-        battleSystem.currentMenu.SetActive(false);
-        activeMenu.SetActive(true);
-        battleSystem.currentMenu = activeMenu;
+        battleSystem.SwitchMenu(activeMenu);
     }
 
     public void OnMoveSelected()

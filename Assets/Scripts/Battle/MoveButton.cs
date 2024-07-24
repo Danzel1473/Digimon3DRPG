@@ -5,7 +5,7 @@ public class MoveButton : MonoBehaviour
     private BattleSystem battleSystem;
     private Move move;
 
-    public void Start()
+    private void Start()
     {
         battleSystem = GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
     }

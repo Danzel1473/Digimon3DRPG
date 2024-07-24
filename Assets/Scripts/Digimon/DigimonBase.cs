@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor.Animations;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DigimonBase", menuName = "Digimon/Create Digimon Base")]
@@ -19,104 +20,44 @@ public class DigimonBase : ScriptableObject
     [SerializeField] Sprite digimonSprite;
     [SerializeField] GameObject digimonMedel;
     [SerializeField] List<LearnableMove> learnableMoves;
+    [SerializeField] public AnimatorController digimonSpriteAnimator;
 
+    public string DigimonName => digimonName;
 
-    public string DigimonName
-    {
-        get{ return digimonName; }
-    }
+    public string Description => description;
 
-    public string Description
-    {
-        get{ return description; }
-    }
+    public DigimonType DigimonType1 => digimonType1;
 
-    public DigimonType DigimonType1
-    {
-        get{ return digimonType1; }
-    }
+    public ElementType ElementType1 => elementType1;
 
-    public ElementType ElementType1
-    {
-        get { return elementType1; }
-    }
+    public ElementType ElementType2 => elementType2;
 
-        public ElementType ElementType2
-    {
-        get { return elementType1; }
-    }
+    public int MaxHP => maxHP;
 
-    public int MaxHP
-    {
-        get { return maxHP; }
-    }
+    public int Attack => attack;
 
-    public int Attack
-    {
-        get { return attack; }
-    }
+    public int Defense => defense;
 
-    public int Defense
-    {
-        get { return defense; }
-    }
+    public int SpAttack => spAttack;
 
-    public int SpAttack
-    {
-        get { return spAttack; }
-    }
+    public int SpDefense => spDefense;
 
-    public int SpDefense
-    {
-        get { return spDefense; }
-    }
+    public int Speed => speed;
 
-    public int Speed
-    {
-        get { return speed; }
-    }
+    public List<LearnableMove> LearnableMoves => learnableMoves;
 
-    public List<LearnableMove> LearnableMoves
-    {
-        get { return learnableMoves; }
-    }
+    public GameObject DigimonModel => digimonMedel;
 
-    public GameObject DigimonModel
-    {
-        get { return digimonMedel; }
-    }
+    public Sprite DigimonSprite => digimonSprite;
+
+    public AnimatorController DigimonSpriteAnimator => digimonSpriteAnimator;
 }
 
 
-public enum DigimonType
-{
-    Virus,
-    Data,
-    Vaccine,
-    Free,
-    None,
-    Variable,
-}
 
 [System.Serializable]
 public class LearnableMove
 {
     [SerializeField] public MoveBase moveBase;
     [SerializeField] public int level;
-}
-
-public enum ElementType
-{
-    None,
-    Normal,
-    Fire,
-    Water,
-    Grass,
-    Ice,
-    Wind,
-    Electric,
-    Insect,
-    Steel,
-    Darkness,
-    Light
 }
