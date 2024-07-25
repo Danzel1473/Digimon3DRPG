@@ -14,7 +14,8 @@ public class Digimon
     {
         this.digimonBase = digimonBase;
         Level = level;
-        CurrentHP = digimonBase.MaxHP;
+        MaxHP = HP;
+        CurrentHP = MaxHP;
 
         Moves = new List<Move>();
         foreach (var move in digimonBase.LearnableMoves)
@@ -38,8 +39,8 @@ public class Digimon
                 Moves.Add(new Move(move.moveBase));
         }
     }
-    
-    public int Attack => Mathf.FloorToInt((digimonBase.Attack * Level) / 100f) + 5;
-    public int Defense => Mathf.FloorToInt((digimonBase.Defense * Level) / 100f) + 5;
-    public int Speed => Mathf.FloorToInt((digimonBase.Speed * Level) / 100f) + 5;
+    public int HP => Mathf.FloorToInt(((digimonBase.HP * 2) + 100 ) * Level / 100f) + 10;
+    public int Attack => Mathf.FloorToInt((digimonBase.Attack * 2) * Level / 100f) + 5;
+    public int Defense => Mathf.FloorToInt((digimonBase.Defense * 2) * Level / 100f) + 5;
+    public int Speed => Mathf.FloorToInt((digimonBase.Speed * 2) * Level / 100f) + 5;
 }

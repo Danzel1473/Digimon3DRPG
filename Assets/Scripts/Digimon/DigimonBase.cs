@@ -11,7 +11,7 @@ public class DigimonBase : ScriptableObject
     [SerializeField] DigimonType digimonType1;
     [SerializeField] ElementType elementType1;
     [SerializeField] ElementType elementType2;
-    [SerializeField] int maxHP;
+    [SerializeField] int hp;
     [SerializeField] int attack;
     [SerializeField] int defense;
     [SerializeField] int spAttack;
@@ -32,7 +32,7 @@ public class DigimonBase : ScriptableObject
 
     public ElementType ElementType2 => elementType2;
 
-    public int MaxHP => maxHP;
+    public int HP => hp;
 
     public int Attack => attack;
 

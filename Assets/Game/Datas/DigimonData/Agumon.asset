@@ -28,7 +28,7 @@ MonoBehaviour:
   digimonType1: 2
   elementType1: 0
   elementType2: 0
-  maxHP: 20
+  hp: 10
   attack: 10
   defense: 10
   spAttack: 10

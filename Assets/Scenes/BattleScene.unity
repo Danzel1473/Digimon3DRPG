@@ -1536,7 +1536,6 @@ MonoBehaviour:
   enemyHUD: {fileID: 862815258}
   rootMenu: {fileID: 584137539}
   moveMenu: {fileID: 866987006}
-  bagUI: {fileID: 0}
   playerData: {fileID: 1408125586}
   battleAnimationManager: {fileID: 454365064}
   digimonBaseSample: {fileID: 11400000, guid: 5ea012ab49b9f1d43b7c88443efef96e, type: 2}

@@ -23,15 +23,15 @@ public class BattleHUDManager : MonoBehaviour
         {
             playerNameText.text = digimon.digimonBase.DigimonName;
             playerLevelText.text = digimon.Level.ToString();
-            playerHPBar.value = (float)digimon.CurrentHP / digimon.digimonBase.MaxHP;
-            playerHPText.text = $"{digimon.CurrentHP}/{digimon.digimonBase.MaxHP}";
+            playerHPBar.value = (float)digimon.CurrentHP / digimon.digimonBase.HP;
+            playerHPText.text = $"{digimon.CurrentHP}/{digimon.digimonBase.HP}";
         }
         else
         {
             enemyNameText.text = digimon.digimonBase.DigimonName;
             enemyLevelText.text = digimon.Level.ToString();
-            enemyHPBar.value = (float)digimon.CurrentHP / digimon.digimonBase.MaxHP;
-            enemyHPText.text = $"{digimon.CurrentHP}/{digimon.digimonBase.MaxHP}";
+            enemyHPBar.value = (float)digimon.CurrentHP / digimon.digimonBase.HP;
+            enemyHPText.text = $"{digimon.CurrentHP}/{digimon.digimonBase.HP}";
         }
     }
 
@@ -59,13 +59,13 @@ public class BattleHUDManager : MonoBehaviour
 
         if (entity.IsPlayer)
         {
-            playerHPBar.value = (float)entity.Digimon.CurrentHP / entity.Digimon.digimonBase.MaxHP;
-            playerHPText.text = $"{entity.Digimon.CurrentHP}/{entity.Digimon.digimonBase.MaxHP}";
+            playerHPBar.value = (float)entity.Digimon.CurrentHP / entity.Digimon.digimonBase.HP;
+            playerHPText.text = $"{entity.Digimon.CurrentHP}/{entity.Digimon.digimonBase.HP}";
         }
         else
         {
-            enemyHPBar.value = (float)entity.Digimon.CurrentHP / entity.Digimon.digimonBase.MaxHP;
-            enemyHPText.text = $"{entity.Digimon.CurrentHP}/{entity.Digimon.digimonBase.MaxHP}";
+            enemyHPBar.value = (float)entity.Digimon.CurrentHP / entity.Digimon.digimonBase.HP;
+            enemyHPText.text = $"{entity.Digimon.CurrentHP}/{entity.Digimon.digimonBase.HP}";
         }
     }
 

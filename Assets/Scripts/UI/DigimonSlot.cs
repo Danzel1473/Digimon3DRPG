@@ -18,5 +18,6 @@ public class DigimonSlot : MonoBehaviour
         digimonName.text = digimon.digimonBase.DigimonName;
         digimonLevel.text = $"Lv.{digimon.Level}";
         digimonHP.text = $"{digimon.CurrentHP} / {digimon.MaxHP}";
+        digimonHPSlider.value = (float)digimon.CurrentHP / digimon.MaxHP;
     }
 }
