@@ -10,20 +10,22 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private BattleHUD enemyHUD;
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
-    [SerializeField] private BagUI bagUI;
     [SerializeField] private PlayerData playerData;
+    
 
     [SerializeField] private BattleAnimationManager battleAnimationManager;
 
     [SerializeField] private DigimonBase digimonBaseSample; //테스트용
 
-
     private GameObject currentMenu;
+    private List<GameObject> previousMenu;
+
     private Move playerMove;
 
     private void Start()
     {
         currentMenu = rootMenu;
+        previousMenu = new List<GameObject>();
 
         //테스트용 코드
         playerData.partyData.AddDigimon(new Digimon(digimonBaseSample, 8));
@@ -31,6 +33,14 @@ public class BattleSystem : MonoBehaviour
 
 
         StartCoroutine(SetupBattle());
+    }
+
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.X))
+        {
+            SwitchPreviousMenu();
+        }
     }
 
     private IEnumerator SetupBattle()
@@ -145,6 +155,21 @@ public class BattleSystem : MonoBehaviour
     {
         currentMenu.SetActive(false);
         menu.SetActive(true);
+
+        previousMenu.Add(currentMenu);
         currentMenu = menu;
+    }
+
+        public void SwitchPreviousMenu()
+    {
+        if(previousMenu.Count == 0) return;
+
+        GameObject switchMenu = previousMenu[previousMenu.Count -1];
+
+        currentMenu.SetActive(false);
+        switchMenu.SetActive(true);
+
+        currentMenu = switchMenu;
+        previousMenu.RemoveAt(previousMenu.Count -1);
     }
 }
