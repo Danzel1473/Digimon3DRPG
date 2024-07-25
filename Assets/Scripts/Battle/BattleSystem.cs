@@ -31,7 +31,7 @@ public class BattleSystem : MonoBehaviour
         playerData.partyData.AddDigimon(new Digimon(digimonBaseSample, 8));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
 
-
+        
         StartCoroutine(SetupBattle());
     }
 

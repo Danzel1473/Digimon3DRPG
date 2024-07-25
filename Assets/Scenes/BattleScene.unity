@@ -6682,7 +6682,9 @@ MonoBehaviour:
   partyData:
     digimons: []
   inventory:
-    itemSlots: []
+    itemSlots:
+    - Item: {fileID: 11400000, guid: b052943979770c84aaae68e023601ac8, type: 2}
+      Quantity: 1
 --- !u!1 &1413067406
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,4 +9,14 @@ public class ItemInstance
         this.itemBase = itemBase;
         this.quantity = quantity;
     }
+    
+    public void IncreaseQuantity()
+    {
+        quantity++;
+    }
+
+    public void DecreaseQuantity()
+    {
+        quantity--;
+    }
 }
