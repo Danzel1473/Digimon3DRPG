@@ -12,7 +12,4 @@ public class PlayerData : MonoBehaviour
     //public PartyData PartyData => partyData;
     public Inventory Inventory => inventory;
 
-    public void Start() 
-    {
-    }
 }

@@ -9,6 +9,12 @@ public class ItemInstance
         this.itemBase = itemBase;
         this.quantity = quantity;
     }
+
+    public void SetItem(ItemInstance itemInstance)
+    {
+        itemBase = itemInstance.itemBase;
+        quantity = itemInstance.quantity;
+    }
     
     public void IncreaseQuantity()
     {

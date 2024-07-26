@@ -3,8 +3,7 @@ using UnityEngine;
 public class BagUI : MonoBehaviour
 {
     [SerializeField] public GameObject itemSlotPrefab;
-    [SerializeField] private ItemInstance itemSlot;
-    [SerializeField] private Transform content;
+    [SerializeField] private Transform itemSlotContainer;
     private GameManager gameManager;
 
     public void Awake()
@@ -14,17 +13,28 @@ public class BagUI : MonoBehaviour
 
     public void OnEnable()
     {
-        Inventory inventory = gameManager.GetComponentInChildren<PlayerData>().Inventory;
-        foreach(ItemInstance item in inventory.Items)
-        {
-            GameObject itemSlot = Instantiate(itemSlotPrefab, content);
-            itemSlot.
-        }
+        PopulateBag();
     }
 
-    public void Update()
+    private void PopulateBag()
     {
-        
+        // 기존 슬롯 제거
+        foreach (Transform child in itemSlotContainer)
+        {
+            Destroy(child.gameObject);
+        }
 
+        // 플레이어 인벤토리 가져오기
+        Inventory inventory = gameManager.playerData.Inventory;
+        if(inventory == null) return;
+
+        // 각 아이템에 대해 ItemSlot 인스턴스 생성
+        foreach (ItemInstance itemInstance in inventory.Items)
+        {
+            GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
+            
+            if(itemSlotObject.GetComponent<ItemSlot>() == null) return;
+            itemSlotObject.GetComponent<ItemSlot>().UpdateUI(itemInstance);
+        }
     }
 }

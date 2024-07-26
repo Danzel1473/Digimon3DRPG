@@ -8,6 +8,5 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        playerData = GetComponentInChildren<PlayerData>();
     }
 }
