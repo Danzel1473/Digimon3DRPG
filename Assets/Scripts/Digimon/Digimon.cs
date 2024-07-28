@@ -9,6 +9,7 @@ public class Digimon
     public int CurrentHP { get; set; }
     public int MaxHP { get; set; }
     public List<Move> Moves { get; private set; }
+    public int VirusValue, DataValue, VaccineValue;
 
     public Digimon(DigimonBase digimonBase, int level)
     {

@@ -44,3 +44,14 @@ MonoBehaviour:
     level: 5
   digimonSpriteAnimator: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a,
     type: 2}
+  evolutionData:
+  - EvolvedForm: {fileID: 11400000, guid: 5ea012ab49b9f1d43b7c88443efef96e, type: 2}
+    Conditions:
+    - ConditionType: 0
+      Value: 15
+      RequiresDayTime: 0
+      RequiredArea: 
+    - ConditionType: 5
+      Value: 50
+      RequiresDayTime: 0
+      RequiredArea: 

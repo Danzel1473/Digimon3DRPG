@@ -21,6 +21,8 @@ public class DigimonBase : ScriptableObject
     [SerializeField] GameObject digimonMedel;
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] public AnimatorController digimonSpriteAnimator;
+    [SerializeField] private List<EvolutionData> evolutionData;
+
 
     public string DigimonName => digimonName;
 
@@ -61,3 +63,4 @@ public class LearnableMove
     [SerializeField] public MoveBase moveBase;
     [SerializeField] public int level;
 }
+
