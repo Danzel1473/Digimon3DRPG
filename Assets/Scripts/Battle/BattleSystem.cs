@@ -11,11 +11,13 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private PlayerData playerData;
-    
+    [SerializeField] private PlayerData EnemyData;
 
     [SerializeField] private BattleAnimationManager battleAnimationManager;
 
-    [SerializeField] private DigimonBase digimonBaseSample; //테스트용
+    [SerializeField] private DigimonBase pDigimonBaseSample; //테스트용
+    [SerializeField] private DigimonBase eDigimonBaseSample; //테스트용
+
 
     private GameObject currentMenu;
     private List<GameObject> previousMenu;
@@ -28,10 +30,12 @@ public class BattleSystem : MonoBehaviour
         previousMenu = new List<GameObject>();
 
         //테스트용 코드
-        playerData.partyData.AddDigimon(new Digimon(digimonBaseSample, 8));
+        playerData.partyData.AddDigimon(new Digimon(pDigimonBaseSample, 12));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
 
-        
+        EnemyData.partyData.AddDigimon(new Digimon(eDigimonBaseSample, 5));
+        enemyBattleEntity.SetDigimonData(EnemyData.partyData.Digimons[0]);
+
         StartCoroutine(SetupBattle());
     }
 
@@ -111,7 +115,9 @@ public class BattleSystem : MonoBehaviour
 
         float modifiers = Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) + 2;
+        float multiplier = ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType1)
+        * ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType2);
+        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) * multiplier + 2;
 
         return Mathf.FloorToInt(d * modifiers);
     }

@@ -29,9 +29,9 @@ MonoBehaviour:
   elementType1: 0
   elementType2: 0
   hp: 10
-  attack: 10
+  attack: 15
   defense: 10
-  spAttack: 10
+  spAttack: 15
   spDefense: 10
   speed: 10
   digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}

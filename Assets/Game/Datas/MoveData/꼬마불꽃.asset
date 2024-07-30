@@ -17,7 +17,7 @@ MonoBehaviour:
   power: 40
   accuracy: 100
   pp: 30
-  moveType: 0
+  moveType: 1
   moveCategory: 1
   particlePrefab: {fileID: 1947871717301538, guid: a990e3ac1318b834488c784d851f42a9,
     type: 3}
