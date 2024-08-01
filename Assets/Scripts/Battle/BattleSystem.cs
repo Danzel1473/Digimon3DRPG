@@ -102,21 +102,23 @@ public class BattleSystem : MonoBehaviour
 
         float multiplier = GetBattleMultiplier(move, defender);
         bool isFainted = TakeDamage(move, attacker, defender, multiplier);
-        UpdateHUD(defender);
 
-        yield return new WaitForSeconds(2f);
+        
+        UpdateHUD(defender);
+        yield return new WaitForSeconds(1f);
+        AllHUDSetActivity(false);
+        
+        yield return new WaitForSeconds(0.5f);
 
         if (multiplier >= 2)
         {
-            string text = "효과는 굉장했다!";
-            yield return StartCoroutine(BattleText(text));
+            yield return StartCoroutine(BattleText("효과는 굉장했다!"));
         }
 
         if (isFainted)
         {
             defender.PlayFaintAnimation();
-            string text = $"{defender.Digimon.digimonBase.DigimonName} 은(는) 쓰러졌다.";
-            yield return StartCoroutine(BattleText(text));
+            yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName} 은(는) 쓰러졌다."));
         }
     }
 
@@ -176,6 +178,7 @@ public class BattleSystem : MonoBehaviour
         }
         else
         {
+            HUDSetActivity(enemyHUD.gameObject, true);
             enemyHUD.SetData(enemyBattleEntity.Digimon);
         }
     }
@@ -199,8 +202,8 @@ public class BattleSystem : MonoBehaviour
 
     private void TurnStart()
     {
-        rootMenu.SetActive(true);
         currentMenu = rootMenu;
+        AllHUDSetActivity(true);
     }
 
     public void SwitchMenu(GameObject menu)
