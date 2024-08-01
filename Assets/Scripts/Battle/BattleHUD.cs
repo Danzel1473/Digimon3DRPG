@@ -36,9 +36,4 @@ public class BattleHUD : MonoBehaviour
             }
         }
     }
-
-    public void ShowHUD(bool show)
-    {
-        gameObject.SetActive(show);
-    }
 }
