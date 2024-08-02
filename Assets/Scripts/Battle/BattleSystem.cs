@@ -39,6 +39,7 @@ public class BattleSystem : MonoBehaviour
         enemyBattleEntity.SetDigimonData(EnemyData.partyData.Digimons[0]);
 
         StartCoroutine(SetupBattle());
+        TurnStart();
     }
 
     private void Update()
@@ -62,19 +63,17 @@ public class BattleSystem : MonoBehaviour
         //Player 디지몬의 Move 목록을 버튼에 세팅
         playerHUD.SetMoveNames(playerBattleEntity.Digimon.Moves);
         yield return new WaitForSeconds(1f);
-        TurnStart();
     }
 
     public void PlayerMove(Move move)
     {
         playerMove = move;
-        currentMenu.SetActive(false);
+        AllHUDSetActivity(false);
         StartCoroutine(PerformBattle());
     }
 
     private IEnumerator PerformBattle()
     {
-        AllHUDSetActivity(false);
         var enemyMove = GetEnemyMove();
         var battleQueue = GetBattleOrder(playerBattleEntity, enemyBattleEntity, playerMove, enemyMove);
 
@@ -95,24 +94,30 @@ public class BattleSystem : MonoBehaviour
 
     private IEnumerator PerformMove(BattleEntity attacker, Move move, BattleEntity defender)
     {
+
         yield return StartCoroutine(BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다."));
 
         yield return StartCoroutine(battleAnimationManager.PlayAttackAnimation(move, attacker));
+
         yield return StartCoroutine(battleAnimationManager.PlayDefenderDamageAnimation(defender));
 
         float multiplier = GetBattleMultiplier(move, defender);
         bool isFainted = TakeDamage(move, attacker, defender, multiplier);
 
-        
+        //HUD를 활성화하고 업데이트, 1초후에 비활성화한다.
+        BattleHUD targetHUD = SetTargetHUD(defender);
+
+        HUDSetActivity(targetHUD.gameObject, true);
         UpdateHUD(defender);
         yield return new WaitForSeconds(1f);
         AllHUDSetActivity(false);
-        
+
         yield return new WaitForSeconds(0.5f);
 
         if (multiplier >= 2)
         {
             yield return StartCoroutine(BattleText("효과는 굉장했다!"));
+            yield return new WaitForSeconds(1f);
         }
 
         if (isFainted)
@@ -120,6 +125,12 @@ public class BattleSystem : MonoBehaviour
             defender.PlayFaintAnimation();
             yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName} 은(는) 쓰러졌다."));
         }
+    }
+
+    private BattleHUD SetTargetHUD(BattleEntity defender)
+    {
+        if (defender == playerBattleEntity) return playerHUD;
+        else return enemyHUD;
     }
 
     private IEnumerator BattleText(string text)
@@ -173,12 +184,10 @@ public class BattleSystem : MonoBehaviour
     {
         if (entity == playerBattleEntity)
         {
-            HUDSetActivity(playerHUD.gameObject, true);
             playerHUD.SetData(playerBattleEntity.Digimon);
         }
         else
         {
-            HUDSetActivity(enemyHUD.gameObject, true);
             enemyHUD.SetData(enemyBattleEntity.Digimon);
         }
     }
@@ -187,23 +196,47 @@ public class BattleSystem : MonoBehaviour
     {
         var playerSpeed = player.Digimon.Speed;
         var enemySpeed = enemy.Digimon.Speed;
+        BattleEntity moveTarget;
 
         if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
         {
-            yield return (player, playerMove, enemy);
+            moveTarget = SetMoveTarget(player, playerMove);
+            yield return (player, playerMove, moveTarget);
             if (enemy.Digimon.CurrentHP > 0) yield return (enemy, enemyMove, player);
         }
         else
         {
-            yield return (enemy, enemyMove, player);
+            moveTarget = SetMoveTarget(enemy, enemyMove);
+            yield return (enemy, enemyMove, moveTarget);
             if (player.Digimon.CurrentHP > 0) yield return (player, playerMove, enemy);
         }
+    }
+
+    private BattleEntity SetMoveTarget(BattleEntity attacker, Move playerMove)
+    {
+        //MoveTarget의 정보에 따라 BattleEntity를 Return
+        switch (playerMove.moveBase.MoveTarget)
+        {
+            case MoveTarget.Enemy:
+                if(attacker == playerBattleEntity) return enemyBattleEntity;
+                else return playerBattleEntity;
+            case MoveTarget.Player:
+                if(attacker == playerBattleEntity) return playerBattleEntity;
+                else return enemyBattleEntity;
+            case MoveTarget.Any:
+                //TO DO:대상을 정하는 로직 구현
+                break;
+            default:
+                return playerBattleEntity;
+        }
+        return null;
     }
 
     private void TurnStart()
     {
         currentMenu = rootMenu;
         AllHUDSetActivity(true);
+        Debug.Log("Turn Start");
     }
 
     public void SwitchMenu(GameObject menu)
@@ -215,7 +248,7 @@ public class BattleSystem : MonoBehaviour
         currentMenu = menu;
     }
 
-        public void SwitchPreviousMenu()
+    public void SwitchPreviousMenu()
     {
         if(previousMenu.Count == 0) return;
 
@@ -229,11 +262,6 @@ public class BattleSystem : MonoBehaviour
 
         currentMenu = switchMenu;
         previousMenu.RemoveAt(previousMenu.Count -1);
-    }
-
-    public void ToggleUI(GameObject ui)
-    {
-        ui.SetActive(!ui.activeSelf);
     }
 
     public void AllHUDSetActivity(bool activity)

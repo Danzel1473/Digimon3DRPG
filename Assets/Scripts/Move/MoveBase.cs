@@ -9,6 +9,8 @@ public class MoveBase : ScriptableObject
     [SerializeField] private int accuracy;
     [SerializeField] private int pp;
     [SerializeField] private ElementType moveType;
+    [SerializeField] private MoveTarget moveTarget;
+    [SerializeField] private MoveEffect moveEffect;
     [SerializeField] private MoveCategory moveCategory;
     [SerializeField] private GameObject particlePrefab;
 
@@ -18,13 +20,30 @@ public class MoveBase : ScriptableObject
     public int Accuracy => accuracy;
     public int PP => pp;
     public ElementType MoveType => moveType;
+    public MoveTarget MoveTarget => moveTarget;
     public MoveCategory MoveCategory => moveCategory;
+    public MoveEffect MoveEffect => moveEffect;
+
     public GameObject ParticlePrefab => particlePrefab;
 }
 
 public enum MoveCategory
 {
     Physical,
-    Special,
-    Status
+    Special
+}
+
+public enum MoveEffect
+{
+    Deal,
+    Heal,
+    Buff,
+    Debuff
+}
+
+public enum MoveTarget
+{
+    Enemy,
+    Player,
+    Any
 }
