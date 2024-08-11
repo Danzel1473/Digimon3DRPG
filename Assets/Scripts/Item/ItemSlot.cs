@@ -8,15 +8,10 @@ public class ItemSlot : MonoBehaviour
     [SerializeField] TMP_Text quantity;
     [SerializeField] Image itemSprite;
 
-    public void Awake()
-    {
-
-    }
-
     public void UpdateUI(ItemInstance item)
     {
-        itemSprite.sprite = item.itemBase.Icon;
-        itemName.text = item.itemBase.ItemName;
+        itemSprite.sprite = item.item.Icon;
+        itemName.text = item.item.Name;
         quantity.text = $"×{item.quantity}";
     }
 }

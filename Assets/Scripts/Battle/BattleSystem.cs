@@ -12,7 +12,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private PlayerData playerData;
-    [SerializeField] private PlayerData EnemyData;
+    [SerializeField] private PlayerData enemyData;
     [SerializeField] private GameObject textPanel;
     [SerializeField] private TMP_Text uiText;
 
@@ -35,8 +35,10 @@ public class BattleSystem : MonoBehaviour
         playerData.partyData.AddDigimon(new Digimon(pDigimonBaseSample, 12));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
 
-        EnemyData.partyData.AddDigimon(new Digimon(eDigimonBaseSample, 5));
-        enemyBattleEntity.SetDigimonData(EnemyData.partyData.Digimons[0]);
+        enemyData.partyData.AddDigimon(new Digimon(eDigimonBaseSample, 5));
+        enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
+
+        Debug.Log(ItemTable.Instance.GetItem(0).Name);
 
         StartCoroutine(SetupBattle());
         TurnStart();
@@ -101,30 +103,46 @@ public class BattleSystem : MonoBehaviour
 
         yield return StartCoroutine(battleAnimationManager.PlayDefenderDamageAnimation(defender));
 
-        float multiplier = GetBattleMultiplier(move, defender);
-        bool isFainted = TakeDamage(move, attacker, defender, multiplier);
-
-        //HUD를 활성화하고 업데이트, 1초후에 비활성화한다.
-        BattleHUD targetHUD = SetTargetHUD(defender);
-
-        HUDSetActivity(targetHUD.gameObject, true);
-        UpdateHUD(defender);
-        yield return new WaitForSeconds(1f);
-        AllHUDSetActivity(false);
-
-        yield return new WaitForSeconds(0.5f);
-
-        if (multiplier >= 2)
+        if (CalculateAccuracy(move, defender))
         {
-            yield return StartCoroutine(BattleText("효과는 굉장했다!"));
+            float multiplier = GetBattleMultiplier(move, defender);
+            bool isFainted = TakeDamage(move, attacker, defender, multiplier);
+
+            //HUD를 활성화하고 업데이트, 1초후에 비활성화한다.
+            BattleHUD targetHUD = SetTargetHUD(defender);
+
+            HUDSetActivity(targetHUD.gameObject, true);
+            UpdateHUD(defender);
+            yield return new WaitForSeconds(1f);
+            AllHUDSetActivity(false);
+
+            yield return new WaitForSeconds(0.5f);
+
+            //기술 상성 체크 후 텍스트 출력
+            if (multiplier >= 2)
+            {
+                yield return StartCoroutine(BattleText("효과는 굉장했다!"));
+                yield return new WaitForSeconds(1f);
+            }
+            else if (multiplier == 0)
+            {
+                yield return StartCoroutine(BattleText("효과가 없었다..."));
+                yield return new WaitForSeconds(1f);
+            }
+            
+            if (isFainted)
+            {
+                defender.PlayFaintAnimation();
+                yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 쓰러졌다."));
+            }
+        }
+
+        else
+        {
+            yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!"));
             yield return new WaitForSeconds(1f);
         }
-
-        if (isFainted)
-        {
-            defender.PlayFaintAnimation();
-            yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName} 은(는) 쓰러졌다."));
-        }
+        
     }
 
     private BattleHUD SetTargetHUD(BattleEntity defender)
@@ -160,18 +178,22 @@ public class BattleSystem : MonoBehaviour
 
     private int CalculateDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
     {
-        if (Random.Range(0, 100) >= move.moveBase.Accuracy)
-        {
-            StartCoroutine(BattleText($"{defender.Digimon.digimonBase.name}은 맞지 않았다."));
-            return 0;
-        }
-
         float modifiers = Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        
+
         float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) * multiplier + 2;
 
         return Mathf.FloorToInt(d * modifiers);
+    }
+
+    private bool CalculateAccuracy(Move move, BattleEntity defender)
+    {
+        if (Random.Range(0, 100) >= move.moveBase.Accuracy)
+        {
+            StartCoroutine(BattleText($"{defender.Digimon.digimonBase.name}은 맞지 않았다."));
+            return false;
+        }
+        return true;
     }
 
     private static float GetBattleMultiplier(Move move, BattleEntity defender)

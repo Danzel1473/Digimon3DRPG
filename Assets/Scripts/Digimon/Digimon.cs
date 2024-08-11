@@ -40,6 +40,12 @@ public class Digimon
                 Moves.Add(new Move(move.moveBase));
         }
     }
+
+    public void HealDigimon(int amount)
+    {
+        CurrentHP += Mathf.Min(MaxHP-CurrentHP, amount);
+    }
+
     public int HP => Mathf.FloorToInt(((digimonBase.HP * 2) + 100 ) * Level / 100f) + 10;
     public int Attack => Mathf.FloorToInt((digimonBase.Attack * 2) * Level / 100f) + 5;
     public int Defense => Mathf.FloorToInt((digimonBase.Defense * 2) * Level / 100f) + 5;

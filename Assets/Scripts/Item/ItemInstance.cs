@@ -1,18 +1,18 @@
 [System.Serializable]
 public class ItemInstance
 {
-    public ItemBase itemBase;
+    public Item item;
     public int quantity;
 
-    public ItemInstance(ItemBase itemBase, int quantity)
+    public ItemInstance(int itemID, int quantity)
     {
-        this.itemBase = itemBase;
+        item = ItemTable.Instance[itemID];
         this.quantity = quantity;
     }
 
     public void SetItem(ItemInstance itemInstance)
     {
-        itemBase = itemInstance.itemBase;
+        item = itemInstance.item;
         quantity = itemInstance.quantity;
     }
     

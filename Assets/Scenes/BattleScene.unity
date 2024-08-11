@@ -1397,7 +1397,7 @@ MonoBehaviour:
   rootMenu: {fileID: 584137539}
   moveMenu: {fileID: 866987006}
   playerData: {fileID: 1408125586}
-  EnemyData: {fileID: 1023676727}
+  enemyData: {fileID: 1023676727}
   textPanel: {fileID: 1414579909}
   uiText: {fileID: 42648574}
   battleAnimationManager: {fileID: 454365064}
@@ -4027,8 +4027,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerData: {fileID: 1408125586}
-  enemyPartyData:
-    digimons: []
+  enemyData: {fileID: 1023676727}
 --- !u!114 &1240497731 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1617920706098241378, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
@@ -4456,11 +4455,7 @@ MonoBehaviour:
   partyData:
     digimons: []
   inventory:
-    items:
-    - itemBase: {fileID: 11400000, guid: b052943979770c84aaae68e023601ac8, type: 2}
-      quantity: 3
-    - itemBase: {fileID: 11400000, guid: 75637d287af58c049bd2312977a30e5f, type: 2}
-      quantity: 1
+    items: []
 --- !u!1 &1413067406
 GameObject:
   m_ObjectHideFlags: 0
@@ -6942,6 +6937,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8148832250647890479, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
+        type: 3}
+      propertyPath: m_text
+      value: "\uB514\uC9C0\uBAAC \uC774\uB984"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
