@@ -38,8 +38,6 @@ public class BattleSystem : MonoBehaviour
         enemyData.partyData.AddDigimon(new Digimon(eDigimonBaseSample, 5));
         enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
 
-        Debug.Log(ItemTable.Instance.GetItem(0).Name);
-
         StartCoroutine(SetupBattle());
         TurnStart();
     }
@@ -97,7 +95,7 @@ public class BattleSystem : MonoBehaviour
     private IEnumerator PerformMove(BattleEntity attacker, Move move, BattleEntity defender)
     {
 
-        yield return StartCoroutine(BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다."));
+        yield return StartCoroutine(BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다.", 2f));
 
         yield return StartCoroutine(battleAnimationManager.PlayAttackAnimation(move, attacker));
 
@@ -121,25 +119,25 @@ public class BattleSystem : MonoBehaviour
             //기술 상성 체크 후 텍스트 출력
             if (multiplier >= 2)
             {
-                yield return StartCoroutine(BattleText("효과는 굉장했다!"));
+                yield return StartCoroutine(BattleText("효과는 굉장했다!", 2f));
                 yield return new WaitForSeconds(1f);
             }
             else if (multiplier == 0)
             {
-                yield return StartCoroutine(BattleText("효과가 없었다..."));
+                yield return StartCoroutine(BattleText("효과가 없었다...", 2f));
                 yield return new WaitForSeconds(1f);
             }
             
             if (isFainted)
             {
                 defender.PlayFaintAnimation();
-                yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 쓰러졌다."));
+                yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 쓰러졌다.", 2f));
             }
         }
 
         else
         {
-            yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!"));
+            yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!", 2f));
             yield return new WaitForSeconds(1f);
         }
         
@@ -151,12 +149,20 @@ public class BattleSystem : MonoBehaviour
         else return enemyHUD;
     }
 
-    private IEnumerator BattleText(string text)
+    public IEnumerator BattleText(string text)
     {
         uiText.text = text;
 
         textPanel.SetActive(true);
         yield return WaitForKeyPress(KeyCode.Z);
+        textPanel.SetActive(false);
+    }
+    public IEnumerator BattleText(string text, float time)
+    {
+        uiText.text = text;
+
+        textPanel.SetActive(true);
+        yield return new WaitForSeconds(time);
         textPanel.SetActive(false);
     }
 
@@ -190,7 +196,7 @@ public class BattleSystem : MonoBehaviour
     {
         if (Random.Range(0, 100) >= move.moveBase.Accuracy)
         {
-            StartCoroutine(BattleText($"{defender.Digimon.digimonBase.name}은 맞지 않았다."));
+            StartCoroutine(BattleText($"{defender.Digimon.digimonBase.name}은 맞지 않았다.", 2f));
             return false;
         }
         return true;
@@ -257,6 +263,7 @@ public class BattleSystem : MonoBehaviour
     private void TurnStart()
     {
         currentMenu = rootMenu;
+        playerData.partyData.Digimons[0] = playerBattleEntity.Digimon;
         AllHUDSetActivity(true);
         Debug.Log("Turn Start");
     }

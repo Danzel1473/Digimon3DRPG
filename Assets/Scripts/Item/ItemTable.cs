@@ -17,6 +17,8 @@ public class ItemTable : ScriptableObject, IEnumerable<Item>
                 return instance;
 
             instance = Resources.Load<ItemTable>("Tables/ItemTable");
+            instance.Initialize();
+
             return instance;
         }
     }
@@ -28,13 +30,18 @@ public class ItemTable : ScriptableObject, IEnumerable<Item>
     {
         itemDict = new Dictionary<int, Item>(items.Select(item => new KeyValuePair<int, Item>(item.ItemId, item)));
     }
-    
-    public Item GetItem(int itemId)
+
+    private void Initialize()
+{
+    if (itemDict == null)
     {
-        return itemDict[itemId];
+        itemDict = new Dictionary<int, Item>(items.Select(item => new KeyValuePair<int, Item>(item.ItemId, item)));
     }
+}
 
     public Item this[int itemId] => itemDict[itemId];
+    public int ItemTableLength => items.Length;
+
 
     public IEnumerator<Item> GetEnumerator() => items.Cast<Item>().GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => items.GetEnumerator();

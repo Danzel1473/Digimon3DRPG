@@ -2,7 +2,6 @@ public enum EvolutionConditionType
 {
     Level,
     Friendship,
-    TimeOfDay,
     Virus,
     Data,
     Vaccine,
@@ -13,7 +12,6 @@ public enum EvolutionConditionType
 public class EvolutionCondition
 {
     public EvolutionConditionType ConditionType;
-    public int Value;
-    public bool RequiresDayTime;
     public string RequiredArea;
+    public int Value;
 }

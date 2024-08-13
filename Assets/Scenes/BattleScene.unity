@@ -817,12 +817,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3812871481819404995, guid: ed117f32c10292d42b29d4c453e9901b,
-        type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d,
-        type: 3}
     - target: {fileID: 4222930796799611910, guid: ed117f32c10292d42b29d4c453e9901b,
         type: 3}
       propertyPath: m_Name
@@ -831,18 +825,13 @@ PrefabInstance:
     - target: {fileID: 6792284148094035755, guid: ed117f32c10292d42b29d4c453e9901b,
         type: 3}
       propertyPath: m_AnchorMax.x
-      value: 1
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: 6792284148094035755, guid: ed117f32c10292d42b29d4c453e9901b,
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 7170240516079233603, guid: ed117f32c10292d42b29d4c453e9901b,
-        type: 3}
-      propertyPath: m_Controller
-      value: 
-      objectReference: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -5452,6 +5441,18 @@ MonoBehaviour:
   DigimonSlot:
   - {fileID: 1277044058}
   gameManager: {fileID: 1212279547}
+--- !u!114 &1904465877 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1351203558016489689, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
+    type: 3}
+  m_PrefabInstance: {fileID: 7363923924970022868}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d4dedb12b1c39f40a1ada4ad49c2253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1910923807
 GameObject:
   m_ObjectHideFlags: 0
@@ -6472,6 +6473,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1930007315}
     m_Modifications:
+    - target: {fileID: 2802778503019270242, guid: 1684c8aa120de474abfd0c2f1a05fedb,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 0.7647059
+      objectReference: {fileID: 0}
     - target: {fileID: 7218310758569923997, guid: 1684c8aa120de474abfd0c2f1a05fedb,
         type: 3}
       propertyPath: m_Name
@@ -6614,6 +6620,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1093641884627119638, guid: fc1c918f38d48e1459026e9c25b6242e,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1486235108939024257, guid: fc1c918f38d48e1459026e9c25b6242e,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2954658578513781800, guid: fc1c918f38d48e1459026e9c25b6242e,
         type: 3}
@@ -6937,6 +6953,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745595285730616726, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1904465877}
+    - target: {fileID: 7745595285730616726, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: RunBattle
+      objectReference: {fileID: 0}
+    - target: {fileID: 7745595285730616726, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: BattleButton, Assembly-CSharp
       objectReference: {fileID: 0}
     - target: {fileID: 8148832250647890479, guid: 047205f5a9ccc6d4f82847bdcdd337b3,
         type: 3}

@@ -11,7 +11,7 @@ public class DigimonSlot : MonoBehaviour
     [SerializeField] private Animator digimonAnimator;
     [SerializeField] private Slider digimonHPSlider;
 
-    public void SetDigimon(Digimon digimon)
+    public void UpdateDigimon(Digimon digimon)
     {
         digimonIcon.sprite = digimon.digimonBase.DigimonSprite;
         digimonAnimator.runtimeAnimatorController = digimon.digimonBase.digimonSpriteAnimator;
