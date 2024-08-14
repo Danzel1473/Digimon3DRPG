@@ -6,7 +6,7 @@ public enum ItemAttributeKind
     None,
     Heal,
     Evolution,
-    Buff,
+    Buff
 }
 
 [Serializable]

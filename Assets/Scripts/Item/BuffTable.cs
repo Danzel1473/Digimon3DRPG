@@ -17,20 +17,27 @@ public class BuffTable : ScriptableObject, IEnumerable<Buff>
                 return instance;
 
             instance = Resources.Load<BuffTable>("Tables/BuffTable");
+            instance.Initialize();
             
             return instance;
         }
     }
     
-    [SerializeField]
-    private Buff[] buffs;
+    [SerializeField] private Buff[] buffs;
 
-    [NonSerialized]
-    private Dictionary<int, Buff> buffDict;
+    [NonSerialized] private Dictionary<int, Buff> buffDict;
 
     protected void Awake()
     {
-        buffDict = new Dictionary<int, Buff>(buffs.Select(buff => new KeyValuePair<int, Buff>(buff.BuffId, buff)));
+        Initialize();
+    }
+
+    private void Initialize()
+    {
+        if (buffDict == null)
+        {
+            buffDict = new Dictionary<int, Buff>(buffs.Select(buff => new KeyValuePair<int, Buff>(buff.BuffId, buff)));
+        }
     }
 
     public Buff this[int buffId] => buffDict[buffId];

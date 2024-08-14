@@ -17,16 +17,32 @@ MonoBehaviour:
     name: "\uCE58\uB8CC \uB514\uC2A4\uD06C A"
     description: "\uB514\uC9C0\uBAAC 1\uB9C8\uB9AC\uC758 \uCCB4\uB825\uC744 20 \uD68C\uBCF5\uD55C\uB2E4."
     icon: {fileID: 21300000, guid: db23643804ffcf94c8b4282657582d9d, type: 3}
+    attrs:
+    - kind: 1
+      value: 20
+    kind: 0
   - itemId: 1
     name: "\uCE58\uB8CC \uB514\uC2A4\uD06C B"
     description: "\uB514\uC9C0\uBAAC 1\uB9C8\uB9AC\uC758 \uCCB4\uB825\uC744 50 \uD68C\uBCF5\uD55C\uB2E4."
     icon: {fileID: 21300000, guid: fd1b77f820f5d5f49b136c46ef3c6067, type: 3}
+    attrs:
+    - kind: 1
+      value: 50
+    kind: 0
   - itemId: 2
     name: "\uCE58\uB8CC \uB514\uC2A4\uD06C C"
     description: "\uB514\uC9C0\uBAAC 1\uB9C8\uB9AC\uC758 \uCCB4\uB825\uC744 100 \uD68C\uBCF5\uD55C\uB2E4."
     icon: {fileID: 21300000, guid: 0b2886291e31bbb49a9a0b540cca02a8, type: 3}
+    attrs:
+    - kind: 1
+      value: 100
+    kind: 0
   - itemId: 3
     name: "\uC6A9\uAE30\uC758 \uCEA1\uC290"
     description: "\uD2B9\uC815 \uB514\uC9C0\uBAAC\uB4E4\uC744 \uC9C4\uD654\uC2DC\uD0A4\uB294
       \uCEA1\uC290."
     icon: {fileID: 21300000, guid: dc839649f7de1e44299b90862b260105, type: 3}
+    attrs:
+    - kind: 2
+      value: 0
+    kind: 2

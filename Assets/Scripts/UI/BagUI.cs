@@ -1,23 +1,27 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BagUI : MonoBehaviour
 {
     [SerializeField] public GameObject itemSlotPrefab;
     [SerializeField] private Transform itemSlotContainer;
+    private ItemTab[] itemTabs;
+
     private GameManager gameManager;
-    private PartyUI partyUI;
+    private ItemKind currentBagItemKind;
+    public ItemKind CurrentBagItemKind => currentBagItemKind;
 
     public void Awake()
     {
         gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
-        partyUI = GetComponentInChildren<PartyUI>();
+        currentBagItemKind = ItemKind.Heal;
+        itemTabs = GetComponentsInChildren<ItemTab>();
     }
 
     public void OnEnable()
     {
         AddItemToInventoryForTest();
-        PopulateBag();
-        partyUI.UpdateUI();
+        UpdateBagItems();
     }
 
     private static void AddItemToInventoryForTest()
@@ -29,7 +33,13 @@ public class BagUI : MonoBehaviour
         }
     }
 
-    private void PopulateBag()
+    public void SwitchItemTab(ItemKind itemKind)
+    {
+        currentBagItemKind = itemKind;
+        UpdateBagItems();
+    }
+
+    private void UpdateBagItems()
     {
         //기존 슬롯 제거
         foreach (Transform child in itemSlotContainer)
@@ -44,10 +54,14 @@ public class BagUI : MonoBehaviour
         //각 아이템에 대해 ItemSlot 인스턴스 생성
         foreach (ItemInstance itemInstance in inventory.Items)
         {
+            if(itemInstance.item.Kind != currentBagItemKind)
+                continue;
+
             GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
             
             if(itemSlotObject.GetComponent<ItemSlot>() == null) return;
             itemSlotObject.GetComponent<ItemSlot>().UpdateUI(itemInstance);
         }
     }
+
 }

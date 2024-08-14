@@ -32,12 +32,12 @@ public class ItemTable : ScriptableObject, IEnumerable<Item>
     }
 
     private void Initialize()
-{
-    if (itemDict == null)
     {
-        itemDict = new Dictionary<int, Item>(items.Select(item => new KeyValuePair<int, Item>(item.ItemId, item)));
+        if (itemDict == null)
+        {
+            itemDict = new Dictionary<int, Item>(items.Select(item => new KeyValuePair<int, Item>(item.ItemId, item)));
+        }
     }
-}
 
     public Item this[int itemId] => itemDict[itemId];
     public int ItemTableLength => items.Length;
