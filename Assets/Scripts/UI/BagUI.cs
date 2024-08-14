@@ -5,11 +5,14 @@ public class BagUI : MonoBehaviour
 {
     [SerializeField] public GameObject itemSlotPrefab;
     [SerializeField] private Transform itemSlotContainer;
+    [SerializeField] private ItemDetail itemDetail;
+
     private ItemTab[] itemTabs;
 
     private GameManager gameManager;
     private ItemKind currentBagItemKind;
     public ItemKind CurrentBagItemKind => currentBagItemKind;
+    public ItemDetail ItemDetail => itemDetail;
 
     public void Awake()
     {
@@ -60,7 +63,7 @@ public class BagUI : MonoBehaviour
             GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
             
             if(itemSlotObject.GetComponent<ItemSlot>() == null) return;
-            itemSlotObject.GetComponent<ItemSlot>().UpdateUI(itemInstance);
+            itemSlotObject.GetComponent<ItemSlot>().SetItem(itemInstance);
         }
     }
 
