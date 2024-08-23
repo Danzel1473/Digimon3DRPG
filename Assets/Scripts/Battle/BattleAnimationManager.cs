@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class BattleAnimationManager : MonoBehaviour
 {
+    private static BattleAnimationManager instance = new BattleAnimationManager();
+    public static BattleAnimationManager Instance => instance;
     public IEnumerator PlayAttackAnimation(Move move, BattleEntity attacker)
     {
         bool isSPAttack = move.moveBase.MoveCategory == MoveCategory.Special;

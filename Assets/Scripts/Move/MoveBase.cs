@@ -12,7 +12,8 @@ public class MoveBase : ScriptableObject
     [SerializeField] private MoveTarget moveTarget;
     [SerializeField] private MoveEffect moveEffect;
     [SerializeField] private MoveCategory moveCategory;
-    [SerializeField] private GameObject particlePrefab;
+
+    [SerializeField] private UnityEngine.GameObject particlePrefab;
 
     public string MoveName => moveName;
     public string Description => description;
@@ -24,7 +25,7 @@ public class MoveBase : ScriptableObject
     public MoveCategory MoveCategory => moveCategory;
     public MoveEffect MoveEffect => moveEffect;
 
-    public GameObject ParticlePrefab => particlePrefab;
+    public UnityEngine.GameObject ParticlePrefab => particlePrefab;
 }
 
 public enum MoveCategory
@@ -38,12 +39,13 @@ public enum MoveEffect
     Deal,
     Heal,
     Buff,
-    Debuff
+    Debuff,
+    Drain
 }
 
 public enum MoveTarget
 {
     Enemy,
-    Player,
+    User,
     Any
 }

@@ -18,7 +18,7 @@ public class DigimonBase : ScriptableObject
     [SerializeField] int spDefense;
     [SerializeField] int speed;
     [SerializeField] Sprite digimonSprite;
-    [SerializeField] GameObject digimonMedel;
+    [SerializeField] UnityEngine.GameObject digimonMedel;
     [SerializeField] List<LearnableMove> learnableMoves;
     [SerializeField] public AnimatorController digimonSpriteAnimator;
     [SerializeField] private List<EvolutionData> evolutionData;
@@ -48,7 +48,7 @@ public class DigimonBase : ScriptableObject
 
     public List<LearnableMove> LearnableMoves => learnableMoves;
 
-    public GameObject DigimonModel => digimonMedel;
+    public UnityEngine.GameObject DigimonModel => digimonMedel;
 
     public Sprite DigimonSprite => digimonSprite;
 

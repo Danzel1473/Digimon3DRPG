@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class BattleButton : MonoBehaviour
 {
-    [SerializeField] private GameObject activeMenu;
+    [SerializeField] private UnityEngine.GameObject activeMenu;
     private BattleSystem battleSystem;
 
     public void Awake()
     {
-        battleSystem = GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
+        battleSystem = UnityEngine.GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
     }
 
     public void ActivateMenu()

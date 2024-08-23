@@ -14,8 +14,8 @@ public class BattleHUDManager : MonoBehaviour
     [SerializeField] private TMP_Text enemyHPText;
     [SerializeField] private Slider enemyHPBar;
     [SerializeField] private List<Button> moveButtons;
-    [SerializeField] private GameObject playerHUD;
-    [SerializeField] private GameObject enemyHUD;
+    [SerializeField] private UnityEngine.GameObject playerHUD;
+    [SerializeField] private UnityEngine.GameObject enemyHUD;
 
     public void SetData(Digimon digimon, bool isPlayer)
     {

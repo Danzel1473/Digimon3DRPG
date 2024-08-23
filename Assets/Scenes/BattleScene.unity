@@ -1616,7 +1616,7 @@ Transform:
   m_GameObject: {fileID: 514178760}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08325354, y: -0, z: -0, w: 0.99652845}
-  m_LocalPosition: {x: 3.09, y: -0.2, z: -2.61}
+  m_LocalPosition: {x: 3.105, y: -0.542, z: -3.295}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3183,7 +3183,7 @@ Transform:
   m_GameObject: {fileID: 1038557579}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0.14447497, z: -0, w: -0.9895085}
-  m_LocalPosition: {x: 1.67, y: -2.344222, z: -0.22}
+  m_LocalPosition: {x: 0.99, y: -2.344222, z: -0.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3528,7 +3528,7 @@ Transform:
   m_GameObject: {fileID: 1147845349}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9517432, z: -0, w: -0.30689576}
-  m_LocalPosition: {x: 8.49, y: -2.321, z: 6.07}
+  m_LocalPosition: {x: 9.17, y: -2.321, z: 6.07}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -3807,37 +3807,6 @@ Transform:
   m_Children:
   - {fileID: 1147845350}
   - {fileID: 1038557580}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1210578849
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1210578851}
-  m_Layer: 0
-  m_Name: UIController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1210578851
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1210578849}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.5529547, y: -3.041293, z: -9.965981}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1212279545
@@ -6834,5 +6803,4 @@ SceneRoots:
   - {fileID: 1198473733}
   - {fileID: 1212279546}
   - {fileID: 1930007315}
-  - {fileID: 1210578851}
   - {fileID: 1001830122}

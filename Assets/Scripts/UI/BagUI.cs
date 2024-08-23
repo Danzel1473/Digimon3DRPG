@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BagUI : MonoBehaviour
 {
-    [SerializeField] public GameObject itemSlotPrefab;
+    [SerializeField] public UnityEngine.GameObject itemSlotPrefab;
     [SerializeField] private Transform itemSlotContainer;
     [SerializeField] private ItemDetail itemDetail;
 
@@ -16,7 +16,7 @@ public class BagUI : MonoBehaviour
 
     public void Awake()
     {
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        gameManager = UnityEngine.GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         currentBagItemKind = ItemKind.Heal;
         itemTabs = GetComponentsInChildren<ItemTab>();
     }
@@ -29,7 +29,7 @@ public class BagUI : MonoBehaviour
 
     private static void AddItemToInventoryForTest()
     {
-        PlayerData playerData = GameObject.FindWithTag("GameManager").GetComponentInChildren<PlayerData>();
+        PlayerData playerData = UnityEngine.GameObject.FindWithTag("GameManager").GetComponentInChildren<PlayerData>();
         for(int i = 0; i < ItemTable.Instance.ItemTableLength; i++)
         {
             playerData.Inventory.AddItem(ItemTable.Instance[i], 1);
@@ -60,7 +60,7 @@ public class BagUI : MonoBehaviour
             if(itemInstance.item.Kind != currentBagItemKind)
                 continue;
 
-            GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
+            UnityEngine.GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
             
             if(itemSlotObject.GetComponent<ItemSlot>() == null) return;
             itemSlotObject.GetComponent<ItemSlot>().SetItem(itemInstance);

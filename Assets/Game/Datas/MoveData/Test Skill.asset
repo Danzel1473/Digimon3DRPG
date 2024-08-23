@@ -15,8 +15,10 @@ MonoBehaviour:
   moveName: "\uD14C\uC2A4\uD2B8\uC2A4\uD0AC"
   description: "\uD14C\uC2A4\uD2B8\uC785\uB2C8\uB2E4"
   power: 50
-  accuracy: 100
+  accuracy: 50
   pp: 10
   moveType: 0
+  moveTarget: 0
+  moveEffect: 
   moveCategory: 0
   particlePrefab: {fileID: 0}

@@ -42,16 +42,16 @@ MonoBehaviour:
     level: 1
   - moveBase: {fileID: 11400000, guid: 98c3604668bf4b242a5662e8c3118ffa, type: 2}
     level: 5
+  - moveBase: {fileID: 11400000, guid: b51923c4b8b44e54db09bed314b9d89a, type: 2}
+    level: 6
   digimonSpriteAnimator: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a,
     type: 2}
   evolutionData:
   - EvolvedForm: {fileID: 11400000, guid: 5ea012ab49b9f1d43b7c88443efef96e, type: 2}
     Conditions:
     - ConditionType: 0
+      RequiredArea: 
       Value: 15
-      RequiresDayTime: 0
-      RequiredArea: 
     - ConditionType: 5
-      Value: 50
-      RequiresDayTime: 0
       RequiredArea: 
+      Value: 50

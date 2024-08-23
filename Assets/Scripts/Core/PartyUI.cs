@@ -7,7 +7,7 @@ public class PartyUI : MonoBehaviour
 
     public void Awake()
     {
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        gameManager = UnityEngine.GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
     }
 
     // public void OnEnable()

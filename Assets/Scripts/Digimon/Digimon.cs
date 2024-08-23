@@ -5,6 +5,7 @@ using UnityEngine;
 public class Digimon
 {
     public DigimonBase digimonBase { get; private set; }
+    public string Name { get; private set; }
     public int Level { get; private set; }
     public int CurrentHP { get; set; }
     public int MaxHP { get; set; }
@@ -14,6 +15,7 @@ public class Digimon
     public Digimon(DigimonBase digimonBase, int level)
     {
         this.digimonBase = digimonBase;
+        Name = digimonBase.name;
         Level = level;
         MaxHP = HP;
         CurrentHP = MaxHP;
@@ -21,8 +23,7 @@ public class Digimon
         Moves = new List<Move>();
         foreach (var move in digimonBase.LearnableMoves)
         {
-            if (move.level <= level)
-                Moves.Add(new Move(move.moveBase));
+            if (move.level <= level) Moves.Add(new Move(move.moveBase));
         }
     }
 
