@@ -15,6 +15,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private PlayerData playerData;
     [SerializeField] private PlayerData enemyData;
     [SerializeField] private GameObject textPanel;
+    [SerializeField] private BattleField battleField;
     [SerializeField] private TMP_Text uiText;
 
     [SerializeField] private BattleAnimationManager battleAnimationManager;
@@ -93,6 +94,10 @@ public class BattleSystem : MonoBehaviour
         {
             int playerSpeed = playerBattleEntity.Digimon.Speed;
             int enemySpeed = enemyBattleEntity.Digimon.Speed;
+
+            Debug.Log($"PlayerSpeed : {playerSpeed}");
+            Debug.Log($"EnemySpeed : {enemySpeed}");
+
             if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
             {
                 actions.Add(playerAction);
@@ -115,7 +120,24 @@ public class BattleSystem : MonoBehaviour
             yield return ba.Action();
         }
         
+        CheckGameOver();
+
+        switch(battleField) //날씨 데미지는 스피드가 빠른 쪽부터 받음
+        {
+            case BattleField.SnowStorm:
+                //얼음 타입 제외하고 데미지 주는 로직
+                break;
+            case BattleField.SandStorm:
+                //바위 타입 제외하고 데미지 주는 로직
+                break;
+        }
+
+        //턴 종료시에 상태에 따른 데미지 주는 로직 추가 예정
+        
         yield return new WaitForSeconds(1f);
+
+        if(playerBattleEntity.Digimon.CurrentHP == 0) {}
+
         TurnStart();
     }
 
@@ -123,108 +145,6 @@ public class BattleSystem : MonoBehaviour
     {
         return enemyBattleEntity.Digimon.Moves[Random.Range(0, enemyBattleEntity.Digimon.Moves.Count)];
     }
-
-    private IEnumerator PerformMove(BattleEntity attacker, Move move, BattleEntity defender)
-    {
-
-        yield return 0;
-        // switch(move.moveBase.MoveEffect)
-        // {
-        //     case MoveEffect.Deal:
-        //         yield return DealingMove(attacker, move, defender);
-        //         break;
-        //     case MoveEffect.Heal:
-        //         yield return HealMove(attacker, move, defender);
-        //         break;
-        // }
-    }
-
-    // private IEnumerator DealingMove(BattleEntity attacker, Move move, BattleEntity defender)
-    // {
-    //     yield return StartCoroutine(BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다.", 2f));
-
-    //     yield return StartCoroutine(battleAnimationManager.PlayAttackAnimation(move, attacker));
-
-    //     if (!CalculateAccuracy(move, defender))
-    //     {
-    //         yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!", 2f));
-    //         yield return new WaitForSeconds(1f);
-
-    //         yield break;
-    //     }
-
-    //     yield return StartCoroutine(battleAnimationManager.PlayDefenderDamageAnimation(defender));
-
-    //     float multiplier = GetBattleMultiplier(move, defender);
-    //     if (multiplier == 0)
-    //     {
-    //         yield return StartCoroutine(BattleText("효과가 없었다...", 2f));
-    //         yield return new WaitForSeconds(1f);
-
-    //         yield break;
-    //     }
-
-    //     bool isFainted = TakeDamage(move, attacker, defender, multiplier);
-
-    //     //HUD를 활성화하고 업데이트, 1초후에 비활성화한다.
-    //     BattleHUD targetHUD = SetTargetHUD(defender);
-
-    //     HUDSetActivity(targetHUD.gameObject, true);
-    //     UpdateHUD(defender);
-    //     yield return new WaitForSeconds(1f);
-    //     AllHUDSetActivity(false);
-
-    //     yield return new WaitForSeconds(0.5f);
-
-    //     //기술 상성 체크 후 텍스트 출력
-    //     if (multiplier >= 2)
-    //     {
-    //         yield return StartCoroutine(BattleText("효과는 굉장했다!", 2f));
-    //         yield return new WaitForSeconds(1f);
-    //     }
-
-    //     if (isFainted)
-    //     {
-    //         defender.PlayFaintAnimation();
-    //         yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 쓰러졌다.", 2f));
-    //     }
-    // }
-
-    // private IEnumerator HealMove(BattleEntity attacker, Move move, BattleEntity defender)
-    // {
-    //     yield return StartCoroutine(BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다.", 2f));
-
-    //     yield return StartCoroutine(battleAnimationManager.PlayAttackAnimation(move, attacker));
-
-    //     if (!CalculateAccuracy(move, defender))
-    //     {
-    //         yield return StartCoroutine(BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!", 2f));
-    //         yield return new WaitForSeconds(1f);
-
-    //         yield break;
-    //     }
-
-    //     float multiplier = GetBattleMultiplier(move, defender);
-    //     if (multiplier == 0)
-    //     {
-    //         yield return StartCoroutine(BattleText("효과가 없었다...", 2f));
-    //         yield return new WaitForSeconds(1f);
-
-    //         yield break;
-    //     }
-
-    //     TakeHeal(move, attacker, defender);
-
-    //     //HUD를 활성화하고 업데이트, 1초후에 비활성화한다.
-    //     BattleHUD targetHUD = SetTargetHUD(defender);
-
-    //     HUDSetActivity(targetHUD.gameObject, true);
-    //     UpdateHUD(defender);
-    //     yield return new WaitForSeconds(1f);
-    //     AllHUDSetActivity(false);
-
-    //     yield return new WaitForSeconds(0.5f);
-    // }
 
     public BattleHUD SetTargetHUD(BattleEntity defender)
     {
@@ -256,59 +176,15 @@ public class BattleSystem : MonoBehaviour
             yield return null;
         }
     }
-
-    public bool TakeDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
-    {
-        int damage = CalculateDamage(move, attacker, defender, multiplier);
-        defender.Digimon.CurrentHP -= Mathf.Min(defender.Digimon.CurrentHP, damage);
-        
-        return defender.Digimon.CurrentHP <= 0;
-    }
-
-    public bool TakeHeal(Move move, BattleEntity attacker, BattleEntity defender)
-    {
-        int heal = CalculateHeal(move, attacker, defender);
-        defender.Digimon.CurrentHP += Mathf.Min(defender.Digimon.MaxHP - defender.Digimon.CurrentHP, heal);
-        
-        return defender.Digimon.CurrentHP <= 0;
-    }
-
-    private int CalculateDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
-    {
-        float modifiers = Random.Range(0.85f, 1f);
-        float a = (2 * attacker.Digimon.Level + 10) / 250f;
-
-        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) * multiplier + 2;
-
-        return Mathf.FloorToInt(d * modifiers);
-    }
-
-    private int CalculateHeal(Move move, BattleEntity attacker, BattleEntity defender)
-    {
-        float modifiers = Random.Range(0.85f, 1f);
-        float a = (2 * attacker.Digimon.Level + 10) / 250f;
-
-        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) + 2;
-
-        return Mathf.FloorToInt(d * modifiers);
-    }
-
     public bool CalculateAccuracy(Move move, BattleEntity defender)
     {
         if (Random.Range(0, 100) >= move.moveBase.Accuracy)
         {
-            StartCoroutine(BattleText($"{defender.Digimon.digimonBase.name}은 맞지 않았다.", 2f));
+            StartCoroutine(BattleText($"{defender.Digimon.Name}은 맞지 않았다.", 2f));
             return false;
         }
         return true;
     }
-
-    public static float GetBattleMultiplier(Move move, BattleEntity defender)
-    {
-        return ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType1)
-                * ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType2);
-    }
-
     public void UpdateHUD(BattleEntity entity)
     {
         if (entity == playerBattleEntity)
@@ -320,43 +196,6 @@ public class BattleSystem : MonoBehaviour
             enemyHUD.SetData(enemyBattleEntity.Digimon);
         }
     }
-
-    // private IEnumerable<(BattleEntity, BattleAction, BattleEntity)> GetBattleOrder(BattleEntity player, BattleEntity enemy, BattleAction playerAction, BattleAction enemyAction)
-    // {
-
-    //     // if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
-    //     // {
-    //     //     moveTarget = SetMoveTarget(player, playerAction);
-    //     //     yield return (player, playerAction, moveTarget);
-    //     //     if (enemy.Digimon.CurrentHP > 0) yield return (enemy, enemyAction, player);
-    //     // }
-    //     // else
-    //     // {
-    //     //     moveTarget = SetMoveTarget(enemy, enemyAction);
-    //     //     yield return (enemy, enemyAction, moveTarget);
-    //     //     if (player.Digimon.CurrentHP > 0) yield return (player, playerAction, enemy);
-    //     // }
-    // }
-
-    // private IEnumerable<(BattleEntity, Move, BattleEntity)> GetBattleOrder(BattleEntity player, BattleEntity enemy, Move playerMove, Move enemyMove)
-    // {
-    //     var playerSpeed = player.Digimon.Speed;
-    //     var enemySpeed = enemy.Digimon.Speed;
-    //     BattleEntity moveTarget;
-
-    //     if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
-    //     {
-    //         moveTarget = SetMoveTarget(player, playerMove);
-    //         yield return (player, playerMove, moveTarget);
-    //         if (enemy.Digimon.CurrentHP > 0) yield return (enemy, enemyMove, player);
-    //     }
-    //     else
-    //     {
-    //         moveTarget = SetMoveTarget(enemy, enemyMove);
-    //         yield return (enemy, enemyMove, moveTarget);
-    //         if (player.Digimon.CurrentHP > 0) yield return (player, playerMove, enemy);
-    //     }
-    // }
 
     private BattleEntity SetMoveTarget(BattleEntity attacker, Move playerMove)
     {
@@ -421,5 +260,53 @@ public class BattleSystem : MonoBehaviour
     public void HUDSetActivity(GameObject hud, bool activity)
     {
         hud.SetActive(activity);
+    }
+
+    public void CheckGameOver()
+    {
+        bool playerDown = false;
+        bool enemyDown = false;
+
+        if(playerBattleEntity.Digimon.CurrentHP <= 0)
+        {
+            playerDown = true;
+        }
+
+        if(enemyBattleEntity.Digimon.CurrentHP <= 0)
+        {
+            enemyDown = true;
+        }
+
+        if(playerDown)
+        {
+            if(CheckPartyDown(playerData.partyData.Digimons))
+            {
+                StartCoroutine(BattleText($"{playerData.playerName}은 패배했다.", 2f));
+            }
+        }
+        else if(enemyDown)
+        {
+            if(CheckPartyDown(enemyData.partyData.Digimons))
+            {
+                StartCoroutine(BattleText($"{playerData.playerName}은 승리했다!", 2f));
+            }
+        }
+    }
+
+    public bool CheckPartyDown(List<Digimon> digimons)
+    {
+        bool isAllDown = true;
+        foreach (Digimon eDigimon in digimons)
+        {
+            if(eDigimon.CurrentHP > 0)
+            {
+                Debug.Log($"{eDigimon.CurrentHP}");
+                isAllDown = false;
+                break;
+            }
+        }
+        Debug.Log($"{isAllDown}");
+        Debug.Log("enemy Party All Down");
+        return isAllDown;
     }
 }

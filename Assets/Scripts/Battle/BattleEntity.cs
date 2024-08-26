@@ -4,8 +4,6 @@ using UnityEngine.UI;
 
 public class BattleEntity : MonoBehaviour
 {
-    [SerializeField] private DigimonBase digimonBase;
-    [SerializeField] private int level;
     [SerializeField] public bool IsPlayer { get; set; }
     public bool canAttack = true;
     public bool isDefeated = false;
@@ -13,24 +11,20 @@ public class BattleEntity : MonoBehaviour
     public bool CanAttack => canAttack;
     public bool IsDefeated => isDefeated;
 
-
-
-
     public Digimon Digimon { get; private set; }
     private BattleAnimation battleAnimation;
 
     public void SetUp()
     {
-        if (digimonBase == null) return;
-        Digimon = new Digimon(digimonBase, level);
-        var digimonModel = Instantiate(digimonBase.DigimonModel, transform);
+        if (Digimon == null) return;
+
+        var digimonModel = Instantiate(Digimon.digimonBase.DigimonModel, transform);
         battleAnimation = digimonModel.GetComponentInChildren<BattleAnimation>();
     }
 
     public void SetDigimonData(Digimon digimon)
     {
-        digimonBase = digimon.digimonBase;
-        level = digimon.Level;
+        Digimon = digimon;
     }
 
     public void PlayAttackAnimation(bool isSPAttack)

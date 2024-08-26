@@ -15,10 +15,11 @@ public class Digimon
     public Digimon(DigimonBase digimonBase, int level)
     {
         this.digimonBase = digimonBase;
-        Name = digimonBase.name;
+        Name = digimonBase.DigimonName;
         Level = level;
         MaxHP = HP;
         CurrentHP = MaxHP;
+        //디지몬마다 고유번호 가지도록 추가 예정
 
         Moves = new List<Move>();
         foreach (var move in digimonBase.LearnableMoves)

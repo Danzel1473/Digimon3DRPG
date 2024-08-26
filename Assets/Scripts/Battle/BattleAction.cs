@@ -45,13 +45,13 @@ public class MoveAction : BattleAction
 
     private IEnumerator ExecuteDealingMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonBase.DigimonName}은 {move.moveBase.name}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.name}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
         if (!battleSystem.CalculateAccuracy(move, defender))
         {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 맞지 않았다!", 2f));
             yield break;
         }
 
@@ -80,19 +80,19 @@ public class MoveAction : BattleAction
         if (isFainted)
         {
             defender.PlayFaintAnimation();
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 쓰러졌다.", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 쓰러졌다.", 2f));
         }
     }
 
     private IEnumerator ExecuteHealMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonBase.name}은 {move.moveBase.name}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.name}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
         if (!CalculateAccuracy(move, defender))
         {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonBase.DigimonName}은(는) 맞지 않았다!", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 맞지 않았다!", 2f));
             yield break;
         }
 

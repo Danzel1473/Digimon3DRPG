@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerData : MonoBehaviour
 {
     //[SerializeField] private PartyData partyData;
+    [SerializeField] public string playerName = "Tester";
     [SerializeField] public PartyData partyData;
     [SerializeField] private Inventory inventory;
 
