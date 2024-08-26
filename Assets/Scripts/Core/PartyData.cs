@@ -10,9 +10,8 @@ public class PartyData
 
     public void AddDigimon(Digimon digimon)
     {
-        if(digimons.Count <= 6)
-        {
-            digimons.Add(digimon);
-        }
+        if(digimons.Count >= 6) return; //박스로 보내거나, 파티 디지몬을 박스로 보내고 새 디지몬을 파티에 넣는 로직
+
+        digimons.Add(digimon);
     }
 }

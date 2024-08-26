@@ -28,7 +28,7 @@ public class ItemTable : ScriptableObject, IEnumerable<Item>
 
     protected void Awake()
     {
-        itemDict = new Dictionary<int, Item>(items.Select(item => new KeyValuePair<int, Item>(item.ItemId, item)));
+        Initialize();
     }
 
     private void Initialize()

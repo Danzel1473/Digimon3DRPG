@@ -3,25 +3,26 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class BattleSystem : MonoBehaviour
 {
+    [Header ("Battle Entities")]
     [SerializeField] private BattleEntity playerBattleEntity;
     [SerializeField] private BattleEntity enemyBattleEntity;
-    [SerializeField] private BattleHUD playerHUD;
-    [SerializeField] private BattleHUD enemyHUD;
+
+
+    [Header ("UI & Environments")]
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
-    [SerializeField] private PlayerData playerData;
-    [SerializeField] private PlayerData enemyData;
     [SerializeField] private GameObject textPanel;
-    [SerializeField] private BattleField battleField;
+    [SerializeField] private BattleHUD playerHUD;
+    [SerializeField] private BattleHUD enemyHUD;
     [SerializeField] private TMP_Text uiText;
+    [SerializeField] private BattleField battleField;
 
+    [Header ("ETC")]
     [SerializeField] private BattleAnimationManager battleAnimationManager;
-
-    [SerializeField] private DigimonBase pDigimonBaseSample; //테스트용 플레이어 디지몬
-    [SerializeField] private DigimonBase eDigimonBaseSample; //테스트용 상대 디지몬
 
     private GameObject currentMenu;
     private List<GameObject> previousMenu = new List<GameObject>();
@@ -29,20 +30,42 @@ public class BattleSystem : MonoBehaviour
     //private Move playerMove;
     private BattleAction playerAction;
     private BattleAction enemyAction;
+    private PlayerData playerData;
+    private PlayerData enemyData;
 
-    private static BattleSystem instance = new BattleSystem();
+    private static BattleSystem instance;
+    public static BattleSystem Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                instance = FindObjectOfType<BattleSystem>();
+            }
+            return instance;
+        }
+    }
 
-    public static BattleSystem Instance => instance;
+    public void Awake()
+    {
+        playerData = GameManager.Instance.playerData;
+        enemyData = GameManager.Instance.enemyData;
+    }
 
     private void Start()
     {
         currentMenu = rootMenu;
 
         //테스트용 코드
-        playerData.partyData.AddDigimon(new Digimon(pDigimonBaseSample, 12));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 12));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 10));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 10));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
 
-        enemyData.partyData.AddDigimon(new Digimon(eDigimonBaseSample, 5));
+        enemyData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[2], 8));
         enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
 
         StartCoroutine(SetupBattle());
@@ -95,9 +118,6 @@ public class BattleSystem : MonoBehaviour
             int playerSpeed = playerBattleEntity.Digimon.Speed;
             int enemySpeed = enemyBattleEntity.Digimon.Speed;
 
-            Debug.Log($"PlayerSpeed : {playerSpeed}");
-            Debug.Log($"EnemySpeed : {enemySpeed}");
-
             if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
             {
                 actions.Add(playerAction);
@@ -118,6 +138,7 @@ public class BattleSystem : MonoBehaviour
         foreach(BattleAction ba in actions)
         {
             yield return ba.Action();
+            //Synchronization();
         }
         
         CheckGameOver();

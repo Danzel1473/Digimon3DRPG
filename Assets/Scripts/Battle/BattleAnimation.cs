@@ -26,7 +26,7 @@ public class BattleAnimation : MonoBehaviour
         animator.SetBool("isDead", true);
     }
 
-    public void PlayMoveParticle(UnityEngine.GameObject particlePrefab, Transform target)
+    public void PlayMoveParticle(GameObject particlePrefab, Transform target)
     {
         if (particlePrefab != null)
         {
@@ -34,9 +34,9 @@ public class BattleAnimation : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayMoveParticleCoroutine(UnityEngine.GameObject particlePrefab, Transform target)
+    private IEnumerator PlayMoveParticleCoroutine(GameObject particlePrefab, Transform target)
     {
-        UnityEngine.GameObject particle = Instantiate(particlePrefab, transform.position, Quaternion.identity);
+        GameObject particle = Instantiate(particlePrefab, transform.position, Quaternion.identity);
         ParticleSystem particleSystem = particle.GetComponent<ParticleSystem>();
 
         while (particle != null && Vector3.Distance(particle.transform.position, target.position) > 0.1f)

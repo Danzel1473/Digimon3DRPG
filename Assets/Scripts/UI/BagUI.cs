@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class BagUI : MonoBehaviour
 {
-    [SerializeField] public UnityEngine.GameObject itemSlotPrefab;
+    [SerializeField] public GameObject itemSlotPrefab;
     [SerializeField] private Transform itemSlotContainer;
     [SerializeField] private ItemDetail itemDetail;
 
@@ -16,7 +16,7 @@ public class BagUI : MonoBehaviour
 
     public void Awake()
     {
-        gameManager = UnityEngine.GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
+        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         currentBagItemKind = ItemKind.Heal;
         itemTabs = GetComponentsInChildren<ItemTab>();
     }

@@ -1,27 +1,37 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor.Animations;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DigimonBase", menuName = "Digimon/Create Digimon Base")]
-public class DigimonBase : ScriptableObject
+[Serializable]
+public class DigimonBase
 {
+    [Header ("Digimon Info")]
     [SerializeField] string digimonName;
-    [TextArea]
-    [SerializeField] string description;
-    [SerializeField] DigimonType digimonType1;
-    [SerializeField] ElementType elementType1;
-    [SerializeField] ElementType elementType2;
+    [TextArea] [SerializeField] string description;
+    [SerializeField] int digimonNum;
+
+    [Header ("Digimon Stats")]
     [SerializeField] int hp;
     [SerializeField] int attack;
     [SerializeField] int defense;
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
-    [SerializeField] Sprite digimonSprite;
-    [SerializeField] UnityEngine.GameObject digimonMedel;
+
+    [Header ("Types")]
+    [SerializeField] DigimonType digimonType1;
+    [SerializeField] ElementType elementType1;
+    [SerializeField] ElementType elementType2;
+
+    [Header ("ETC")]
+    [SerializeField] EvolveData[] evoleData;
     [SerializeField] List<LearnableMove> learnableMoves;
+
+    [Header ("Visuals")]
+    [SerializeField] Sprite digimonSprite;
+    [SerializeField] GameObject digimonModel;
     [SerializeField] public AnimatorController digimonSpriteAnimator;
-    [SerializeField] private List<EvolutionData> evolutionData;
 
 
     public string DigimonName => digimonName;
@@ -48,19 +58,22 @@ public class DigimonBase : ScriptableObject
 
     public List<LearnableMove> LearnableMoves => learnableMoves;
 
-    public UnityEngine.GameObject DigimonModel => digimonMedel;
+    public GameObject DigimonModel => digimonModel;
 
     public Sprite DigimonSprite => digimonSprite;
 
     public AnimatorController DigimonSpriteAnimator => digimonSpriteAnimator;
+    public EvolveData[] EvoleData => evoleData;
+    public int DigimonNum => digimonNum;
 }
 
 
 
-[System.Serializable]
+[Serializable]
 public class LearnableMove
 {
-    [SerializeField] public MoveBase moveBase;
+    [SerializeField] public int moveID;
     [SerializeField] public int level;
+    public MoveBase moveBase => MoveTable.Instance[moveID];
 }
 

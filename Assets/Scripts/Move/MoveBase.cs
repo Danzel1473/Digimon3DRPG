@@ -1,10 +1,12 @@
+using System;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "New Move", menuName = "Digimon/Create New Move")]
-public class MoveBase : ScriptableObject
+[Serializable]
+public class MoveBase
 {
+    [SerializeField] private int moveID;
     [SerializeField] private string moveName;
-    [SerializeField] private string description;
+    [TextArea] [SerializeField] private string description;
     [SerializeField] private int power;
     [SerializeField] private int accuracy;
     [SerializeField] private int pp;
@@ -13,8 +15,9 @@ public class MoveBase : ScriptableObject
     [SerializeField] private MoveEffect moveEffect;
     [SerializeField] private MoveCategory moveCategory;
 
-    [SerializeField] private UnityEngine.GameObject particlePrefab;
+    [SerializeField] private GameObject particlePrefab;
 
+    public int MoveID => moveID;
     public string MoveName => moveName;
     public string Description => description;
     public int Power => power;
@@ -25,7 +28,12 @@ public class MoveBase : ScriptableObject
     public MoveCategory MoveCategory => moveCategory;
     public MoveEffect MoveEffect => moveEffect;
 
-    public UnityEngine.GameObject ParticlePrefab => particlePrefab;
+    public GameObject ParticlePrefab => particlePrefab;
+
+    public static explicit operator MoveBase(UnityEngine.Object v)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public enum MoveCategory

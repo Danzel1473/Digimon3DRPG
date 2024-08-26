@@ -14,8 +14,8 @@ public abstract class BattleAction
 
 public class MoveAction : BattleAction
 {
-    private Move actionMove;
-    private BattleSystem battleSystem;
+    protected Move actionMove;
+    protected BattleSystem battleSystem;
 
     public Move ActionMove => actionMove;
 
@@ -45,7 +45,7 @@ public class MoveAction : BattleAction
 
     private IEnumerator ExecuteDealingMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.name}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.MoveName}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
@@ -86,7 +86,7 @@ public class MoveAction : BattleAction
 
     private IEnumerator ExecuteHealMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.name}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.MoveName}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
@@ -122,7 +122,12 @@ public class MoveAction : BattleAction
     {
         float modifiers = Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) * multiplier + 2;
+        
+        float b = move.moveBase.MoveCategory == MoveCategory.Physical
+            ? ((float)attacker.Digimon.Attack / defender.Digimon.Defense) 
+            : ((float)attacker.Digimon.SpAttack / defender.Digimon.SpDefense);
+
+        float d = a * move.moveBase.Power * b * multiplier + 2;
 
         return Mathf.FloorToInt(d * modifiers);
     }

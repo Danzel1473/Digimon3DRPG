@@ -47,9 +47,27 @@ public class Digimon
     {
         CurrentHP += Mathf.Min(MaxHP-CurrentHP, amount);
     }
+    
+    public List<EvolveData> GetEvolves()
+    {
+        List<EvolveData> canEvolves = new List<EvolveData>();
+        foreach(EvolveData evolveData in digimonBase.EvoleData)
+        {
+            if(evolveData.canEvole(this)) canEvolves.Add(evolveData);
+        }
+        return canEvolves;
+    }
+
+    public void EvolveTo(List<EvolveData> canEvolves)
+    {
+        int i = Random.Range(0, canEvolves.Count);
+        //canEvolves의 i번째로 진화
+    }
 
     public int HP => Mathf.FloorToInt(((digimonBase.HP * 2) + 100 ) * Level / 100f) + 10;
-    public int Attack => Mathf.FloorToInt((digimonBase.Attack * 2) * Level / 100f) + 5;
-    public int Defense => Mathf.FloorToInt((digimonBase.Defense * 2) * Level / 100f) + 5;
-    public int Speed => Mathf.FloorToInt((digimonBase.Speed * 2) * Level / 100f) + 5;
+    public int Attack => Mathf.FloorToInt(digimonBase.Attack * 2 * Level / 100f) + 5;
+    public int Defense => Mathf.FloorToInt(digimonBase.Defense * 2 * Level / 100f) + 5;
+    public int SpAttack => Mathf.FloorToInt(digimonBase.SpAttack * 2 * Level / 100f) + 5;
+    public int SpDefense => Mathf.FloorToInt(digimonBase.SpDefense * 2 * Level / 100f) + 5;
+    public int Speed => Mathf.FloorToInt(digimonBase.Speed * 2 * Level / 100f) + 5;
 }
