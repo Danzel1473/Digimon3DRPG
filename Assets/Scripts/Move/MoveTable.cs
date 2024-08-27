@@ -34,5 +34,6 @@ public class MoveTable : ScriptableObject
     }
 
     public MoveBase this[int moveID] => moveDict[moveID];
+    public MoveBase[] Moves => moves;
     public int MoveTableLength => moves.Length;
 }

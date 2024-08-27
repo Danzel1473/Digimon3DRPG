@@ -48,20 +48,24 @@ public class Digimon
         CurrentHP += Mathf.Min(MaxHP-CurrentHP, amount);
     }
     
-    public List<EvolveData> GetEvolves()
+    public List<DigimonBase> GetEvolves()
     {
-        List<EvolveData> canEvolves = new List<EvolveData>();
+        List<DigimonBase> canEvolves = new List<DigimonBase>();
         foreach(EvolveData evolveData in digimonBase.EvoleData)
         {
-            if(evolveData.canEvole(this)) canEvolves.Add(evolveData);
+            DigimonBase evolveTo = DigimonTable.Instance[evolveData.evolveDigimonNum];
+            if(evolveData.canEvole(this)) canEvolves.Add(evolveTo);
         }
         return canEvolves;
     }
 
-    public void EvolveTo(List<EvolveData> canEvolves)
+    public void EvolveTo(List<DigimonBase> canEvolves)
     {
         int i = Random.Range(0, canEvolves.Count);
+        
         //canEvolves의 i번째로 진화
+        digimonBase = canEvolves[i];
+
     }
 
     public int HP => Mathf.FloorToInt(((digimonBase.HP * 2) + 100 ) * Level / 100f) + 10;

@@ -1,9 +1,9 @@
-using System.Collections.Generic;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class EvolveData
 {
-    public DigimonBase evolveTo;
+    public int evolveDigimonNum;
     public EvolveCondition[] conditions;
 
     public bool canEvole(Digimon digimon)

@@ -5,18 +5,14 @@ using UnityEngine.UI;
 public class BattleEntity : MonoBehaviour
 {
     [SerializeField] public bool IsPlayer { get; set; }
-    public bool canAttack = true;
-    public bool isDefeated = false;
-
-    public bool CanAttack => canAttack;
-    public bool IsDefeated => isDefeated;
 
     public Digimon Digimon { get; private set; }
     private BattleAnimation battleAnimation;
 
     public void SetUp()
     {
-        if (Digimon == null) return;
+        if(Digimon == null) return;
+        if(GetComponentInChildren<Animator>()) return;
 
         var digimonModel = Instantiate(Digimon.digimonBase.DigimonModel, transform);
         battleAnimation = digimonModel.GetComponentInChildren<BattleAnimation>();

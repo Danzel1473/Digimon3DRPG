@@ -68,7 +68,7 @@ public class MoveAction : BattleAction
 
         BattleHUD targetHUD = battleSystem.SetTargetHUD(defender);
         battleSystem.HUDSetActivity(targetHUD.gameObject, true);
-        battleSystem.UpdateHUD(defender);
+        battleSystem.UpdateHUD();
         yield return new WaitForSeconds(1f);
         battleSystem.AllHUDSetActivity(false);
 
@@ -107,7 +107,7 @@ public class MoveAction : BattleAction
 
         BattleHUD targetHUD = battleSystem.SetTargetHUD(defender);
         battleSystem.HUDSetActivity(targetHUD.gameObject, true);
-        battleSystem.UpdateHUD(defender);
+        battleSystem.UpdateHUD();
         yield return new WaitForSeconds(1f);
         battleSystem.AllHUDSetActivity(false);
     }
@@ -122,11 +122,10 @@ public class MoveAction : BattleAction
     {
         float modifiers = Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        
         float b = move.moveBase.MoveCategory == MoveCategory.Physical
             ? ((float)attacker.Digimon.Attack / defender.Digimon.Defense) 
             : ((float)attacker.Digimon.SpAttack / defender.Digimon.SpDefense);
-
+            
         float d = a * move.moveBase.Power * b * multiplier + 2;
 
         return Mathf.FloorToInt(d * modifiers);

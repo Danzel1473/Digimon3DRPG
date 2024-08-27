@@ -10,14 +10,22 @@ public class DigimonSlot : MonoBehaviour
     [SerializeField] private TMP_Text digimonHP;
     [SerializeField] private Animator digimonAnimator;
     [SerializeField] private Slider digimonHPSlider;
+    [SerializeField] private Digimon digimonData;
+
 
     public void UpdateDigimon(Digimon digimon)
     {
-        digimonIcon.sprite = digimon.digimonBase.DigimonSprite;
-        digimonAnimator.runtimeAnimatorController = digimon.digimonBase.digimonSpriteAnimator;
-        digimonName.text = digimon.digimonBase.DigimonName;
-        digimonLevel.text = $"Lv.{digimon.Level}";
-        digimonHP.text = $"{digimon.CurrentHP} / {digimon.MaxHP}";
-        digimonHPSlider.value = (float)digimon.CurrentHP / digimon.MaxHP;
+        digimonData = digimon;
+        digimonIcon.sprite = digimonData.digimonBase.DigimonSprite;
+        digimonAnimator.runtimeAnimatorController = digimonData.digimonBase.digimonSpriteAnimator;
+        digimonName.text = digimonData.digimonBase.DigimonName;
+        digimonLevel.text = $"Lv.{digimonData.Level}";
+        digimonHP.text = $"{digimonData.CurrentHP} / {digimonData.MaxHP}";
+        digimonHPSlider.value = (float)digimonData.CurrentHP / digimonData.MaxHP;
+    }
+
+    public void OnClick()
+    {
+        
     }
 }

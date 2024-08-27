@@ -15,9 +15,6 @@ MonoBehaviour:
   digimons:
   - digimonName: empty
     description: 
-    digimonType1: 4
-    elementType1: 0
-    elementType2: 0
     digimonNum: 0
     hp: 1
     attack: 1
@@ -25,24 +22,24 @@ MonoBehaviour:
     spAttack: 1
     spDefense: 1
     speed: 1
-    digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}
-    digimonModel: {fileID: 1087451850464615608, guid: 3a808a6cd4beaa14baf2838021a76ad3,
-      type: 3}
+    digimonType1: 4
+    elementType1: 0
+    elementType2: 0
+    evoleData: []
     learnableMoves:
     - moveID: 0
       level: 1
     - moveID: 0
       level: 8
+    digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}
+    digimonModel: {fileID: 1087451850464615608, guid: 3a808a6cd4beaa14baf2838021a76ad3,
+      type: 3}
     digimonSpriteAnimator: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a,
       type: 2}
-    evolutionData: []
   - digimonName: "\uC544\uAD6C\uBAAC"
     description: "\uC131\uC7A5\uD574\uC11C \uC774\uC871\uBCF4\uD589\uC744 \uD560
       \uC218 \uC788\uAC8C \uB41C \uC18C\uD615 \uACF5\uB8E1\uACFC \uAC19\uC740 \uBAA8\uC2B5\uC744
       \uD55C \uD30C\uCDA9\uB958\uD615 \uB514\uC9C0\uBAAC."
-    digimonType1: 2
-    elementType1: 1
-    elementType2: 0
     digimonNum: 1
     hp: 20
     attack: 15
@@ -50,25 +47,31 @@ MonoBehaviour:
     spAttack: 15
     spDefense: 10
     speed: 10
-    digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}
-    digimonModel: {fileID: 1087451850464615608, guid: 3a808a6cd4beaa14baf2838021a76ad3,
-      type: 3}
+    digimonType1: 2
+    elementType1: 1
+    elementType2: 0
+    evoleData:
+    - evolveDigimonNum: 2
+      conditions:
+      - conditionType: 0
+        Value: 18
+      - conditionType: 4
+        Value: 75
     learnableMoves:
     - moveID: 0
       level: 1
     - moveID: 1
       level: 8
+    digimonSprite: {fileID: 703008334, guid: 87fbc2e607acdfb4984337a7cb74072d, type: 3}
+    digimonModel: {fileID: 1087451850464615608, guid: 3a808a6cd4beaa14baf2838021a76ad3,
+      type: 3}
     digimonSpriteAnimator: {fileID: 9100000, guid: 52f211e9713ac2847bb5cdba75f4286a,
       type: 2}
-    evolutionData: []
   - digimonName: "\uD50C\uB85C\uB77C\uBAAC"
     description: "\uC2DD\uBB3C\uD615\uC73C\uB85C \uBD84\uB958\uB418\uB294 \uD76C\uADC0\uD55C
       \uB514\uC9C0\uBAAC. \uC5BC\uAD74 \uC804\uCCB4\uAC00 \uAF43 \uBAA8\uC591\uC774\uBA70
       \uD3C9\uC18C\uC5D0\uB294 \uAF43\uC78E \uD615\uD0DC\uC758 \uC678\uD53C\uB97C
       \uD5EC\uBA67\uCC98\uB7FC \uC4F0\uACE0 \uBA38\uB9AC\uB97C \uBCF4\uD638\uD55C\uB2E4."
-    digimonType1: 1
-    elementType1: 3
-    elementType2: 0
     digimonNum: 2
     hp: 15
     attack: 10
@@ -76,13 +79,39 @@ MonoBehaviour:
     spAttack: 20
     spDefense: 10
     speed: 10
-    digimonSprite: {fileID: 0}
-    digimonModel: {fileID: 6723299503678526300, guid: 9404b7ad47502b946adad66c28c7d13b,
-      type: 3}
+    digimonType1: 1
+    elementType1: 3
+    elementType2: 0
+    evoleData: []
     learnableMoves:
     - moveID: 0
       level: 1
     - moveID: 0
       level: 7
+    digimonSprite: {fileID: 0}
+    digimonModel: {fileID: 6723299503678526300, guid: 9404b7ad47502b946adad66c28c7d13b,
+      type: 3}
     digimonSpriteAnimator: {fileID: 0}
-    evolutionData: []
+  - digimonName: "\uADF8\uB808\uC774\uBAAC"
+    description: "\uADF8\uB808\uC774\uBAAC\uC774\uB2E4."
+    digimonNum: 3
+    hp: 60
+    attack: 60
+    defense: 40
+    spAttack: 60
+    spDefense: 40
+    speed: 40
+    digimonType1: 2
+    elementType1: 1
+    elementType2: 0
+    evoleData: []
+    learnableMoves:
+    - moveID: 0
+      level: 1
+    - moveID: 0
+      level: 7
+    digimonSprite: {fileID: 1726840397, guid: 28e87754f9e268d4293980b4d77deb13, type: 3}
+    digimonModel: {fileID: 4006310412650036045, guid: b708f76314c43ed44a7b9c46f52c8884,
+      type: 3}
+    digimonSpriteAnimator: {fileID: 9100000, guid: afd785501e9ebdc4cb22bb6ca128a354,
+      type: 2}

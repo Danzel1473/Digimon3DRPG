@@ -8,15 +8,19 @@ public class BattleHUDManager : MonoBehaviour
     //HUD Manager를 통해 HUD를 관리하도록 하기
     [SerializeField] private BattleHUD playerHUD;
     [SerializeField] private BattleHUD enemyHUD;
+    public BattleHUD PlayerHUD => playerHUD;
+    public BattleHUD EnemyHUD => enemyHUD;
 
-    public void UpdateHUD(Digimon player, Digimon enemy)
+
+    public void UpdateHUD(BattleEntity player, BattleEntity enemy)
     {
-        playerHUD.SetData(player);
-        playerHUD.SetData(enemy);
+        playerHUD.SetData(player.Digimon);
+        enemyHUD.SetData(enemy.Digimon);
     }
 
-    public void SetMoveButtonData(List<Move> moves)
+    public void SetMoveButtonData(BattleEntity player)
     {
+        List<Move> moves = player.Digimon.Moves;
         List<Button> moveButtons = playerHUD.MoveButtons;
         if (moves == null || moveButtons == null) return;
 
@@ -25,11 +29,11 @@ public class BattleHUDManager : MonoBehaviour
             if (i < moves.Count)
             {
                 moveButtons[i].GetComponentInChildren<TMP_Text>().text = moves[i].moveBase.MoveName;
-                moveButtons[i].gameObject.SetActive(true);
+                moveButtons[i].GetComponent<MoveButton>().SetUp(moves[i].moveBase);
             }
             else
             {
-                moveButtons[i].gameObject.SetActive(false);
+                moveButtons[i].GetComponentInChildren<TMP_Text>().text = "";
             }
         }
     }
@@ -56,5 +60,11 @@ public class BattleHUDManager : MonoBehaviour
         {
             enemyHUD.gameObject.SetActive(true);
         }
+    }
+
+    public void ActiveHUD()
+    {
+        playerHUD.gameObject.SetActive(true);
+        enemyHUD.gameObject.SetActive(true);
     }
 }

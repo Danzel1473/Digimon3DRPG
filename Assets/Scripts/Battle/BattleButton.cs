@@ -2,22 +2,16 @@ using UnityEngine;
 
 public class BattleButton : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.GameObject activeMenu;
-    private BattleSystem battleSystem;
-
-    public void Awake()
-    {
-        battleSystem = UnityEngine.GameObject.FindWithTag("BattleManager").GetComponent<BattleSystem>();
-    }
+    [SerializeField] private GameObject activeMenu;
 
     public void ActivateMenu()
     {
-        battleSystem.SwitchMenu(activeMenu);
+        BattleSystem.Instance.SwitchMenu(activeMenu);
     }
 
     public void RunBattle()
     {
         //임시 코드
-        StartCoroutine(battleSystem.BattleText("도망쳤다.", 2f));
+        StartCoroutine(BattleSystem.Instance.BattleText("도망쳤다.", 2f));
     }
 }

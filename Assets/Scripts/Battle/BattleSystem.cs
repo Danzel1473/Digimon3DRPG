@@ -16,8 +16,10 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private GameObject textPanel;
-    [SerializeField] private BattleHUD playerHUD;
-    [SerializeField] private BattleHUD enemyHUD;
+
+    [SerializeField] private BattleHUDManager hudManager;
+    // [SerializeField] private BattleHUD playerHUD;
+    // [SerializeField] private BattleHUD enemyHUD;
     [SerializeField] private TMP_Text uiText;
     [SerializeField] private BattleField battleField;
 
@@ -87,11 +89,10 @@ public class BattleSystem : MonoBehaviour
         enemyBattleEntity.SetUp();
 
         //서로의 디지몬의 HUD 세팅
-        playerHUD.SetData(playerBattleEntity.Digimon);
-        enemyHUD.SetData(enemyBattleEntity.Digimon);
+        hudManager.UpdateHUD(playerBattleEntity, enemyBattleEntity);
 
         //Player 디지몬의 Move 목록을 버튼에 세팅
-        playerHUD.SetMoveNames(playerBattleEntity.Digimon.Moves);
+        hudManager.SetMoveButtonData(playerBattleEntity);
         yield return new WaitForSeconds(1f);
     }
 
@@ -138,7 +139,6 @@ public class BattleSystem : MonoBehaviour
         foreach(BattleAction ba in actions)
         {
             yield return ba.Action();
-            //Synchronization();
         }
         
         CheckGameOver();
@@ -169,8 +169,8 @@ public class BattleSystem : MonoBehaviour
 
     public BattleHUD SetTargetHUD(BattleEntity defender)
     {
-        if (defender == playerBattleEntity) return playerHUD;
-        else return enemyHUD;
+        if (defender == playerBattleEntity) return hudManager.PlayerHUD;
+        else return hudManager.EnemyHUD;
     }
 
     public IEnumerator BattleText(string text)
@@ -181,6 +181,7 @@ public class BattleSystem : MonoBehaviour
         yield return WaitForKeyPress(KeyCode.Z);
         textPanel.SetActive(false);
     }
+    
     public IEnumerator BattleText(string text, float time)
     {
         uiText.text = text;
@@ -206,16 +207,9 @@ public class BattleSystem : MonoBehaviour
         }
         return true;
     }
-    public void UpdateHUD(BattleEntity entity)
+    public void UpdateHUD()
     {
-        if (entity == playerBattleEntity)
-        {
-            playerHUD.SetData(playerBattleEntity.Digimon);
-        }
-        else
-        {
-            enemyHUD.SetData(enemyBattleEntity.Digimon);
-        }
+        hudManager.UpdateHUD(playerBattleEntity, enemyBattleEntity);
     }
 
     private BattleEntity SetMoveTarget(BattleEntity attacker, Move playerMove)
@@ -273,8 +267,7 @@ public class BattleSystem : MonoBehaviour
 
     public void AllHUDSetActivity(bool activity)
     {
-        playerHUD.gameObject.SetActive(activity);
-        enemyHUD.gameObject.SetActive(activity);
+        hudManager.ActiveHUD();
         currentMenu.SetActive(activity);
     }
 
@@ -330,4 +323,41 @@ public class BattleSystem : MonoBehaviour
         Debug.Log("enemy Party All Down");
         return isAllDown;
     }
+
+    public void DestroyModel(bool isPlayer)
+    {
+        if(isPlayer)
+        {
+            Destroy(playerBattleEntity.GetComponentInChildren<Animator>().gameObject);
+        }
+        else
+        {
+            Destroy(enemyBattleEntity.GetComponentInChildren<Animator>().gameObject);
+        }
+    }
+
+    public void SwitchDigimonEntity(int partyNum)
+    {
+        List<Digimon> party = playerData.partyData.Digimons;
+        if(party[partyNum].CurrentHP <= 0)
+        {
+            StartCoroutine(BattleText($"{party[partyNum].Name}은 기절해있다!", 2f));
+            return;
+        }
+
+        //바꾸는 연출
+
+
+        StartCoroutine(BattleText($"{playerData.playerName}은 {party[0]}을 후퇴시켰다.", 2f));
+        Digimon stack = party[partyNum];
+        party[partyNum] = party[0];
+        party[0] = stack;
+
+        DestroyModel(true);
+        StartCoroutine(Instance.BattleText($"{playerData.playerName}은 {party[0]}을 내보냈다!", 2f));
+        
+        playerBattleEntity.SetDigimonData(party[0]);
+        playerBattleEntity.SetUp();
+    }
+    
 }
