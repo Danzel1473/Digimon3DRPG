@@ -39,7 +39,12 @@ public class PopupButton : MonoBehaviour
                     StartCoroutine(BattleSystem.Instance.BattleText("이미 출전해있다.", 2f));
                     break;
                 }
-                BattleSystem.Instance.SwitchDigimonEntity(GameManager.Instance.playerData, partyNum);
+                if(GameManager.Instance.playerData.partyData.Digimons[partyNum].CurrentHP <= 0)
+                {
+                    StartCoroutine(BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.partyData.Digimons[partyNum]}은 기절해있다!", 2f));
+                    break;
+                }
+                BattleSystem.Instance.SwitchPerform(GameManager.Instance.playerData, partyNum);
                 break;
         }
     }

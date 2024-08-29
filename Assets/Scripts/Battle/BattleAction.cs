@@ -32,6 +32,8 @@ public class MoveAction : BattleAction
         if (actionMove == null || user == null || target == null || battleSystem == null) yield break;
         if(user.Digimon.CurrentHP == 0) yield break;
 
+        BattleSystem.Instance.AllHUDSetActivity(false);
+
         switch (actionMove.moveBase.MoveEffect)
         {
             case MoveEffect.Deal:
@@ -166,17 +168,78 @@ public class MoveAction : BattleAction
 
 public class SwitchAction : BattleAction
 {
-    Digimon switchDigimon;
-    Digimon retreatDigimon;
+    PlayerData player;
+    int partyNum;
 
-    public SwitchAction(Digimon switchDigimon, Digimon retreatDigimon)
+    public SwitchAction(PlayerData player, int partyNum)
     {
-        
+        this.player = player;
+        this.partyNum = partyNum;
     }
 
     public override IEnumerator Action()
     {
+        BattleSystem.Instance.AllHUDSetActivity(false);
 
-        throw new System.NotImplementedException();
+        yield return SwitchLogic(player, partyNum);
+    }
+
+    public IEnumerator SwitchDigimonEntity(PlayerData player, int partyNum)
+    {
+        yield return SwitchLogic(player, partyNum);
+    }
+
+    private IEnumerator SwitchLogic(PlayerData player, int partyNum)
+    {
+        foreach (GameObject menu in BattleSystem.Instance.menus) menu.SetActive(false);
+        BattleSystem.Instance.MenuReset();
+
+        if (player.partyData.Digimons[partyNum].CurrentHP <= 0)
+        {
+            yield return BattleSystem.Instance.BattleText($"{player.partyData.Digimons[partyNum].Name}은 기절해있다!", 2f);
+            yield break;
+        }
+
+        //바꾸는 연출
+
+        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].Name}을 후퇴시켰다.", 2f);
+
+        //파티의 디지몬 정보를 먼저 교체
+        Digimon stack = player.partyData.Digimons[partyNum];
+        player.partyData.Digimons[partyNum] = player.partyData.Digimons[0];
+        player.partyData.Digimons[0] = stack;
+
+        BattleEntity target;
+
+        //어떤 BattleEntity에서 처리할지 정함
+        if (player == GameManager.Instance.playerData)
+        {
+            target = BattleSystem.Instance.PlayerBattleEntity;
+        }
+        else
+        {
+            target = BattleSystem.Instance.EnemyBattleEntity;
+        }
+
+        if (target == null) yield break;
+
+        BattleSystem.Instance.DestroyModel(target);
+
+        yield return new WaitForSeconds(2f);
+
+        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].Name}을 내보냈다!", 2f);
+
+        Debug.Log($"{player.partyData.Digimons[0].Name}, {player.partyData.Digimons[0].Level}");
+        target.SetDigimonData(player.partyData.Digimons[0]);
+        target.SetUp();
+
+        yield return new WaitForSeconds(2f);
+
+        BattleSystem.Instance.SetupHUD();
+        BattleSystem.Instance.MenuReset();
+
+        BattleSystem.Instance.menus[0].gameObject.SetActive(true);
+        
+        BattleSystem.Instance.AllHUDSetActivity(true);
     }
 }

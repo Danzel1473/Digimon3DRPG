@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerData playerData;
     [SerializeField] public PlayerData enemyData;
     [SerializeField] public PopupMenu popupMenu;
+    private bool isBattle;
 
 
 }

@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Analytics;
 
 public class BattleSystem : MonoBehaviour
 {
@@ -18,8 +17,6 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private GameObject textPanel;
 
     [SerializeField] private BattleHUDManager hudManager;
-    // [SerializeField] private BattleHUD playerHUD;
-    // [SerializeField] private BattleHUD enemyHUD;
     [SerializeField] private TMP_Text uiText;
     [SerializeField] private BattleField battleField;
 
@@ -29,11 +26,14 @@ public class BattleSystem : MonoBehaviour
     private GameObject currentMenu;
     private List<GameObject> previousMenu = new List<GameObject>();
 
-    //private Move playerMove;
     private BattleAction playerAction;
     private BattleAction enemyAction;
     private PlayerData playerData;
     private PlayerData enemyData;
+
+    public BattleEntity PlayerBattleEntity => playerBattleEntity;
+    public BattleEntity EnemyBattleEntity => enemyBattleEntity;
+
 
     private static BattleSystem instance;
     public static BattleSystem Instance
@@ -87,13 +87,17 @@ public class BattleSystem : MonoBehaviour
         //서로의 디지몬 세팅
         playerBattleEntity.SetUp();
         enemyBattleEntity.SetUp();
+        SetupHUD();
+        yield return new WaitForSeconds(1f);
+    }
 
+    public void SetupHUD()
+    {
         //서로의 디지몬의 HUD 세팅
         hudManager.UpdateHUD(playerBattleEntity, enemyBattleEntity);
 
         //Player 디지몬의 Move 목록을 버튼에 세팅
         hudManager.SetMoveButtonData(playerBattleEntity);
-        yield return new WaitForSeconds(1f);
     }
 
     public void PlayerMove(Move move)
@@ -237,7 +241,6 @@ public class BattleSystem : MonoBehaviour
         currentMenu = rootMenu;
         playerData.partyData.Digimons[0] = playerBattleEntity.Digimon;
         AllHUDSetActivity(true);
-        Debug.Log("Turn Start");
     }
 
     public void SwitchMenu(GameObject menu)
@@ -267,7 +270,7 @@ public class BattleSystem : MonoBehaviour
 
     public void AllHUDSetActivity(bool activity)
     {
-        hudManager.ActiveHUD();
+        hudManager.SetActivityHUD(activity);
         currentMenu.SetActive(activity);
     }
 
@@ -314,76 +317,18 @@ public class BattleSystem : MonoBehaviour
         {
             if(eDigimon.CurrentHP > 0)
             {
-                Debug.Log($"{eDigimon.CurrentHP}");
                 isAllDown = false;
                 break;
             }
         }
-        Debug.Log($"{isAllDown}");
-        Debug.Log("enemy Party All Down");
         return isAllDown;
     }
 
-    public void SwitchDigimonEntity(PlayerData player, int partyNum)
+    public void SwitchPerform(PlayerData player, int partyNum)
     {
-        StartCoroutine(SwitchLogic(player, partyNum));
-    }
-
-    private IEnumerator SwitchLogic(PlayerData player, int partyNum)
-    {
-        foreach (GameObject menu in menus) menu.SetActive(false);
-        previousMenu.Clear();
-        Debug.Log(previousMenu.Count);
-
-        if (player.partyData.Digimons[partyNum].CurrentHP <= 0)
-        {
-            Debug.Log("기절");
-
-            yield return BattleText($"{player.partyData.Digimons[partyNum].Name}은 기절해있다!", 2f);
-            yield break;
-        }
-
-        //바꾸는 연출
-
-        yield return BattleText($"{player.playerName}은 {player.partyData.Digimons[0]}을 후퇴시켰다.", 2f);
-
-        //파티의 디지몬 정보를 먼저 교체
-        Digimon stack = player.partyData.Digimons[partyNum];
-        player.partyData.Digimons[partyNum] = player.partyData.Digimons[0];
-        player.partyData.Digimons[0] = stack;
-
-        Debug.Log($"{player.partyData.Digimons[0].Name}");
-
-
-        BattleEntity target;
-
-        //어떤 BattleEntity에서 처리할지 정함
-        if (player == GameManager.Instance.playerData)
-        {
-            target = playerBattleEntity;
-        }
-        else
-        {
-            target = enemyBattleEntity;
-        }
-
-        if (target == null) yield break;
-
-        DestroyModel(target);
-
-        yield return new WaitForSeconds(2f);
-
-        yield return BattleText($"{playerData.playerName}은 {player.partyData.Digimons[0]}을 내보냈다!", 2f);
-
-        Debug.Log($"{player.partyData.Digimons[0].Name}, {player.partyData.Digimons[0].Level}");
-        target.SetDigimonData(player.partyData.Digimons[0]);
-        target.SetUp();
-
-        yield return new WaitForSeconds(2f);
-
-        currentMenu = rootMenu;
-        menus[0].gameObject.SetActive(true);
-        AllHUDSetActivity(true);
+        playerAction = new SwitchAction(player, partyNum);
+        StartCoroutine(PerformBattle());
+        //StartCoroutine(SwitchLogic(player, partyNum));
     }
 
     public void DestroyModel(BattleEntity player)
@@ -392,5 +337,11 @@ public class BattleSystem : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
+    }
+
+    public void MenuReset()
+    {
+        previousMenu.Clear();
+        currentMenu = rootMenu;
     }
 }

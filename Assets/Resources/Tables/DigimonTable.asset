@@ -112,7 +112,9 @@ MonoBehaviour:
     learnableMoves:
     - moveID: 0
       level: 1
-    - moveID: 0
+    - moveID: 1
+      level: 7
+    - moveID: 2
       level: 7
     digimonSprite: {fileID: 1726840397, guid: 28e87754f9e268d4293980b4d77deb13, type: 3}
     digimonModel: {fileID: 4006310412650036045, guid: b708f76314c43ed44a7b9c46f52c8884,

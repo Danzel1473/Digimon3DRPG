@@ -67,4 +67,10 @@ public class BattleHUDManager : MonoBehaviour
         playerHUD.gameObject.SetActive(true);
         enemyHUD.gameObject.SetActive(true);
     }
+
+    public void SetActivityHUD(bool activity)
+    {
+        playerHUD.gameObject.SetActive(activity);
+        enemyHUD.gameObject.SetActive(activity);
+    }
 }
