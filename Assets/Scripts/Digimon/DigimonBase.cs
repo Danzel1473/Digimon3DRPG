@@ -23,6 +23,7 @@ public class DigimonBase
     [SerializeField] DigimonType digimonType1;
     [SerializeField] ElementType elementType1;
     [SerializeField] ElementType elementType2;
+    [SerializeField] bool xAntiBody;
 
     [Header ("ETC")]
     [SerializeField] EvolveData[] evoleData;
@@ -55,6 +56,7 @@ public class DigimonBase
     public int SpDefense => spDefense;
 
     public int Speed => speed;
+    public bool XAnityBody => xAntiBody;
 
     public List<LearnableMove> LearnableMoves => learnableMoves;
 

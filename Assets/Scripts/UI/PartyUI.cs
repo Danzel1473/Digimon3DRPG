@@ -4,20 +4,24 @@ using UnityEngine;
 public class PartyUI : MonoBehaviour
 {
     [SerializeField] private DigimonSlot slotPrefab;
-    [SerializeField] private GameObject PartyPanel;
+    [SerializeField] private List<DigimonSlot> slots;
+
+    [SerializeField] private GameObject partyPanel;
     public void OnEnable()
     {
         List<Digimon> digimons = GameManager.Instance.playerData.partyData.Digimons;
 
-        foreach (Transform child in PartyPanel.transform)
+        foreach (Transform child in partyPanel.transform)
         {
             Destroy(child.gameObject);
+            slots.Clear();
         }
 
-        foreach(Digimon digimon in digimons)
+        for(int i = 0; i < digimons.Count; i++)
         {
-            DigimonSlot digimonSlot = Instantiate(slotPrefab, PartyPanel.transform);
-            digimonSlot.UpdateDigimon(digimon);
+            DigimonSlot digimonSlot = Instantiate(slotPrefab, partyPanel.transform);
+            digimonSlot.UpdateDigimon(i);
+            slots.Add(digimonSlot);
         }
     }
 }

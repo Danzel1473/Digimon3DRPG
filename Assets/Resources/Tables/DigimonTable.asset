@@ -25,6 +25,7 @@ MonoBehaviour:
     digimonType1: 4
     elementType1: 0
     elementType2: 0
+    xAntiBody: 0
     evoleData: []
     learnableMoves:
     - moveID: 0
@@ -50,6 +51,7 @@ MonoBehaviour:
     digimonType1: 2
     elementType1: 1
     elementType2: 0
+    xAntiBody: 0
     evoleData:
     - evolveDigimonNum: 2
       conditions:
@@ -82,6 +84,7 @@ MonoBehaviour:
     digimonType1: 1
     elementType1: 3
     elementType2: 0
+    xAntiBody: 0
     evoleData: []
     learnableMoves:
     - moveID: 0
@@ -104,6 +107,7 @@ MonoBehaviour:
     digimonType1: 2
     elementType1: 1
     elementType2: 0
+    xAntiBody: 0
     evoleData: []
     learnableMoves:
     - moveID: 0

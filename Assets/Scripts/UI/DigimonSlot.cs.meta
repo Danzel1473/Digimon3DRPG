@@ -3,7 +3,15 @@ guid: 098df597a2f9b3c4d85aa7f18223c8c3
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - slotPrefab: {fileID: 4222930796799611910, guid: ed117f32c10292d42b29d4c453e9901b,
+      type: 3}
+  - digimonIcon: {instanceID: 0}
+  - digimonName: {instanceID: 0}
+  - digimonLevel: {instanceID: 0}
+  - digimonHP: {instanceID: 0}
+  - digimonAnimator: {instanceID: 0}
+  - digimonHPSlider: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

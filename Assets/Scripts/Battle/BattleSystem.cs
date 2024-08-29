@@ -25,7 +25,7 @@ public class BattleSystem : MonoBehaviour
 
     [Header ("ETC")]
     [SerializeField] private BattleAnimationManager battleAnimationManager;
-
+    [SerializeField] public GameObject[] menus;
     private GameObject currentMenu;
     private List<GameObject> previousMenu = new List<GameObject>();
 
@@ -60,7 +60,7 @@ public class BattleSystem : MonoBehaviour
 
         //테스트용 코드
         playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 12));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
+        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[3], 15));
         playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
         playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
         playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 10));
@@ -232,7 +232,7 @@ public class BattleSystem : MonoBehaviour
         return null;
     }
 
-    private void TurnStart()
+    public void TurnStart()
     {
         currentMenu = rootMenu;
         playerData.partyData.Digimons[0] = playerBattleEntity.Digimon;
@@ -324,40 +324,73 @@ public class BattleSystem : MonoBehaviour
         return isAllDown;
     }
 
-    public void DestroyModel(bool isPlayer)
+    public void SwitchDigimonEntity(PlayerData player, int partyNum)
     {
-        if(isPlayer)
-        {
-            Destroy(playerBattleEntity.GetComponentInChildren<Animator>().gameObject);
-        }
-        else
-        {
-            Destroy(enemyBattleEntity.GetComponentInChildren<Animator>().gameObject);
-        }
+        StartCoroutine(SwitchLogic(player, partyNum));
     }
 
-    public void SwitchDigimonEntity(int partyNum)
+    private IEnumerator SwitchLogic(PlayerData player, int partyNum)
     {
-        List<Digimon> party = playerData.partyData.Digimons;
-        if(party[partyNum].CurrentHP <= 0)
+        foreach (GameObject menu in menus) menu.SetActive(false);
+        previousMenu.Clear();
+        Debug.Log(previousMenu.Count);
+
+        if (player.partyData.Digimons[partyNum].CurrentHP <= 0)
         {
-            StartCoroutine(BattleText($"{party[partyNum].Name}은 기절해있다!", 2f));
-            return;
+            Debug.Log("기절");
+
+            yield return BattleText($"{player.partyData.Digimons[partyNum].Name}은 기절해있다!", 2f);
+            yield break;
         }
 
         //바꾸는 연출
 
+        yield return BattleText($"{player.playerName}은 {player.partyData.Digimons[0]}을 후퇴시켰다.", 2f);
 
-        StartCoroutine(BattleText($"{playerData.playerName}은 {party[0]}을 후퇴시켰다.", 2f));
-        Digimon stack = party[partyNum];
-        party[partyNum] = party[0];
-        party[0] = stack;
+        //파티의 디지몬 정보를 먼저 교체
+        Digimon stack = player.partyData.Digimons[partyNum];
+        player.partyData.Digimons[partyNum] = player.partyData.Digimons[0];
+        player.partyData.Digimons[0] = stack;
 
-        DestroyModel(true);
-        StartCoroutine(Instance.BattleText($"{playerData.playerName}은 {party[0]}을 내보냈다!", 2f));
-        
-        playerBattleEntity.SetDigimonData(party[0]);
-        playerBattleEntity.SetUp();
+        Debug.Log($"{player.partyData.Digimons[0].Name}");
+
+
+        BattleEntity target;
+
+        //어떤 BattleEntity에서 처리할지 정함
+        if (player == GameManager.Instance.playerData)
+        {
+            target = playerBattleEntity;
+        }
+        else
+        {
+            target = enemyBattleEntity;
+        }
+
+        if (target == null) yield break;
+
+        DestroyModel(target);
+
+        yield return new WaitForSeconds(2f);
+
+        yield return BattleText($"{playerData.playerName}은 {player.partyData.Digimons[0]}을 내보냈다!", 2f);
+
+        Debug.Log($"{player.partyData.Digimons[0].Name}, {player.partyData.Digimons[0].Level}");
+        target.SetDigimonData(player.partyData.Digimons[0]);
+        target.SetUp();
+
+        yield return new WaitForSeconds(2f);
+
+        currentMenu = rootMenu;
+        menus[0].gameObject.SetActive(true);
+        AllHUDSetActivity(true);
     }
-    
+
+    public void DestroyModel(BattleEntity player)
+    {
+        foreach (Transform child in player.transform)
+        {
+            Destroy(child.gameObject);
+        }
+    }
 }

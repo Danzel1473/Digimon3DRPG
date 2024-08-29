@@ -163,3 +163,20 @@ public class MoveAction : BattleAction
         return true;
     }
 }
+
+public class SwitchAction : BattleAction
+{
+    Digimon switchDigimon;
+    Digimon retreatDigimon;
+
+    public SwitchAction(Digimon switchDigimon, Digimon retreatDigimon)
+    {
+        
+    }
+
+    public override IEnumerator Action()
+    {
+
+        throw new System.NotImplementedException();
+    }
+}

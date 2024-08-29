@@ -4,7 +4,8 @@ public enum EvConType
     Friendship,
     Virus,
     Data,
-    Vaccine
+    Vaccine,
+    XAnityBody
 }
 
 [System.Serializable]
@@ -30,6 +31,9 @@ public class EvolveCondition
                 return false;
             case EvConType.Vaccine:
                 if(digimon.VaccineValue >= Value) return true;
+                return false;
+            case EvConType.XAnityBody:
+                if(digimon.XAnityBody == true) return true;
                 return false;
             default:
                 return false;

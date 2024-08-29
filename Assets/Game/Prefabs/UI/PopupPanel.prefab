@@ -13,13 +13,14 @@ GameObject:
   - component: {fileID: 8157156821118005071}
   - component: {fileID: 1951674726256562408}
   - component: {fileID: 3101570322897499496}
+  - component: {fileID: 8320009965005871145}
   m_Layer: 5
   m_Name: PopupPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5426640733750827281
 RectTransform:
   m_ObjectHideFlags: 0
@@ -117,3 +118,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 2
+--- !u!114 &8320009965005871145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7476780302845649139}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49c784694b5ac2b43b20142af49cfe44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonPrefab: {fileID: 2373021909619320745, guid: bd39145a3806d1741a9239b01b1d9328,
+    type: 3}

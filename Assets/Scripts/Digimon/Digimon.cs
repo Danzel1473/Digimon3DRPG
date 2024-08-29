@@ -9,6 +9,8 @@ public class Digimon
     public int Level { get; private set; }
     public int CurrentHP { get; set; }
     public int MaxHP { get; set; }
+    public bool XAnityBody { get; set; }
+
     public List<Move> Moves { get; private set; }
     public int VirusValue, DataValue, VaccineValue;
 
@@ -19,6 +21,7 @@ public class Digimon
         Level = level;
         MaxHP = HP;
         CurrentHP = MaxHP;
+        XAnityBody = digimonBase.XAnityBody;
         //디지몬마다 고유번호 가지도록 추가 예정
 
         Moves = new List<Move>();
