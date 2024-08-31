@@ -46,7 +46,10 @@ public class PopupButton : MonoBehaviour
                 }
                 BattleSystem.Instance.SwitchPerform(GameManager.Instance.playerData, partyNum);
                 break;
-        }
+            case PopupButtonType.Cancel:
+                transform.parent.gameObject.SetActive(false);
+            break;
+    }
     }
 }
 
