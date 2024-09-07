@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -15,10 +16,21 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(gameObject);
+    }
+
     [SerializeField] public PlayerData playerData;
     [SerializeField] public PlayerData enemyData;
     [SerializeField] public PopupMenu popupMenu;
     private bool isBattle;
 
-
+    public IEnumerator WaitForKeyPress(KeyCode key)
+    {
+        while(!Input.GetKeyDown(key))
+        {
+            yield return null;
+        }
+    }
 }

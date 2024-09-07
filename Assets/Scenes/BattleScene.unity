@@ -780,55 +780,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1023676725
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1023676726}
-  - component: {fileID: 1023676727}
-  m_Layer: 0
-  m_Name: EnemyData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1023676726
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023676725}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1212279546}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1023676727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1023676725}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9256bb8c1b76034d8924f10bc65457c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerName: enemy
-  partyData:
-    digimons: []
-  inventory:
-    items: []
 --- !u!1 &1038557579
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,8 +944,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 454365061}
-  - {fileID: 1408125585}
-  - {fileID: 1023676726}
   - {fileID: 24261965}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1010,8 +959,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82db8228fd983a443b9e0518e18147d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData: {fileID: 1408125586}
-  enemyData: {fileID: 1023676727}
+  playerData:
+    playerName: Tester
+    partyData:
+      digimons: []
+    inventory:
+      items: []
+  enemyData:
+    playerName: NPC
+    partyData:
+      digimons: []
+    inventory:
+      items: []
   popupMenu: {fileID: 3204097455789105372}
 --- !u!1 &1256533249
 GameObject:
@@ -1045,55 +1004,6 @@ Transform:
   - {fileID: 42283653}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1408125584
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1408125585}
-  - component: {fileID: 1408125586}
-  m_Layer: 0
-  m_Name: PlayerData
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1408125585
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408125584}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.2116165, y: 0.4484378, z: -19.010847}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1212279546}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1408125586
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1408125584}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9256bb8c1b76034d8924f10bc65457c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerName: Tester
-  partyData:
-    digimons: []
-  inventory:
-    items: []
 --- !u!1 &1414579909 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7218310758569923997, guid: 1684c8aa120de474abfd0c2f1a05fedb,

@@ -59,15 +59,15 @@ public class BattleSystem : MonoBehaviour
         currentMenu = rootMenu;
 
         //테스트용 코드
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 12));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[3], 15));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 11));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 10));
-        playerData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[1], 10));
+        playerData.partyData.AddDigimon(new Digimon(1, 12));
+        playerData.partyData.AddDigimon(new Digimon(3, 15));
+        playerData.partyData.AddDigimon(new Digimon(1, 11));
+        playerData.partyData.AddDigimon(new Digimon(1, 11));
+        playerData.partyData.AddDigimon(new Digimon(1, 10));
+        playerData.partyData.AddDigimon(new Digimon(1, 10));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
 
-        enemyData.partyData.AddDigimon(new Digimon(DigimonTable.Instance[2], 8));
+        enemyData.partyData.AddDigimon(new Digimon(2, 8));
         enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
 
         StartCoroutine(SetupBattle());
@@ -182,7 +182,7 @@ public class BattleSystem : MonoBehaviour
         uiText.text = text;
 
         textPanel.SetActive(true);
-        yield return WaitForKeyPress(KeyCode.Z);
+        yield return GameManager.Instance.WaitForKeyPress(KeyCode.Z);
         textPanel.SetActive(false);
     }
     
@@ -194,19 +194,11 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(time);
         textPanel.SetActive(false);
     }
-
-    private IEnumerator WaitForKeyPress(KeyCode key)
-    {
-        while(!Input.GetKeyDown(key))
-        {
-            yield return null;
-        }
-    }
     public bool CalculateAccuracy(Move move, BattleEntity defender)
     {
         if (Random.Range(0, 100) >= move.moveBase.Accuracy)
         {
-            StartCoroutine(BattleText($"{defender.Digimon.Name}은 맞지 않았다.", 2f));
+            StartCoroutine(BattleText($"{defender.Digimon.digimonName}은 맞지 않았다.", 2f));
             return false;
         }
         return true;

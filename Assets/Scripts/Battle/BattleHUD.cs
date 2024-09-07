@@ -21,7 +21,7 @@ public class BattleHUD : MonoBehaviour
 
     public void SetData(Digimon digimon)
     {
-        nameText.text = digimon.digimonBase.DigimonName;
+        nameText.text = digimon.DigimonBase.DigimonName;
         levelText.text = digimon.Level.ToString();
         hpBar.value = (float)digimon.CurrentHP / digimon.MaxHP;
         hpText.text = $"{digimon.CurrentHP}/{digimon.MaxHP}";

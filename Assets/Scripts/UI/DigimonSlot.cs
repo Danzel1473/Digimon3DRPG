@@ -19,9 +19,9 @@ public class DigimonSlot : Button
     {
         this.i = i;
         digimonData = GameManager.Instance.playerData.partyData.Digimons[i];
-        digimonIcon.sprite = digimonData.digimonBase.DigimonSprite;
-        digimonAnimator.runtimeAnimatorController = digimonData.digimonBase.digimonSpriteAnimator;
-        digimonName.text = digimonData.digimonBase.DigimonName;
+        digimonIcon.sprite = digimonData.DigimonBase.DigimonSprite;
+        digimonAnimator.runtimeAnimatorController = digimonData.DigimonBase.digimonSpriteAnimator;
+        digimonName.text = digimonData.DigimonBase.DigimonName;
         digimonLevel.text = $"Lv.{digimonData.Level}";
         digimonHP.text = $"{digimonData.CurrentHP} / {digimonData.MaxHP}";
         digimonHPSlider.value = (float)digimonData.CurrentHP / digimonData.MaxHP;

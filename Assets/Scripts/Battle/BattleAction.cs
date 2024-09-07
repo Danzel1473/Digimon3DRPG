@@ -47,13 +47,13 @@ public class MoveAction : BattleAction
 
     private IEnumerator ExecuteDealingMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.MoveName}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.moveBase.MoveName}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
         if (!battleSystem.CalculateAccuracy(move, defender))
         {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 맞지 않았다!", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 맞지 않았다!", 2f));
             yield break;
         }
 
@@ -82,19 +82,19 @@ public class MoveAction : BattleAction
         if (isFainted)
         {
             defender.PlayFaintAnimation();
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 쓰러졌다.", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 쓰러졌다.", 2f));
         }
     }
 
     private IEnumerator ExecuteHealMove(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.Name}은 {move.moveBase.MoveName}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.moveBase.MoveName}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
         if (!CalculateAccuracy(move, defender))
         {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.Name}은(는) 맞지 않았다!", 2f));
+            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 맞지 않았다!", 2f));
             yield break;
         }
 
@@ -116,8 +116,8 @@ public class MoveAction : BattleAction
 
     protected float GetBattleMultiplier(Move move, BattleEntity defender)
     {
-        return ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType1)
-                * ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.digimonBase.ElementType2);
+        return ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.DigimonBase.ElementType1)
+                * ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.DigimonBase.ElementType2);
     }
 
     protected int CalculateDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
@@ -196,13 +196,13 @@ public class SwitchAction : BattleAction
 
         if (player.partyData.Digimons[partyNum].CurrentHP <= 0)
         {
-            yield return BattleSystem.Instance.BattleText($"{player.partyData.Digimons[partyNum].Name}은 기절해있다!", 2f);
+            yield return BattleSystem.Instance.BattleText($"{player.partyData.Digimons[partyNum].digimonName}은 기절해있다!", 2f);
             yield break;
         }
 
         //바꾸는 연출
 
-        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].Name}을 후퇴시켰다.", 2f);
+        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].digimonName}을 후퇴시켰다.", 2f);
 
         //파티의 디지몬 정보를 먼저 교체
         Digimon stack = player.partyData.Digimons[partyNum];
@@ -227,9 +227,9 @@ public class SwitchAction : BattleAction
 
         yield return new WaitForSeconds(2f);
 
-        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].Name}을 내보냈다!", 2f);
+        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {player.partyData.Digimons[0].digimonName}을 내보냈다!", 2f);
 
-        Debug.Log($"{player.partyData.Digimons[0].Name}, {player.partyData.Digimons[0].Level}");
+        Debug.Log($"{player.partyData.Digimons[0].digimonName}, {player.partyData.Digimons[0].Level}");
         target.SetDigimonData(player.partyData.Digimons[0]);
         target.SetUp();
 

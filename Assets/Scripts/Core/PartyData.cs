@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [System.Serializable]
@@ -14,4 +15,11 @@ public class PartyData
 
         digimons.Add(digimon);
     }
+
+    public void DeleteDigimon(Digimon digimon)
+    {
+        digimons.Remove(digimon);
+    }
+
+    public Digimon this[int num] => digimons[num];
 }

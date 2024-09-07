@@ -14,7 +14,7 @@ public class BattleEntity : MonoBehaviour
         if(Digimon == null) return;
         if(GetComponentInChildren<Animator>()) return;
 
-        var digimonModel = Instantiate(Digimon.digimonBase.DigimonModel, transform);
+        var digimonModel = Instantiate(Digimon.DigimonBase.DigimonModel, transform);
         battleAnimation = digimonModel.GetComponentInChildren<BattleAnimation>();
     }
 
