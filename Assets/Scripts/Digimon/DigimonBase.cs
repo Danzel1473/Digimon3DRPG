@@ -18,11 +18,10 @@ public class DigimonBase
     [SerializeField] int spAttack;
     [SerializeField] int spDefense;
     [SerializeField] int speed;
-
+ 
     [Header ("Types")]
-    [SerializeField] DigimonType digimonType1;
-    [SerializeField] ElementType elementType1;
-    [SerializeField] ElementType elementType2;
+    [SerializeField] DigimonType digimonType;
+    [SerializeField] ElementType[] elementTypes;
     [SerializeField] bool xAntiBody;
 
     [Header ("ETC")]
@@ -36,37 +35,24 @@ public class DigimonBase
 
 
     public string DigimonName => digimonName;
-
     public string Description => description;
-
-    public DigimonType DigimonType1 => digimonType1;
-
-    public ElementType ElementType1 => elementType1;
-
-    public ElementType ElementType2 => elementType2;
+    public int DigimonNum => digimonNum;
+    public DigimonType DigimonType => digimonType;
+    public ElementType[] ElementTypes => elementTypes;
 
     public int HP => hp;
-
     public int Attack => attack;
-
     public int Defense => defense;
-
     public int SpAttack => spAttack;
-
     public int SpDefense => spDefense;
-
     public int Speed => speed;
+
     public bool XAnityBody => xAntiBody;
-
     public List<LearnableMove> LearnableMoves => learnableMoves;
-
     public GameObject DigimonModel => digimonModel;
-
     public Sprite DigimonSprite => digimonSprite;
-
     public AnimatorController DigimonSpriteAnimator => digimonSpriteAnimator;
     public EvolveData[] EvoleData => evoleData;
-    public int DigimonNum => digimonNum;
 }
 
 

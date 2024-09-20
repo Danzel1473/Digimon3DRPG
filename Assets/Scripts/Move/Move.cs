@@ -1,11 +1,24 @@
-using UnityEngine;
+using System;
 
+[Serializable]
 public class Move
 {
-    public MoveBase moveBase { get; private set; }
+    public int maxPP;
+    public int currentPP;
+    public int moveNum;
+    public MoveBase MoveBase => MoveTable.Instance[moveNum];
 
-    public Move(MoveBase moveBase)
+    public Move(int moveNum)
     {
-        this.moveBase = moveBase;
+        this.moveNum = moveNum;
+        maxPP = MoveBase.PP;
+        currentPP = maxPP;
+    }
+
+    public void Initialize(int moveNum)
+    {
+        this.moveNum = moveNum;
+        maxPP = MoveBase.PP;
+        currentPP = maxPP; 
     }
 }

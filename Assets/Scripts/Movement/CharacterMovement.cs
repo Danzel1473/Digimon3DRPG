@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace D3R.Movement
 {
@@ -30,6 +29,7 @@ namespace D3R.Movement
 
         private void Update()
         {
+            if(GameManager.Instance.state != GameManager.SituState.OpenWorld) return;
             HandleMovement();
             HandleRotation();
             HandleAnimation();

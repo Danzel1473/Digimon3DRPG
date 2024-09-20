@@ -6,6 +6,7 @@ public enum ItemAttributeKind
     None,
     Heal,
     Evolution,
+    Digicatch,
     Buff
 }
 
@@ -13,8 +14,8 @@ public enum ItemAttributeKind
 public struct ItemAttribute
 {
     [SerializeField] private ItemAttributeKind kind;
-    [SerializeField] private int value;
+    [SerializeField] private float value;
 
     public ItemAttributeKind Kind => kind;
-    public int Value => value;
+    public float Value => value;
 }

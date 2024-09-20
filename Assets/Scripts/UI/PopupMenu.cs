@@ -8,12 +8,24 @@ public class PopupMenu : MonoBehaviour
     private PopupButton buttonPrefab;
     private List<PopupButton> buttons = new List<PopupButton>();
     public List<PopupButton> Buttons => buttons;
-    public int partyNum;
+    public int num;
     
     public void SetMenu(int num, List<PopupButtonType> types)
     {
         ClearMenu();
-        partyNum = num;
+        this.num = num;
+
+        foreach(PopupButtonType type in types)
+        {
+            buttons.Add(Instantiate(buttonPrefab, transform));
+            buttons[buttons.Count-1].SetType(type);
+        }
+    }
+
+        public void SetMenu(List<PopupButtonType> types)
+    {
+        ClearMenu();
+        num = 0;
 
         foreach(PopupButtonType type in types)
         {

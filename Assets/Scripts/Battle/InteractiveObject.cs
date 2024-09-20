@@ -1,4 +1,6 @@
-public interface InteractiveObject
+using UnityEngine;
+
+public abstract class InteractiveObject : MonoBehaviour
 {
-    void Interaction();
+    public abstract void Interaction();
 }

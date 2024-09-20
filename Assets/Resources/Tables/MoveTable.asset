@@ -24,6 +24,8 @@ MonoBehaviour:
     moveEffect: 0
     moveCategory: 0
     particlePrefab: {fileID: 0}
+    attackAudio: {fileID: 8300000, guid: 4a726fc1c40e66a45869bd9b9c7ba699, type: 3}
+    hitAudio: {fileID: 0}
   - moveID: 1
     moveName: "\uAF2C\uB9C8\uBD88\uAF43"
     description: "\uC791\uC740 \uBD88\uB369\uC774\uB97C \uC801\uC5D0\uAC8C \uBC1C\uC0AC\uD55C\uB2E4."
@@ -35,14 +37,18 @@ MonoBehaviour:
     moveEffect: 0
     moveCategory: 1
     particlePrefab: {fileID: 0}
+    attackAudio: {fileID: 8300000, guid: 2c953e2dd46d6cb45b7413821a6c1acb, type: 3}
+    hitAudio: {fileID: 0}
   - moveID: 2
     moveName: "\uAF43\uAC00\uB8E8\uBFCC\uB9AC\uAE30"
     description: "\uC791\uC740 \uBD88\uB369\uC774\uB97C \uC801\uC5D0\uAC8C \uBC1C\uC0AC\uD55C\uB2E4."
     power: 60
     accuracy: 100
     pp: 20
-    moveType: 1
+    moveType: 3
     moveTarget: 0
     moveEffect: 0
     moveCategory: 1
     particlePrefab: {fileID: 0}
+    attackAudio: {fileID: 8300000, guid: 81d6c0e2910898640a769db3dfd74e85, type: 3}
+    hitAudio: {fileID: 0}

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -22,14 +23,25 @@ public class ItemSlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         itemSprite.sprite = iInst.item.Icon;
         itemName.text = iInst.item.Name;
         quantity.text = $"×{iInst.quantity}";
+        Debug.Log($"{iInst.item.Name}");
     }
     
-    public void OnItemClick(Item item)
+    public void OnClick()
     {
-    }
+        PopupMenu pm = GameManager.Instance.popupMenu;
 
-    public void OnCancelButtonClick()
-    {
+        pm.gameObject.SetActive(false);
+        GameManager.Instance.popupMenu.gameObject.transform.position = transform.position;
+        List<PopupButtonType> pbt = new List<PopupButtonType>
+        {
+            PopupButtonType.UseItem,
+            PopupButtonType.Give,
+            PopupButtonType.Throw,
+            PopupButtonType.Cancel
+        };
+        
+        pm.SetMenu(iInst.itemId, pbt);
+        pm.ShowMenuAtPosition(transform.position);
     }
 
     public void OnPointerEnter(PointerEventData eventData)

@@ -40,5 +40,6 @@ public class DigimonTable : ScriptableObject
     }
 
     public DigimonBase this[int digimonNum] => digimonDict[digimonNum];
+    public DigimonBase[] Digimons => digimons;
     public int DigimonTableLength => digimons.Length;
 }

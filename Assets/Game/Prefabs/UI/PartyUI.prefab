@@ -193,4 +193,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slotPrefab: {fileID: 124903832665272208, guid: ed117f32c10292d42b29d4c453e9901b,
     type: 3}
-  PartyPanel: {fileID: 1683641043792257875}
+  slots: []
+  partyPanel: {fileID: 0}
+  state: 0

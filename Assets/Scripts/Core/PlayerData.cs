@@ -7,6 +7,6 @@ public class PlayerData
     [SerializeField] public string playerName;
     [SerializeField] public PartyData partyData;
     [SerializeField] private Inventory inventory;
-
+    [SerializeField] private bool isTamer;
     public Inventory Inventory => inventory;
 }

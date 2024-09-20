@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class BattleMenuManager : MonoBehaviour
 {
-    [SerializeField] private UnityEngine.GameObject rootMenu;
-    [SerializeField] private UnityEngine.GameObject moveMenu;
-    private UnityEngine.GameObject currentMenu;
+    [SerializeField] private GameObject rootMenu;
+    [SerializeField] private GameObject moveMenu;
+    private GameObject currentMenu;
 
     private void Start()
     {

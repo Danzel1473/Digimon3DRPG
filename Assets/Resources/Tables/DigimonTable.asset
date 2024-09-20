@@ -22,9 +22,8 @@ MonoBehaviour:
     spAttack: 1
     spDefense: 1
     speed: 1
-    digimonType1: 4
-    elementType1: 0
-    elementType2: 0
+    digimonType: 0
+    elementTypes: 
     xAntiBody: 0
     evoleData: []
     learnableMoves:
@@ -48,9 +47,8 @@ MonoBehaviour:
     spAttack: 15
     spDefense: 10
     speed: 10
-    digimonType1: 2
-    elementType1: 1
-    elementType2: 0
+    digimonType: 0
+    elementTypes: 01000000
     xAntiBody: 0
     evoleData:
     - evolveDigimonNum: 2
@@ -81,9 +79,8 @@ MonoBehaviour:
     spAttack: 20
     spDefense: 10
     speed: 10
-    digimonType1: 1
-    elementType1: 3
-    elementType2: 0
+    digimonType: 0
+    elementTypes: 03000000
     xAntiBody: 0
     evoleData: []
     learnableMoves:
@@ -104,9 +101,8 @@ MonoBehaviour:
     spAttack: 60
     spDefense: 40
     speed: 40
-    digimonType1: 2
-    elementType1: 1
-    elementType2: 0
+    digimonType: 0
+    elementTypes: 01000000
     xAntiBody: 0
     evoleData: []
     learnableMoves:

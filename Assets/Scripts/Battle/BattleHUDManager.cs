@@ -28,8 +28,8 @@ public class BattleHUDManager : MonoBehaviour
         {
             if (i < moves.Count)
             {
-                moveButtons[i].GetComponentInChildren<TMP_Text>().text = moves[i].moveBase.MoveName;
-                moveButtons[i].GetComponent<MoveButton>().SetUp(moves[i].moveBase);
+                moveButtons[i].GetComponentInChildren<TMP_Text>().text = moves[i].MoveBase.MoveName;
+                moveButtons[i].GetComponent<MoveButton>().SetUp(moves[i].moveNum);
             }
             else
             {

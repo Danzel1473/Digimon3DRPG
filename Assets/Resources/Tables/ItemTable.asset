@@ -46,3 +46,11 @@ MonoBehaviour:
     - kind: 2
       value: 0
     kind: 2
+  - itemId: 4
+    name: "\uB514\uC9C0\uCE90\uCE58"
+    description: "\uB514\uC9C0\uBAAC\uC744 \uD3EC\uD68D\uD558\uB294 \uB3C4\uAD6C"
+    icon: {fileID: 21300000, guid: 556b0915c518b00479903d871474e638, type: 3}
+    attrs:
+    - kind: 3
+      value: 2
+    kind: 1

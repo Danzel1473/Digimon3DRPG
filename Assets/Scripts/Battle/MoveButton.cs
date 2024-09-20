@@ -4,10 +4,9 @@ public class MoveButton : MonoBehaviour
 {
     private Move move;
 
-    public void SetUp(MoveBase moveBase)
+    public void SetUp(int moveNum)
     {
-        if (moveBase == null) return;
-        move = new Move(moveBase);
+        move = new Move(moveNum);
     }
 
     public void OnClick()

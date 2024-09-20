@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -33,21 +34,12 @@ public class MoveAction : BattleAction
         if(user.Digimon.CurrentHP == 0) yield break;
 
         BattleSystem.Instance.AllHUDSetActivity(false);
-
-        switch (actionMove.moveBase.MoveEffect)
-        {
-            case MoveEffect.Deal:
-                yield return ExecuteDealingMove(user, target, actionMove);
-                break;
-            case MoveEffect.Heal:
-                yield return ExecuteHealMove(user, target, actionMove);
-                break;
-        }
+        yield return ActionLogic(user, target, actionMove);
     }
 
-    private IEnumerator ExecuteDealingMove(BattleEntity attacker, BattleEntity defender, Move move)
+    private IEnumerator ActionLogic(BattleEntity attacker, BattleEntity defender, Move move)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.moveBase.MoveName}을 사용했다.", 2f));
+        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.MoveBase.MoveName}을 사용했다.", 2f));
         
         yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
 
@@ -56,57 +48,57 @@ public class MoveAction : BattleAction
             yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 맞지 않았다!", 2f));
             yield break;
         }
-
-        yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayDefenderDamageAnimation(defender));
-
-        float multiplier = GetBattleMultiplier(move, defender);
-        if (multiplier == 0)
+        MoveEffect moveEffect = move.MoveBase.MoveEffect;
+        switch(moveEffect)
         {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText("효과가 없었다...", 2f));
-            yield break;
+            case MoveEffect.Deal:
+                yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayDefenderDamageAnimation(defender));
+
+                float multiplier = GetBattleMultiplier(move, defender);
+                if (multiplier == 0)
+                {
+                    yield return battleSystem.StartCoroutine(battleSystem.BattleText("효과가 없었다...", 2f));
+                    yield break;
+                }
+
+                bool isFainted = TakeDamage(move, attacker, defender, multiplier);
+
+                //HUD 업데이트
+                yield return UpdateHUD(defender);
+
+                if (multiplier >= 2)
+                {
+                    yield return battleSystem.StartCoroutine(battleSystem.BattleText("효과는 굉장했다!", 2f));
+                }
+
+                if (isFainted)
+                {
+                    defender.PlayFaintAnimation();
+                    yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 쓰러졌다.", 2f));
+                }
+            break;
+
+            case MoveEffect.Heal:
+                yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.MoveBase.MoveName}을 사용했다.", 2f));
+            
+                yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
+
+                if (!CalculateAccuracy(move, defender))
+                {
+                    yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 맞지 않았다!", 2f));
+                    yield break;
+                }
+
+                TakeHeal(move, attacker, defender);
+
+                yield return UpdateHUD(defender);
+            break;
         }
 
-        bool isFainted = TakeDamage(move, attacker, defender, multiplier);
-
-        BattleHUD targetHUD = battleSystem.SetTargetHUD(defender);
-        battleSystem.HUDSetActivity(targetHUD.gameObject, true);
-        battleSystem.UpdateHUD();
-        yield return new WaitForSeconds(1f);
-        battleSystem.AllHUDSetActivity(false);
-
-        if (multiplier >= 2)
-        {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText("효과는 굉장했다!", 2f));
-        }
-
-        if (isFainted)
-        {
-            defender.PlayFaintAnimation();
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 쓰러졌다.", 2f));
-        }
     }
 
-    private IEnumerator ExecuteHealMove(BattleEntity attacker, BattleEntity defender, Move move)
+    private IEnumerator UpdateHUD(BattleEntity defender)
     {
-        yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{attacker.Digimon.digimonName}은 {move.moveBase.MoveName}을 사용했다.", 2f));
-        
-        yield return battleSystem.StartCoroutine(BattleAnimationManager.Instance.PlayAttackAnimation(move, attacker));
-
-        if (!CalculateAccuracy(move, defender))
-        {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText($"{defender.Digimon.digimonName}은(는) 맞지 않았다!", 2f));
-            yield break;
-        }
-
-        float multiplier = GetBattleMultiplier(move, defender);
-        if (multiplier == 0)
-        {
-            yield return battleSystem.StartCoroutine(battleSystem.BattleText("효과가 없었다...", 2f));
-            yield break;
-        }
-
-        TakeHeal(move, attacker, defender);
-
         BattleHUD targetHUD = battleSystem.SetTargetHUD(defender);
         battleSystem.HUDSetActivity(targetHUD.gameObject, true);
         battleSystem.UpdateHUD();
@@ -116,35 +108,41 @@ public class MoveAction : BattleAction
 
     protected float GetBattleMultiplier(Move move, BattleEntity defender)
     {
-        return ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.DigimonBase.ElementType1)
-                * ElementChart.GetMultiplier(move.moveBase.MoveType, defender.Digimon.DigimonBase.ElementType2);
+        float multiplier = 1f;
+        foreach(ElementType type in defender.Digimon.Types)
+        {
+            multiplier *= ElementChart.GetMultiplier(move.MoveBase.MoveType, type);
+        }
+        return multiplier;
     }
 
     protected int CalculateDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
     {
-        float modifiers = Random.Range(0.85f, 1f);
+        float modifiers = UnityEngine.Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        float b = move.moveBase.MoveCategory == MoveCategory.Physical
+        float b = move.MoveBase.MoveCategory == MoveCategory.Physical
             ? ((float)attacker.Digimon.Attack / defender.Digimon.Defense) 
             : ((float)attacker.Digimon.SpAttack / defender.Digimon.SpDefense);
             
-        float d = a * move.moveBase.Power * b * multiplier + 2;
-
+        float d = a * move.MoveBase.Power * b * multiplier + 2;
+        Debug.Log(Mathf.FloorToInt(d * modifiers));
         return Mathf.FloorToInt(d * modifiers);
     }
 
     protected bool TakeDamage(Move move, BattleEntity attacker, BattleEntity defender, float multiplier)
     {
         int damage = CalculateDamage(move, attacker, defender, multiplier);
-        defender.Digimon.CurrentHP -= Mathf.Min(defender.Digimon.CurrentHP, damage);
+        defender.Digimon.TakeDamage(damage);
+
+        Debug.Log(defender.Digimon.CurrentHP);
         return defender.Digimon.CurrentHP <= 0;
     }
 
     protected int CalculateHeal(Move move, BattleEntity attacker, BattleEntity defender)
     {
-        float modifiers = Random.Range(0.85f, 1f);
+        float modifiers = UnityEngine.Random.Range(0.85f, 1f);
         float a = (2 * attacker.Digimon.Level + 10) / 250f;
-        float d = a * move.moveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) + 2;
+        float d = a * move.MoveBase.Power * ((float)attacker.Digimon.Attack / defender.Digimon.Defense) + 2;
 
         return Mathf.FloorToInt(d * modifiers);
     }
@@ -152,13 +150,13 @@ public class MoveAction : BattleAction
     protected bool TakeHeal(Move move, BattleEntity attacker, BattleEntity defender)
     {
         int heal = CalculateHeal(move, attacker, defender);
-        defender.Digimon.CurrentHP += Mathf.Min(defender.Digimon.MaxHP - defender.Digimon.CurrentHP, heal);
+        defender.Digimon.HealDigimon(heal);
         return defender.Digimon.CurrentHP <= 0;
     }
 
     protected bool CalculateAccuracy(Move move, BattleEntity defender)
     {
-        if (Random.Range(0, 100) >= move.moveBase.Accuracy)
+        if (UnityEngine.Random.Range(0, 100) >= move.MoveBase.Accuracy)
         {
             return false;
         }
@@ -181,11 +179,6 @@ public class SwitchAction : BattleAction
     {
         BattleSystem.Instance.AllHUDSetActivity(false);
 
-        yield return SwitchLogic(player, partyNum);
-    }
-
-    public IEnumerator SwitchDigimonEntity(PlayerData player, int partyNum)
-    {
         yield return SwitchLogic(player, partyNum);
     }
 
@@ -242,4 +235,91 @@ public class SwitchAction : BattleAction
         
         BattleSystem.Instance.AllHUDSetActivity(true);
     }
+}
+
+public class ItemAction : BattleAction
+{
+    protected PlayerData player;
+    protected Item item;
+
+    public ItemAction(PlayerData player, BattleEntity target, Item item)
+    {
+        this.player = player;
+        this.target = target;
+        this.item = item;
+    }
+
+    public override IEnumerator Action()
+    {
+        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {target.Digimon.digimonName}에게 {item.Name}을 사용했다.", 2f);
+
+        switch(item.Attrs[0].Kind)
+        {
+            case ItemAttributeKind.Heal:
+                yield return HealItemAction((int)item.Attrs[0].Value);
+                break;
+            case ItemAttributeKind.Digicatch:
+                yield return DigicatchItemAction(item.Attrs[0].Value);
+                break;
+        }
+        
+        yield return 0;
+    }
+
+    public IEnumerator HealItemAction(int amount)
+    {
+        target.Digimon.HealDigimon(amount);
+
+        BattleHUD targetHUD = BattleSystem.Instance.SetTargetHUD(target);
+        
+        BattleSystem.Instance.HUDSetActivity(targetHUD.gameObject, true);
+        BattleSystem.Instance.UpdateHUD();
+
+        yield return new WaitForSeconds(1f);
+
+        BattleSystem.Instance.AllHUDSetActivity(false);
+    }
+    
+    public IEnumerator DigicatchItemAction(float modifier)
+    {
+        Debug.Log("DigicatchItemAction on");
+        BattleHUD targetHUD = BattleSystem.Instance.SetTargetHUD(target);
+
+        BattleSystem.Instance.HUDSetActivity(targetHUD.gameObject, true);
+        BattleSystem.Instance.UpdateHUD();
+
+        float catchChance = CalculateCatchChance(target.Digimon, modifier);
+        float randomValue = UnityEngine.Random.Range(0f, 10f);
+
+        yield return new WaitForSeconds(1f);
+
+        if (randomValue <= catchChance)
+        {
+            BattleSystem.Instance.DestroyModel(target);
+            yield return BattleSystem.Instance.BattleText($"{target.Digimon.digimonName}을 성공적으로 잡았다!", 2f);
+
+            if(GameManager.Instance.playerData.partyData.Digimons.Count < 6)
+                GameManager.Instance.playerData.partyData.AddDigimon(target.Digimon);
+
+            BattleSystem.Instance.BattleWin();
+        }
+        else
+        {
+            yield return BattleSystem.Instance.BattleText($"{target.Digimon.digimonName}을 잡는 데 실패했다.", 2f);
+        }
+
+        BattleSystem.Instance.AllHUDSetActivity(false);
+    }
+
+    private float CalculateCatchChance(Digimon targetDigimon, float modifier)
+{
+    float maxHP = targetDigimon.MaxHP;
+    float currentHP = targetDigimon.CurrentHP;
+    float ballModifier = modifier;
+
+    // 포획률 계산 (포켓몬의 공식을 참고)
+    float catchRate = (3 * maxHP - 2 * currentHP) * ballModifier / (3 * maxHP);
+
+    return Mathf.Clamp(catchRate * 100f, 1f, 100f);
+}
 }

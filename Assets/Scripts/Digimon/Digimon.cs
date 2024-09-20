@@ -8,66 +8,80 @@ public class Digimon
     public DigimonBase DigimonBase => DigimonTable.Instance[digimonID];
 
     [SerializeField] public string digimonName;
-    public int Level;
-    public int CurrentHP;
-    public int MaxHP;
-    public bool XAnityBody;
+    [SerializeField] public int Level;
+    private ElementType[] types;
+    private int currentHP;
+    private int maxHP;
+    [SerializeField] private bool xAnityBody;
 
-    public List<Move> Moves;
-    public int VirusValue, DataValue, VaccineValue;
+    [Range(0, 32)][SerializeField] private int[] ivs = new int[6]; //개체치
+    [Range(0, 255)] [SerializeField] private int[] effort = new int[6]; //노력치
 
-    // public void Initialize(int id)
-    // {
-    //     SetDigimonByID(id);
-    // }
-    
-    // public void SetDigimonByID(int id)
-    // {
-    //     digimonID = id;
-    //     digimonName = DigimonTable.Instance[id].DigimonName;
-    // }
+    public int[] Ivs => ivs;
+    public int[] Effort => effort;
+    public int CurrentHP => currentHP;
+    public int MaxHP => maxHP;
+    public bool XAnityBody => xAnityBody;
+    public ElementType[] Types => types;
+    [SerializeField] public List<Move> Moves;
+    public void Initialize()
+    {
+        if (string.IsNullOrEmpty(digimonName)) digimonName = DigimonBase.DigimonName;
+        types = DigimonBase.ElementTypes;
+        maxHP = HP;
+        currentHP = HP;
+    }
 
     public Digimon(int id, int level)
     {
         digimonID = id;
+        
         digimonName = DigimonBase.DigimonName;
         Level = level;
-        MaxHP = HP;
-        CurrentHP = MaxHP;
-        XAnityBody = DigimonBase.XAnityBody;
-        //디지몬마다 고유번호 가지도록 추가 예정
+        maxHP = HP;
+        currentHP = maxHP;
+        xAnityBody = DigimonBase.XAnityBody;
+        //디지몬마다 고유ID 가지도록 추가 예정
 
         Moves = new List<Move>();
         foreach (var move in DigimonBase.LearnableMoves)
         {
-            if (move.level <= level) Moves.Add(new Move(move.moveBase));
+            if (move.level <= level) Moves.Add(new Move(move.moveID));
         }
     }
 
-    public Digimon(int id, int level, int currentHP, List<Move> moves)
+    public Digimon(int id, int level, int hp, List<Move> moves)
     {
         digimonID = id;
 
         Level = level;
-        CurrentHP = currentHP;
+        currentHP = hp;
         Moves = moves;
 
         Moves = new List<Move>();
         foreach (var move in DigimonBase.LearnableMoves)
         {
             if (move.level <= level)
-                Moves.Add(new Move(move.moveBase));
+                Moves.Add(new Move(move.moveID));
         }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        currentHP -= Mathf.Min(currentHP, amount);
+        Debug.Log($"{currentHP}");
+
     }
 
     public void HealDigimon(int amount)
     {
-        CurrentHP += Mathf.Min(MaxHP-CurrentHP, amount);
+        currentHP += Mathf.Min(maxHP-currentHP, amount);
     }
     
     public List<DigimonBase> GetEvolves()
     {
         List<DigimonBase> canEvolves = new List<DigimonBase>();
+
         foreach(EvolveData evolveData in DigimonBase.EvoleData)
         {
             DigimonBase evolveTo = DigimonTable.Instance[evolveData.evolveDigimonNum];
@@ -79,10 +93,6 @@ public class Digimon
     public void EvolveTo(List<DigimonBase> canEvolves)
     {
         int i = Random.Range(0, canEvolves.Count);
-        
-        //canEvolves의 i번째로 진화
-        //digimonBase = canEvolves[i];
-
     }
 
     public int HP => Mathf.FloorToInt(((DigimonBase.HP * 2) + 100 ) * Level / 100f) + 10;

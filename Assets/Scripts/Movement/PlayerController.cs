@@ -14,6 +14,8 @@ namespace D3R.Movement
 
         public void Update()
         {
+            if(GameManager.Instance.state != GameManager.SituState.OpenWorld) return;
+
             moveVector.x = Input.GetAxisRaw("Horizontal");
             moveVector.z = Input.GetAxisRaw("Vertical");
 

@@ -41,6 +41,7 @@ public class ItemTable : ScriptableObject, IEnumerable<Item>
 
     public Item this[int itemId] => itemDict[itemId];
     public int ItemTableLength => items.Length;
+    public Item[] Items => items;
 
 
     public IEnumerator<Item> GetEnumerator() => items.Cast<Item>().GetEnumerator();

@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Debug = UnityEngine.Debug;
 
 public class BattleSystem : MonoBehaviour
 {
-    [Header ("Battle Entities")]
+    [Header("Battle Entities")]
     [SerializeField] private BattleEntity playerBattleEntity;
     [SerializeField] private BattleEntity enemyBattleEntity;
 
 
-    [Header ("UI & Environments")]
+    [Header("UI & Environments")]
     [SerializeField] private GameObject rootMenu;
     [SerializeField] private GameObject moveMenu;
     [SerializeField] private GameObject textPanel;
@@ -20,7 +22,7 @@ public class BattleSystem : MonoBehaviour
     [SerializeField] private TMP_Text uiText;
     [SerializeField] private BattleField battleField;
 
-    [Header ("ETC")]
+    [Header("ETC")]
     [SerializeField] private BattleAnimationManager battleAnimationManager;
     [SerializeField] public GameObject[] menus;
     private GameObject currentMenu;
@@ -30,6 +32,9 @@ public class BattleSystem : MonoBehaviour
     private BattleAction enemyAction;
     private PlayerData playerData;
     private PlayerData enemyData;
+
+    private bool isDownSwitch;
+    public bool IsDownSwitch => isDownSwitch;
 
     public BattleEntity PlayerBattleEntity => playerBattleEntity;
     public BattleEntity EnemyBattleEntity => enemyBattleEntity;
@@ -50,6 +55,7 @@ public class BattleSystem : MonoBehaviour
 
     public void Awake()
     {
+        if(!GameManager.Instance) return;
         playerData = GameManager.Instance.playerData;
         enemyData = GameManager.Instance.enemyData;
     }
@@ -58,16 +64,12 @@ public class BattleSystem : MonoBehaviour
     {
         currentMenu = rootMenu;
 
-        //테스트용 코드
-        playerData.partyData.AddDigimon(new Digimon(1, 12));
-        playerData.partyData.AddDigimon(new Digimon(3, 15));
-        playerData.partyData.AddDigimon(new Digimon(1, 11));
-        playerData.partyData.AddDigimon(new Digimon(1, 11));
-        playerData.partyData.AddDigimon(new Digimon(1, 10));
-        playerData.partyData.AddDigimon(new Digimon(1, 10));
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
+        
+        //디버깅
+        Debug.Log($"{GameManager.Instance.playerData.partyData.Digimons[0].Moves.Count}");
+        Debug.Log(GameManager.Instance.playerData.partyData.Digimons[0].Moves[0].MoveBase.MoveName);
 
-        enemyData.partyData.AddDigimon(new Digimon(2, 8));
         enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
 
         StartCoroutine(SetupBattle());
@@ -161,8 +163,6 @@ public class BattleSystem : MonoBehaviour
         
         yield return new WaitForSeconds(1f);
 
-        if(playerBattleEntity.Digimon.CurrentHP == 0) {}
-
         TurnStart();
     }
 
@@ -196,7 +196,7 @@ public class BattleSystem : MonoBehaviour
     }
     public bool CalculateAccuracy(Move move, BattleEntity defender)
     {
-        if (Random.Range(0, 100) >= move.moveBase.Accuracy)
+        if (Random.Range(0, 100) >= move.MoveBase.Accuracy)
         {
             StartCoroutine(BattleText($"{defender.Digimon.digimonName}은 맞지 않았다.", 2f));
             return false;
@@ -211,7 +211,7 @@ public class BattleSystem : MonoBehaviour
     private BattleEntity SetMoveTarget(BattleEntity attacker, Move playerMove)
     {
         //MoveTarget의 정보에 따라 BattleEntity를 Return
-        switch (playerMove.moveBase.MoveTarget)
+        switch (playerMove.MoveBase.MoveTarget)
         {
             case MoveTarget.Enemy:
                 if(attacker == playerBattleEntity) return enemyBattleEntity;
@@ -233,6 +233,7 @@ public class BattleSystem : MonoBehaviour
         currentMenu = rootMenu;
         playerData.partyData.Digimons[0] = playerBattleEntity.Digimon;
         AllHUDSetActivity(true);
+        hudManager.SetMoveButtonData(playerBattleEntity);
     }
 
     public void SwitchMenu(GameObject menu)
@@ -292,14 +293,45 @@ public class BattleSystem : MonoBehaviour
             {
                 StartCoroutine(BattleText($"{playerData.playerName}은 패배했다.", 2f));
             }
+            else
+            {
+                isDownSwitch = true;
+
+                foreach(GameObject go in menus)
+                {
+                    if(go.GetComponent<PartyUI>())
+                    {
+                        AllHUDSetActivity(false);
+                        go.SetActive(true);
+                    }
+                }
+            }
         }
         else if(enemyDown)
         {
             if(CheckPartyDown(enemyData.partyData.Digimons))
             {
-                StartCoroutine(BattleText($"{playerData.playerName}은 승리했다!", 2f));
+                BattleWin();
+            }
+            else
+            {
+                int nextNum = 0;
+
+                for(int i = 0; i < enemyData.partyData.Digimons.Count; i++)
+                {
+                    if(enemyData.partyData.Digimons[i].CurrentHP <= 0) continue;
+                    else nextNum = i;
+                    break;
+                }
+
+                SwitchPerform(enemyData, nextNum, true);
             }
         }
+    }
+
+    public void BattleWin()
+    {
+        StartCoroutine(BattleText($"{playerData.playerName}은 승리했다!", 2f));
     }
 
     public bool CheckPartyDown(List<Digimon> digimons)
@@ -316,13 +348,29 @@ public class BattleSystem : MonoBehaviour
         return isAllDown;
     }
 
-    public void SwitchPerform(PlayerData player, int partyNum)
+    public void SwitchPerform(PlayerData player, int partyNum, bool downSwitch = false)
     {
+        isDownSwitch = downSwitch;
         playerAction = new SwitchAction(player, partyNum);
+
+        if(isDownSwitch)
+        {
+            StartCoroutine(playerAction.Action());
+            TurnStart();
+            return;
+        }
+
         StartCoroutine(PerformBattle());
-        //StartCoroutine(SwitchLogic(player, partyNum));
     }
 
+
+    public void CatchDigimon(PlayerData player, BattleEntity target, Item item)
+    {
+        Debug.Log("배틀 시스템의 캐치 디지몬 함수 시작");
+        playerAction = new ItemAction(player, target, item);
+        StartCoroutine(PerformBattle());
+    }
+    
     public void DestroyModel(BattleEntity player)
     {
         foreach (Transform child in player.transform)

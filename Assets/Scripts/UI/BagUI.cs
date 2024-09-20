@@ -9,31 +9,19 @@ public class BagUI : MonoBehaviour
 
     private ItemTab[] itemTabs;
 
-    private GameManager gameManager;
     private ItemKind currentBagItemKind;
     public ItemKind CurrentBagItemKind => currentBagItemKind;
     public ItemDetail ItemDetail => itemDetail;
 
     public void Awake()
     {
-        gameManager = GameObject.FindWithTag("GameManager").GetComponent<GameManager>();
         currentBagItemKind = ItemKind.Heal;
         itemTabs = GetComponentsInChildren<ItemTab>();
     }
 
     public void OnEnable()
     {
-        AddItemToInventoryForTest();
         UpdateBagItems();
-    }
-
-    private static void AddItemToInventoryForTest()
-    {
-        PlayerData playerData = UnityEngine.GameObject.FindWithTag("GameManager").GetComponentInChildren<PlayerData>();
-        for(int i = 0; i < ItemTable.Instance.ItemTableLength; i++)
-        {
-            playerData.Inventory.AddItem(ItemTable.Instance[i], 1);
-        }
     }
 
     public void SwitchItemTab(ItemKind itemKind)
@@ -51,7 +39,7 @@ public class BagUI : MonoBehaviour
         }
 
         //플레이어 인벤토리 가져오기
-        Inventory inventory = gameManager.playerData.Inventory;
+        Inventory inventory = GameManager.Instance.playerData.Inventory;
         if(inventory == null) return;
 
         //각 아이템에 대해 ItemSlot 인스턴스 생성
@@ -60,11 +48,10 @@ public class BagUI : MonoBehaviour
             if(itemInstance.item.Kind != currentBagItemKind)
                 continue;
 
-            UnityEngine.GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
+            GameObject itemSlotObject = Instantiate(itemSlotPrefab, itemSlotContainer);
             
             if(itemSlotObject.GetComponent<ItemSlot>() == null) return;
             itemSlotObject.GetComponent<ItemSlot>().SetItem(itemInstance);
         }
     }
-
 }

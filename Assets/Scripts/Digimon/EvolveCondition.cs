@@ -23,15 +23,6 @@ public class EvolveCondition
                 return false;
             case EvConType.Friendship:
                 return false;
-            case EvConType.Virus:
-                if(digimon.VirusValue >= Value) return true;
-                return false;
-            case EvConType.Data:
-                if(digimon.DataValue >= Value) return true;
-                return false;
-            case EvConType.Vaccine:
-                if(digimon.VaccineValue >= Value) return true;
-                return false;
             case EvConType.XAnityBody:
                 if(digimon.XAnityBody == true) return true;
                 return false;

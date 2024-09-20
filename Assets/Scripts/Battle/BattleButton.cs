@@ -13,5 +13,6 @@ public class BattleButton : MonoBehaviour
     {
         //임시 코드
         StartCoroutine(BattleSystem.Instance.BattleText("도망쳤다.", 2f));
+        
     }
 }

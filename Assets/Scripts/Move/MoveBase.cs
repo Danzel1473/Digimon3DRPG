@@ -16,6 +16,8 @@ public class MoveBase
     [SerializeField] private MoveCategory moveCategory;
 
     [SerializeField] private GameObject particlePrefab;
+    [SerializeField] private AudioClip attackAudio;
+    [SerializeField] private AudioClip hitAudio;
 
     public int MoveID => moveID;
     public string MoveName => moveName;
@@ -28,12 +30,10 @@ public class MoveBase
     public MoveCategory MoveCategory => moveCategory;
     public MoveEffect MoveEffect => moveEffect;
 
-    public GameObject ParticlePrefab => particlePrefab;
+    public AudioClip AttackAudio => attackAudio;
 
-    public static explicit operator MoveBase(UnityEngine.Object v)
-    {
-        throw new NotImplementedException();
-    }
+
+    public GameObject ParticlePrefab => particlePrefab;
 }
 
 public enum MoveCategory
