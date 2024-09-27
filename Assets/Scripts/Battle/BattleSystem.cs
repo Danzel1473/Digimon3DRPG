@@ -35,6 +35,7 @@ public class BattleSystem : MonoBehaviour
 
     private bool isDownSwitch;
     public bool IsDownSwitch => isDownSwitch;
+    public bool gameover = false;
 
     public BattleEntity PlayerBattleEntity => playerBattleEntity;
     public BattleEntity EnemyBattleEntity => enemyBattleEntity;
@@ -144,6 +145,7 @@ public class BattleSystem : MonoBehaviour
 
         foreach(BattleAction ba in actions)
         {
+            if(gameover) yield break;
             yield return ba.Action();
         }
         
@@ -329,9 +331,14 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    public void BattleWin()
+    public IEnumerator BattleWin()
     {
-        StartCoroutine(BattleText($"{playerData.playerName}은 승리했다!", 2f));
+        gameover = true;
+        yield return BattleText($"{playerData.playerName}은 승리했다!", 2f);
+        yield return new WaitForSeconds(1f);
+
+        GameManager.Instance.state = GameManager.SituState.OpenWorld;
+        SceneManager.LoadScene(0);
     }
 
     public bool CheckPartyDown(List<Digimon> digimons)
@@ -368,6 +375,7 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("배틀 시스템의 캐치 디지몬 함수 시작");
         playerAction = new ItemAction(player, target, item);
+
         StartCoroutine(PerformBattle());
     }
     

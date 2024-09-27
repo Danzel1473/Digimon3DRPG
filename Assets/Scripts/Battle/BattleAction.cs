@@ -301,7 +301,7 @@ public class ItemAction : BattleAction
             if(GameManager.Instance.playerData.partyData.Digimons.Count < 6)
                 GameManager.Instance.playerData.partyData.AddDigimon(target.Digimon);
 
-            BattleSystem.Instance.BattleWin();
+            yield return BattleSystem.Instance.BattleWin();
         }
         else
         {
