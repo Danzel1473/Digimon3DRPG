@@ -20,8 +20,7 @@ public static class ElementChart
 
         {(ElementType.Electric, ElementType.Water), 2f},
         {(ElementType.Electric, ElementType.Wind), 2f},
-
-
+        {(ElementType.Electric, ElementType.Ground), 0.5f}
     };
 
     public static float GetMultiplier(ElementType attackType, ElementType defenseType)

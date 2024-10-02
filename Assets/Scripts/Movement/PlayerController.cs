@@ -12,6 +12,15 @@ namespace D3R.Movement
             characterMovement = GetComponent<CharacterMovement>();
         }
 
+        private void Start()
+        {
+            if(GameManager.Instance.playerPosition != null)
+            {
+                transform.position = GameManager.Instance.playerPosition;
+                transform.rotation = GameManager.Instance.playerRotation;
+            }
+        }
+
         public void Update()
         {
             if(GameManager.Instance.state != GameManager.SituState.OpenWorld) return;

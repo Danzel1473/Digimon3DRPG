@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] public PlayerData enemyData;
     [SerializeField] public PopupMenu popupMenu;
     [SerializeField] public SituState state = SituState.OpenWorld;
+    public Vector3 playerPosition = new Vector3();
+    public Quaternion playerRotation = new Quaternion();
 
     public SituState State => state;
 
@@ -31,10 +33,6 @@ public class GameManager : MonoBehaviour
         {
             digimon.Initialize();
         }
-        if(playerData.Inventory.Items[0].item == null) Debug.Log("ㄴㄴ");
-        Debug.Log(playerData.Inventory.Items[0].item.Description);
-        Debug.Log(playerData.Inventory.Items[1].item.ItemId);
-        Debug.Log(playerData.Inventory.Items[0].quantity);
     }
     
     public IEnumerator WaitForKeyPress(KeyCode key)
@@ -63,6 +61,30 @@ public class GameManager : MonoBehaviour
         Camera cam = FindObjectOfType<Camera>();
         AudioSource audio = cam.GetComponent<AudioSource>();
         audio.PlayOneShot(clip);
+    }
+
+    public IEnumerator BattelEnter(NPCData data)
+    {
+        enemyData = data.npcData;
+        state = SituState.Battle;
+        InterectionUI.Instance.DisableText();
+
+        SavePlayerTransform();
+
+        yield return SceneManager.LoadSceneAsync("BattleScene");
+    }
+
+    public IEnumerator BattelExit()
+    {
+        state = SituState.OpenWorld;
+
+        yield return SceneManager.LoadSceneAsync("SandBox");
+    }
+
+    private void SavePlayerTransform()
+    {
+        playerPosition = GameObject.FindWithTag("Player").transform.position;
+        playerRotation = GameObject.FindWithTag("Player").transform.rotation;
     }
 
     public enum SituState

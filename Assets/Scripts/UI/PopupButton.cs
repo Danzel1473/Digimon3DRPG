@@ -43,6 +43,7 @@ public class PopupButton : MonoBehaviour
                 break;
         }
     }
+    
     public void OnButtonClick()
     {
         switch(buttonType)
@@ -117,7 +118,6 @@ public enum PopupButtonType
     Cancel,
     UseItem,
     UseToTarget,
-
     Give,
     Throw,
     Target

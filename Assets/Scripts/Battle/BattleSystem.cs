@@ -66,11 +66,6 @@ public class BattleSystem : MonoBehaviour
         currentMenu = rootMenu;
 
         playerBattleEntity.SetDigimonData(playerData.partyData.Digimons[0]);
-        
-        //디버깅
-        Debug.Log($"{GameManager.Instance.playerData.partyData.Digimons[0].Moves.Count}");
-        Debug.Log(GameManager.Instance.playerData.partyData.Digimons[0].Moves[0].MoveBase.MoveName);
-
         enemyBattleEntity.SetDigimonData(enemyData.partyData.Digimons[0]);
 
         StartCoroutine(SetupBattle());
@@ -337,8 +332,7 @@ public class BattleSystem : MonoBehaviour
         yield return BattleText($"{playerData.playerName}은 승리했다!", 2f);
         yield return new WaitForSeconds(1f);
 
-        GameManager.Instance.state = GameManager.SituState.OpenWorld;
-        SceneManager.LoadScene(0);
+        yield return GameManager.Instance.BattelExit();
     }
 
     public bool CheckPartyDown(List<Digimon> digimons)

@@ -9,13 +9,9 @@ public class NPCInteraction : InteractiveObject
         NPCType npcType = data.npcType;
         if(npcType == NPCType.Enemy)
         {
-            if(data.npcData == null) return;
-            GameManager.Instance.enemyData = data.npcData;
-            GameManager.Instance.state = GameManager.SituState.Battle;
-            InterectionUI.Instance.DisableText();
-            //Scene currentScene = SceneManager.GetActiveScene();
+            if (data.npcData == null) return;
 
-            SceneManager.LoadScene("BattleScene");
+            StartCoroutine(GameManager.Instance.BattelEnter(data));
         }
     }
 }

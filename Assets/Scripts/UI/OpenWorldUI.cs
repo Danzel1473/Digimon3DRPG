@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class OpenWorldUI : MonoBehaviour
@@ -7,10 +6,12 @@ public class OpenWorldUI : MonoBehaviour
     [SerializeField] GameObject[] menus;
     GameObject currentMenu;
     List<GameObject> menuHistory = new List<GameObject>();
+    
     public void Update()
     {
         if(Input.GetKeyDown(KeyCode.X))
         {
+            //오픈월드 메뉴창 오픈
             if(GameManager.Instance.state != GameManager.SituState.InUI)
             {
                 GameManager.Instance.state = GameManager.SituState.InUI;

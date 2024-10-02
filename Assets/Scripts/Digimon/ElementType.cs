@@ -7,6 +7,7 @@ public enum ElementType
     Grass,
     Electric,
     Rock,
+    Ground,
     Wind,
     Ice,
     Steel,
