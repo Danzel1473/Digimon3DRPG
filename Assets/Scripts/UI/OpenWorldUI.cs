@@ -3,9 +3,22 @@ using UnityEngine;
 
 public class OpenWorldUI : MonoBehaviour
 {
+    private static OpenWorldUI instance;
+    public static OpenWorldUI Instance
+    {
+        get
+        {
+            return instance;
+        }
+    }
+
     [SerializeField] GameObject[] menus;
-    GameObject currentMenu;
-    List<GameObject> menuHistory = new List<GameObject>();
+    [SerializeField] List<GameObject> menuHistory = new List<GameObject>();
+
+    public void Awake()
+    {
+        instance = this;
+    }
     
     public void Update()
     {
@@ -16,17 +29,16 @@ public class OpenWorldUI : MonoBehaviour
             {
                 GameManager.Instance.state = GameManager.SituState.InUI;
                 menuHistory.Clear();
-
+                
                 foreach(GameObject menu in menus)
                 {
                     menu.SetActive(false);
                 }
-
-                menus[0].SetActive(true);
-                currentMenu= menus[0];
+                GameObject currentMenu = menus[(int)OWUIMenuBtnType.RootMenu];
+                currentMenu.SetActive(true);
                 menuHistory.Add(currentMenu);
             }
-            else if(GameManager.Instance.state == GameManager.SituState.InUI && menuHistory.Count -1 < 1)
+            else if(GameManager.Instance.state == GameManager.SituState.InUI && menuHistory.Count <= 1)
             {
                 foreach(GameObject menu in menus)
                 {
@@ -34,6 +46,33 @@ public class OpenWorldUI : MonoBehaviour
                     GameManager.Instance.state = GameManager.SituState.OpenWorld;
                 }
             }
+            else
+            {
+                SwitchPrevMenu();
+            }
         }
     }
+
+    private void SwitchPrevMenu()
+    {
+        menuHistory[menuHistory.Count - 1].SetActive(false);
+        menuHistory.RemoveAt(menuHistory.Count - 1);
+    }
+
+
+    public void SwitchMenu(OWUIMenuBtnType type)
+    {
+        GameObject currentMenu = menus[(int)type];
+
+        currentMenu.SetActive(true);
+        menuHistory.Add(currentMenu);
+    }
+}
+
+public enum OWUIMenuBtnType
+{
+    RootMenu,
+    DigimonMenu,
+    BagMenu,
+    profileMenu
 }

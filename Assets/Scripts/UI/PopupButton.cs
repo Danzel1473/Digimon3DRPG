@@ -27,7 +27,7 @@ public class PopupButton : MonoBehaviour
             case PopupButtonType.UseItem:
                 buttonText.text = "사용";
                 break;
-            case  PopupButtonType.UseToTarget:
+            case PopupButtonType.UseToTarget:
                 buttonText.text = "사용";
                 break;        
             case PopupButtonType.Give:
@@ -74,11 +74,9 @@ public class PopupButton : MonoBehaviour
         switch (item.Attrs[0].Kind)
         {
             case ItemAttributeKind.Heal:
-                Debug.Log("아이템 힐");
                 //partyUI 표시
                 break;
             case ItemAttributeKind.Digicatch:
-                Debug.Log("아이템 캐치");
                 CatchDigimon(item);
                 break;
         }
@@ -88,16 +86,18 @@ public class PopupButton : MonoBehaviour
     private void Switch()
     {
         int num = GetComponentInParent<PopupMenu>().num;
-        if (num == 0)
+
+        if (num == 0) //선택 디지몬이 첫번째 디지몬
         {
             StartCoroutine(BattleSystem.Instance.BattleText("이미 출전해있다.", 2f));
             return;
         }
-        if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP <= 0)
+        if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP <= 0) //선택 디지몬의 체력이 0
         {
             StartCoroutine(BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.partyData.Digimons[num]}은 기절해있다!", 2f));
             return;
         }
+
         if (BattleSystem.Instance.IsDownSwitch) BattleSystem.Instance.SwitchPerform(GameManager.Instance.playerData, num, true);
         else BattleSystem.Instance.SwitchPerform(GameManager.Instance.playerData, num);
         transform.parent.gameObject.SetActive(false);
@@ -105,6 +105,12 @@ public class PopupButton : MonoBehaviour
 
     private void CatchDigimon(Item item)
     {
+        if(GameManager.Instance.enemyData.IsTamer)
+        {
+            StartCoroutine(BattleSystem.Instance.BattleText("테이머의 디지몬을 잡을 수는 없다!", 2f));
+            return;
+        }
+        
         BattleSystem.Instance.CatchDigimon(GameManager.Instance.playerData, BattleSystem.Instance.EnemyBattleEntity, item);
         transform.parent.gameObject.SetActive(false);
     }

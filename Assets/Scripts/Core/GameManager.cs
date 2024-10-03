@@ -29,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        foreach(Digimon digimon in playerData.partyData.Digimons) //테스트용
+        foreach(Digimon digimon in playerData.partyData.Digimons)
         {
             digimon.Initialize();
         }

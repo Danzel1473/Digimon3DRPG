@@ -36,11 +36,6 @@ public class PopupMenu : MonoBehaviour
 
     public void ClearMenu()
     {
-        // for(int i = transform.childCount -1; i >= 0; i--)
-        // {
-        //     Destroy(transform.GetChild(i).gameObject);
-        // }
-        
         foreach(var button in buttons)
         {
             Destroy(button.gameObject);
