@@ -9,4 +9,5 @@ public class PlayerData
     [SerializeField] private Inventory inventory;
     [SerializeField] private bool isTamer;
     public Inventory Inventory => inventory;
+    public bool IsTamer => isTamer;
 }

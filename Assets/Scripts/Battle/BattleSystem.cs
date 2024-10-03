@@ -335,6 +335,12 @@ public class BattleSystem : MonoBehaviour
         yield return GameManager.Instance.BattelExit();
     }
 
+    public void BattleRun()
+    {
+        playerAction = new RunAction();
+        StartCoroutine(PerformBattle());
+    }
+
     public bool CheckPartyDown(List<Digimon> digimons)
     {
         bool isAllDown = true;
@@ -367,7 +373,6 @@ public class BattleSystem : MonoBehaviour
 
     public void CatchDigimon(PlayerData player, BattleEntity target, Item item)
     {
-        Debug.Log("배틀 시스템의 캐치 디지몬 함수 시작");
         playerAction = new ItemAction(player, target, item);
 
         StartCoroutine(PerformBattle());

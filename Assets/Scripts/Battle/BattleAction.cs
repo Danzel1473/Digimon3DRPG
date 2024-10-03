@@ -312,14 +312,30 @@ public class ItemAction : BattleAction
     }
 
     private float CalculateCatchChance(Digimon targetDigimon, float modifier)
-{
-    float maxHP = targetDigimon.MaxHP;
-    float currentHP = targetDigimon.CurrentHP;
-    float ballModifier = modifier;
+    {
+        float maxHP = targetDigimon.MaxHP;
+        float currentHP = targetDigimon.CurrentHP;
+        float ballModifier = modifier;
 
-    // 포획률 계산 (포켓몬의 공식을 참고)
-    float catchRate = (3 * maxHP - 2 * currentHP) * ballModifier / (3 * maxHP);
+        // 포획률 계산 (포켓몬의 공식을 참고)
+        float catchRate = (3 * maxHP - 2 * currentHP) * ballModifier / (3 * maxHP);
 
-    return Mathf.Clamp(catchRate * 100f, 1f, 100f);
+        return Mathf.Clamp(catchRate * 100f, 1f, 100f);
+    }
 }
+
+public class RunAction : BattleAction
+{
+    public override IEnumerator Action()
+    {
+        if(GameManager.Instance.enemyData.IsTamer)
+        {
+            yield return BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.playerName}은 도망칠 수 없다.", 2f);
+            yield break;
+        }
+
+        yield return BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.playerName}은 도망쳤다.", 2f);
+        BattleSystem.Instance.gameover = true;
+        yield return GameManager.Instance.BattelExit();
+    }
 }
