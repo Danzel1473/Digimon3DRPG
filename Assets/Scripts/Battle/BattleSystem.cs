@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
@@ -124,7 +126,7 @@ public class BattleSystem : MonoBehaviour
             int playerSpeed = playerBattleEntity.Digimon.Speed;
             int enemySpeed = enemyBattleEntity.Digimon.Speed;
 
-            if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && Random.Range(0, 2) == 0))
+            if (playerSpeed > enemySpeed || (playerSpeed == enemySpeed && UnityEngine.Random.Range(0, 2) == 0))
             {
                 actions.Add(playerAction);
                 actions.Add(enemyAction);
@@ -168,7 +170,7 @@ public class BattleSystem : MonoBehaviour
 
     private Move GetEnemyMove()
     {
-        return enemyBattleEntity.Digimon.Moves[Random.Range(0, enemyBattleEntity.Digimon.Moves.Count)];
+        return enemyBattleEntity.Digimon.Moves[UnityEngine.Random.Range(0, enemyBattleEntity.Digimon.Moves.Count)];
     }
 
     public BattleHUD SetTargetHUD(BattleEntity defender)
@@ -200,7 +202,7 @@ public class BattleSystem : MonoBehaviour
     }
     public bool CalculateAccuracy(Move move, BattleEntity defender)
     {
-        if (Random.Range(0, 100) >= move.MoveBase.Accuracy)
+        if (UnityEngine.Random.Range(0, 100) >= move.MoveBase.Accuracy)
         {
             StartCoroutine(BattleText($"{defender.Digimon.digimonName}은 맞지 않았다.", 2f));
             return false;
@@ -434,7 +436,7 @@ public class BattleSystem : MonoBehaviour
 
         while (value < duration)
         {
-            Vector3 randomPoint = originalPos + Random.insideUnitSphere * magnitude;
+            Vector3 randomPoint = originalPos + UnityEngine.Random.insideUnitSphere * magnitude;
             cameraTransform.localPosition = new Vector3(randomPoint.x, randomPoint.y, originalPos.z);
 
             value += Time.deltaTime;
