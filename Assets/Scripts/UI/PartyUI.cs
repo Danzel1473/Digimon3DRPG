@@ -30,10 +30,19 @@ public class PartyUI : MonoBehaviour
             slots.Add(digimonSlot);
         }
     }
+
+    public void OnDisable()
+    {
+        if(GameManager.Instance.popupMenu.gameObject.activeSelf)
+        {
+            GameManager.Instance.popupMenu.gameObject.SetActive(false);
+        }
+    }
 }
 
 public enum PartyUIState
 {
     InBattle,
+    OpenWorld,
     ItemTarget
 }

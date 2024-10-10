@@ -24,6 +24,7 @@ public class Digimon
     public bool XAnityBody => xAnityBody;
     public ElementType[] Types => types;
     [SerializeField] public List<Move> Moves;
+    
     public void Initialize()
     {
         if (string.IsNullOrEmpty(digimonName)) digimonName = DigimonBase.DigimonName;

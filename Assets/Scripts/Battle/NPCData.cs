@@ -3,17 +3,11 @@ using UnityEngine;
 
 public class NPCData : MonoBehaviour
 {
-    private int battleCount;
-    [SerializeField] private int canBattleCount;
+    [SerializeField] public string uuid = Guid.NewGuid().ToString();
     [SerializeField] public PlayerData npcData;
     [SerializeField] public NPCType npcType;
     [SerializeField] private string script;
-
-    public bool CanBattle()
-    {
-        if(canBattleCount == 0) return true;
-        return canBattleCount <= battleCount;
-    }
+    public bool hasBattled = false;
 
     public void Start()
     {

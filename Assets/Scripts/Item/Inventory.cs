@@ -36,8 +36,12 @@ public class Inventory
         {
             if(i.item == item)
             {
+                if(i.quantity - quantity == 0) 
+                {
+                    items.Remove(i);
+                    break;
+                }
                 i.quantity -= quantity;
-                if(i.quantity <= 0) items.Remove(i);
             }
         }
     }

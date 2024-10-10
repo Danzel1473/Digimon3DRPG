@@ -24,6 +24,14 @@ public class BagUI : MonoBehaviour
         UpdateBagItems();
     }
 
+    public void OnDisable()
+    {
+        if(GameManager.Instance.popupMenu.gameObject.activeSelf)
+        {
+            GameManager.Instance.popupMenu.gameObject.SetActive(false);
+        }
+    }
+
     public void SwitchItemTab(ItemKind itemKind)
     {
         currentBagItemKind = itemKind;

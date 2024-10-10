@@ -25,6 +25,7 @@ public class BattleSystem : MonoBehaviour
     [Header("ETC")]
     [SerializeField] private BattleAnimationManager battleAnimationManager;
     [SerializeField] public GameObject[] menus;
+    public Item itemWaitForUse;
     private GameObject currentMenu;
     private List<GameObject> previousMenu = new List<GameObject>();
 
@@ -36,6 +37,7 @@ public class BattleSystem : MonoBehaviour
     private bool isDownSwitch;
     public bool IsDownSwitch => isDownSwitch;
     public bool gameover = false;
+    public bool inputLock = false;
 
     public BattleEntity PlayerBattleEntity => playerBattleEntity;
     public BattleEntity EnemyBattleEntity => enemyBattleEntity;
@@ -74,6 +76,7 @@ public class BattleSystem : MonoBehaviour
 
     private void Update()
     {
+        if(inputLock) return;
         if(Input.GetKeyDown(KeyCode.X))
         {
             SwitchPreviousMenu();
@@ -176,20 +179,24 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator BattleText(string text)
     {
+        inputLock = true;
         uiText.text = text;
 
         textPanel.SetActive(true);
         yield return GameManager.Instance.WaitForKeyPress(KeyCode.Z);
         textPanel.SetActive(false);
+        inputLock = false;
     }
     
     public IEnumerator BattleText(string text, float time)
     {
+        inputLock = true;
         uiText.text = text;
 
         textPanel.SetActive(true);
         yield return new WaitForSeconds(time);
         textPanel.SetActive(false);
+        inputLock = false;
     }
     public bool CalculateAccuracy(Move move, BattleEntity defender)
     {
@@ -240,6 +247,15 @@ public class BattleSystem : MonoBehaviour
 
         previousMenu.Add(currentMenu);
         currentMenu = menu;
+    }
+
+    public void SwitchMenu(BattleMenu btMenu)
+    {
+        currentMenu.SetActive(false);
+        menus[(int)btMenu].SetActive(true);
+
+        previousMenu.Add(currentMenu);
+        currentMenu = menus[(int)btMenu];
     }
 
     public void SwitchPreviousMenu()
@@ -326,6 +342,18 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
+    public void ActiveMenu(BattleMenu menu, bool active = true)
+    {
+        menus[(int)menu].SetActive(active);
+        previousMenu.Add(currentMenu);
+        currentMenu = menus[(int)menu];
+    }
+
+    public void SetPartyUIState(PartyUIState state)
+    {
+        menus[(int)BattleMenu.DigimonMenu].GetComponent<PartyUI>().SetState(state);
+    }
+
     public IEnumerator BattleWin()
     {
         gameover = true;
@@ -371,9 +399,16 @@ public class BattleSystem : MonoBehaviour
     }
 
 
-    public void CatchDigimon(PlayerData player, BattleEntity target, Item item)
+    public void ItemAction(PlayerData player, BattleEntity target, Item item)
     {
         playerAction = new ItemAction(player, target, item);
+
+        StartCoroutine(PerformBattle());
+    }
+
+        public void ItemAction(PlayerData player, int partyNum, Item item)
+    {
+        playerAction = new ItemAction(player, partyNum, item);
 
         StartCoroutine(PerformBattle());
     }
@@ -391,4 +426,28 @@ public class BattleSystem : MonoBehaviour
         previousMenu.Clear();
         currentMenu = rootMenu;
     }
+
+    public IEnumerator ShakeCoroutine(Transform cameraTransform, float duration, float magnitude)
+    {
+        Vector3 originalPos = cameraTransform.localPosition;
+        float value = 0f;
+
+        while (value < duration)
+        {
+            Vector3 randomPoint = originalPos + Random.insideUnitSphere * magnitude;
+            cameraTransform.localPosition = new Vector3(randomPoint.x, randomPoint.y, originalPos.z);
+
+            value += Time.deltaTime;
+            yield return null;
+        }
+
+        cameraTransform.localPosition = originalPos;
+    }
+}
+
+public enum BattleMenu
+{
+    BattleMenu,
+    BagMenu,
+    DigimonMenu
 }

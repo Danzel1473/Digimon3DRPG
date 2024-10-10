@@ -241,6 +241,7 @@ public class ItemAction : BattleAction
 {
     protected PlayerData player;
     protected Item item;
+    protected int partyNum;
 
     public ItemAction(PlayerData player, BattleEntity target, Item item)
     {
@@ -249,9 +250,26 @@ public class ItemAction : BattleAction
         this.item = item;
     }
 
+    public ItemAction(PlayerData player, int partyNum, Item item)
+    {
+        this.player = player;
+        this.partyNum = partyNum;
+        this.item = item;
+    }
+
     public override IEnumerator Action()
     {
-        yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {target.Digimon.digimonName}에게 {item.Name}을 사용했다.", 2f);
+        if(target == null)
+        {
+            yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {GameManager.Instance.playerData.partyData.Digimons[partyNum].digimonName}에게 {item.Name}을 사용했다.", 2f);
+            
+        }
+        else
+        {
+            yield return BattleSystem.Instance.BattleText($"{player.playerName}은 {target.Digimon.digimonName}에게 {item.Name}을 사용했다.", 2f);
+        }
+
+        GameManager.Instance.playerData.Inventory.RemoveItem(item, 1);
 
         switch(item.Attrs[0].Kind)
         {
@@ -268,12 +286,14 @@ public class ItemAction : BattleAction
 
     public IEnumerator HealItemAction(int amount)
     {
-        target.Digimon.HealDigimon(amount);
-
-        BattleHUD targetHUD = BattleSystem.Instance.SetTargetHUD(target);
-        
-        BattleSystem.Instance.HUDSetActivity(targetHUD.gameObject, true);
-        BattleSystem.Instance.UpdateHUD();
+        GameManager.Instance.playerData.partyData.Digimons[partyNum].HealDigimon(amount);
+        if(partyNum == 0)
+        {
+            target = BattleSystem.Instance.PlayerBattleEntity;
+            BattleHUD targetHUD = BattleSystem.Instance.SetTargetHUD(target);
+            BattleSystem.Instance.HUDSetActivity(targetHUD.gameObject, true);
+            BattleSystem.Instance.UpdateHUD();
+        }
 
         yield return new WaitForSeconds(1f);
 

@@ -15,22 +15,23 @@ public class PopupMenu : MonoBehaviour
         ClearMenu();
         this.num = num;
 
-        foreach(PopupButtonType type in types)
-        {
-            buttons.Add(Instantiate(buttonPrefab, transform));
-            buttons[buttons.Count-1].SetType(type);
-        }
+        InstantiateBtns(types);
     }
 
     public void SetMenu(List<PopupButtonType> types)
     {
         ClearMenu();
         num = 0;
+        
+        InstantiateBtns(types);
+    }
 
-        foreach(PopupButtonType type in types)
+    private void InstantiateBtns(List<PopupButtonType> types)
+    {
+        foreach (PopupButtonType type in types)
         {
             buttons.Add(Instantiate(buttonPrefab, transform));
-            buttons[buttons.Count-1].SetType(type);
+            buttons[buttons.Count - 1].SetType(type);
         }
     }
 

@@ -33,28 +33,35 @@ public class DigimonSlot : Button
 
         pm.gameObject.SetActive(false);
         GameManager.Instance.popupMenu.gameObject.transform.position = transform.position;
-        List<PopupButtonType> pbt;
-        switch(GetComponentInParent<PartyUI>().state)
+        List<PopupButtonType> pbt = new List<PopupButtonType>();
+        
+        if(GameManager.Instance.state == GameManager.SituState.Battle)
         {
-            case PartyUIState.InBattle:
-            pbt = new List<PopupButtonType>
+            switch(GetComponentInParent<PartyUI>().state)
             {
-                PopupButtonType.Switch,
-                PopupButtonType.Item,
-                PopupButtonType.DigimonDetail,
-                PopupButtonType.Cancel
-            };
-            break;
-            case PartyUIState.ItemTarget:
-            pbt = new List<PopupButtonType>
-            {
-                PopupButtonType.Target,
-                PopupButtonType.Cancel
-            };
-            break;
-            default:
-            pbt = new List<PopupButtonType> {PopupButtonType.Cancel};
-            break;
+                case PartyUIState.InBattle:
+                List<PopupButtonType> pbt2 = new List<PopupButtonType>
+                {
+                    PopupButtonType.Switch,
+                    PopupButtonType.Item,
+                    PopupButtonType.DigimonDetail,
+                    PopupButtonType.Cancel
+                };
+                pbt = pbt2;
+                break;
+                case PartyUIState.ItemTarget:
+                pbt2 = new List<PopupButtonType>
+                {
+                    PopupButtonType.Target,
+                    PopupButtonType.Cancel
+                };
+                pbt = pbt2;
+                break;
+                default:
+                pbt2 = new List<PopupButtonType> {PopupButtonType.Cancel};
+                pbt = pbt2;
+                break;
+            }
         }
 
         pm.SetMenu(i, pbt);

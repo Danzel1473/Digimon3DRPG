@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -49,14 +50,35 @@ public class PopupButton : MonoBehaviour
         switch(buttonType)
         {
             case PopupButtonType.Switch:
-                Switch();
+                SwitchDigimon();
                 break;
             case PopupButtonType.UseItem:
                 UseItem();
                 break;
+            case PopupButtonType.Target:
+                ItemEffect();
+                break;
             case PopupButtonType.Cancel:
                 transform.parent.gameObject.SetActive(false);
                 break;
+        }
+    }
+
+    private void ItemEffect()
+    {
+        int num = GetComponentInParent<PopupMenu>().num;
+
+        switch(BattleSystem.Instance.itemWaitForUse.Attrs[0].Kind)
+        {
+            case ItemAttributeKind.Heal:
+                if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP == GameManager.Instance.playerData.partyData.Digimons[num].MaxHP)
+                {
+                    StartCoroutine(BattleSystem.Instance.BattleText("사용해도 의미가 없다.", 2f));
+                    return;
+                }
+                BattleSystem.Instance.ItemAction(GameManager.Instance.playerData, num, BattleSystem.Instance.itemWaitForUse);
+                transform.parent.gameObject.SetActive(false);
+            break;
         }
     }
 
@@ -74,7 +96,10 @@ public class PopupButton : MonoBehaviour
         switch (item.Attrs[0].Kind)
         {
             case ItemAttributeKind.Heal:
-                //partyUI 표시
+                BattleSystem.Instance.SwitchMenu(BattleMenu.DigimonMenu);
+                BattleSystem.Instance.SetPartyUIState(PartyUIState.ItemTarget);
+                BattleSystem.Instance.itemWaitForUse = item;
+                transform.parent.gameObject.SetActive(false);
                 break;
             case ItemAttributeKind.Digicatch:
                 CatchDigimon(item);
@@ -83,7 +108,7 @@ public class PopupButton : MonoBehaviour
         if(itemUsed) GameManager.Instance.playerData.Inventory.RemoveItem(item, 1);
     }
 
-    private void Switch()
+    private void SwitchDigimon()
     {
         int num = GetComponentInParent<PopupMenu>().num;
 
@@ -92,7 +117,7 @@ public class PopupButton : MonoBehaviour
             StartCoroutine(BattleSystem.Instance.BattleText("이미 출전해있다.", 2f));
             return;
         }
-        if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP <= 0) //선택 디지몬의 체력이 0
+        if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP <= 0) //선택 디지몬의 체력이 0이면 return
         {
             StartCoroutine(BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.partyData.Digimons[num]}은 기절해있다!", 2f));
             return;
@@ -110,8 +135,8 @@ public class PopupButton : MonoBehaviour
             StartCoroutine(BattleSystem.Instance.BattleText("테이머의 디지몬을 잡을 수는 없다!", 2f));
             return;
         }
-        
-        BattleSystem.Instance.CatchDigimon(GameManager.Instance.playerData, BattleSystem.Instance.EnemyBattleEntity, item);
+
+        BattleSystem.Instance.ItemAction(GameManager.Instance.playerData, BattleSystem.Instance.EnemyBattleEntity, item);
         transform.parent.gameObject.SetActive(false);
     }
 }

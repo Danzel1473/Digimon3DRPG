@@ -162,7 +162,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -194,5 +194,5 @@ MonoBehaviour:
   slotPrefab: {fileID: 124903832665272208, guid: ed117f32c10292d42b29d4c453e9901b,
     type: 3}
   slots: []
-  partyPanel: {fileID: 0}
+  partyPanel: {fileID: 1683641043792257875}
   state: 0

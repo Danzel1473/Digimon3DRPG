@@ -25,6 +25,4 @@ public class ItemDetail : MonoBehaviour
         itemDescription.text = "";
         itemIcon.sprite = null;
     }
-
-
 }

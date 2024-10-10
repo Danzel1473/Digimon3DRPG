@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -86,6 +87,11 @@ public class GameManager : MonoBehaviour
         playerPosition = GameObject.FindWithTag("Player").transform.position;
         playerRotation = GameObject.FindWithTag("Player").transform.rotation;
     }
+
+    // public NPCData GetNPCByUUID(string uuid)
+    // {
+        // return List<NPCData> npcDataList.Find(npc => npc.UUID == uuid);
+    // }
 
     public enum SituState
     {

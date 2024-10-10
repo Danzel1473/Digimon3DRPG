@@ -19,6 +19,8 @@ public class BattleAnimation : MonoBehaviour
     public void PlayDamageAnimation()
     {
         animator.SetTrigger("damaged");
+        StartCoroutine(BattleSystem.Instance.ShakeCoroutine(Camera.main.transform, 0.1f, 0.2f));
+        
     }
 
     public void PlayFaintAnimation()
