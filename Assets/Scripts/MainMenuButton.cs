@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -10,18 +10,13 @@ public class MainMenuButton : MonoBehaviour
         switch(type)
         {
             case MainMenuBtnType.Start:
-            FadeInOutManager.Instance.FadeIn();
-            SceneManager.LoadSceneAsync("Sandbox");
+            FadeInOutManager.Instance.SceneLoadWithFade("Sandbox");
             break;
+
             case MainMenuBtnType.Exit:
             Application.Quit();
             break;
         }
-    }
-
-    public void test()
-    {
-
     }
 }
 

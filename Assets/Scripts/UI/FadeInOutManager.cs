@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class FadeInOutManager : MonoBehaviour
@@ -17,11 +18,12 @@ public class FadeInOutManager : MonoBehaviour
         }
     }
 
-    [SerializeField] Image fadePanel;
+    [SerializeField] private Image fadePanel;
 
     public void FadeIn()
     {
-        StartCoroutine(FadeInAction());
+        fadePanel.gameObject.SetActive(false);
+        //StartCoroutine(FadeInAction());
     }
 
     public void FadeOut()
@@ -32,31 +34,59 @@ public class FadeInOutManager : MonoBehaviour
     public IEnumerator FadeInAction()
     {
         float elapsedTime = 0f;
-        float fadedTime = 1f;
+        float fadeDuration = 1f;
+        Color panelColor = fadePanel.color;
+        panelColor.a = 1f;
+        fadePanel.color = panelColor;
 
         fadePanel.gameObject.SetActive(true);
-        while(elapsedTime <= fadedTime)
+        while (elapsedTime <= fadeDuration)
         {
-            fadePanel.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(1f, 0f, elapsedTime/fadedTime));
+            panelColor.a = Mathf.Lerp(1f, 0f, elapsedTime / fadeDuration);
+            fadePanel.color = panelColor;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-        yield break;
+        panelColor.a = 0f;
+        fadePanel.color = panelColor;
+        fadePanel.gameObject.SetActive(false);
     }
 
-        public IEnumerator FadeOutAction()
+    public IEnumerator FadeOutAction()
     {
         float elapsedTime = 0f;
-        float fadedTime = 1f;
+        float fadeDuration = 1f;
+        Color panelColor = fadePanel.color;
+        panelColor.a = 0f;
+        fadePanel.color = panelColor;
 
-        while(elapsedTime <= fadedTime)
+        fadePanel.gameObject.SetActive(true);
+        while (elapsedTime <= fadeDuration)
         {
-            fadePanel.GetComponent<CanvasRenderer>().SetAlpha(Mathf.Lerp(0f, 1f, elapsedTime/fadedTime));
+            panelColor.a = Mathf.Lerp(0f, 1f, elapsedTime / fadeDuration);
+            fadePanel.color = panelColor;
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+        panelColor.a = 1f;
+        fadePanel.color = panelColor;
+    }
 
-        fadePanel.gameObject.SetActive(false);
-        yield break;
+    public void SceneLoadWithFade(string sceneName)
+    {
+        StartCoroutine(SceneLoadAction(sceneName));
+    }
+
+    private IEnumerator SceneLoadAction(string sceneName)
+    {
+        yield return FadeOutAction();
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!asyncLoad.isDone)
+            yield return null;
+
+        Debug.Log("씬 로드 성공");
+        yield return FadeInAction();
     }
 }
