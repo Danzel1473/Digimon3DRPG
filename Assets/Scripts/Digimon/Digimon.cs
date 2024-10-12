@@ -30,7 +30,7 @@ public class Digimon
         if (string.IsNullOrEmpty(digimonName)) digimonName = DigimonBase.DigimonName;
         types = DigimonBase.ElementTypes;
         maxHP = HP;
-        currentHP = HP;
+        currentHP = maxHP;
     }
 
     public Digimon(int id, int level)

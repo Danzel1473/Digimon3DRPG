@@ -149,7 +149,7 @@ public class BattleSystem : MonoBehaviour
             yield return ba.Action();
         }
         
-        CheckGameOver();
+        yield return CheckGameOver();
 
         switch(battleField) //날씨 데미지는 스피드가 빠른 쪽부터 받음
         {
@@ -287,7 +287,7 @@ public class BattleSystem : MonoBehaviour
         hud.SetActive(activity);
     }
 
-    public void CheckGameOver()
+    public IEnumerator CheckGameOver()
     {
         bool playerDown = false;
         bool enemyDown = false;
@@ -306,7 +306,7 @@ public class BattleSystem : MonoBehaviour
         {
             if(CheckPartyDown(playerData.partyData.Digimons))
             {
-                StartCoroutine(BattleText($"{playerData.playerName}은 패배했다.", 2f));
+                yield return BattleText($"{playerData.playerName}은 패배했다.", 2f);
             }
             else
             {
@@ -326,7 +326,7 @@ public class BattleSystem : MonoBehaviour
         {
             if(CheckPartyDown(enemyData.partyData.Digimons))
             {
-                BattleWin();
+                yield return BattleWin();
             }
             else
             {

@@ -23,7 +23,6 @@ public class FadeInOutManager : MonoBehaviour
     public void FadeIn()
     {
         fadePanel.gameObject.SetActive(false);
-        //StartCoroutine(FadeInAction());
     }
 
     public void FadeOut()
@@ -72,12 +71,12 @@ public class FadeInOutManager : MonoBehaviour
         fadePanel.color = panelColor;
     }
 
-    public void SceneLoadWithFade(string sceneName)
+    public void SceneLoadWithFade(string sceneName, bool dataLoad = false)
     {
-        StartCoroutine(SceneLoadAction(sceneName));
+        StartCoroutine(SceneLoadAction(sceneName, dataLoad));
     }
 
-    private IEnumerator SceneLoadAction(string sceneName)
+    private IEnumerator SceneLoadAction(string sceneName, bool dataLoad = false)
     {
         yield return FadeOutAction();
 
@@ -86,7 +85,13 @@ public class FadeInOutManager : MonoBehaviour
         while (!asyncLoad.isDone)
             yield return null;
 
-        Debug.Log("씬 로드 성공");
+        if(dataLoad)
+        {
+            Debug.Log("로드 시작");
+
+            SaveSystem.LoadGame();
+        }
+
         yield return FadeInAction();
     }
 }

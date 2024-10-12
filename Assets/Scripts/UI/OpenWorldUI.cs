@@ -59,7 +59,6 @@ public class OpenWorldUI : MonoBehaviour
         menuHistory.RemoveAt(menuHistory.Count - 1);
     }
 
-
     public void SwitchMenu(OWUIMenuBtnType type)
     {
         GameObject currentMenu = menus[(int)type];
@@ -74,5 +73,6 @@ public enum OWUIMenuBtnType
     RootMenu,
     DigimonMenu,
     BagMenu,
+    SaveBtn,
     profileMenu
 }

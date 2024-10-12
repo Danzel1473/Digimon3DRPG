@@ -8,7 +8,7 @@ public class NPCData : MonoBehaviour
     [SerializeField] public NPCType npcType;
     [SerializeField] private string script;
     public bool hasBattled = false;
-
+ 
     public void Start()
     {
         foreach(Digimon digimon in npcData.partyData.Digimons)
