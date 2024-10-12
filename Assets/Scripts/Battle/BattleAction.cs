@@ -31,7 +31,7 @@ public class MoveAction : BattleAction
     public override IEnumerator Action()
     {
         if (actionMove == null || user == null || target == null || battleSystem == null) yield break;
-        if(user.Digimon.CurrentHP == 0) yield break;
+        if(user.Digimon.currentHP == 0) yield break;
 
         BattleSystem.Instance.AllHUDSetActivity(false);
         yield return ActionLogic(user, target, actionMove);
@@ -134,8 +134,8 @@ public class MoveAction : BattleAction
         int damage = CalculateDamage(move, attacker, defender, multiplier);
         defender.Digimon.TakeDamage(damage);
 
-        Debug.Log(defender.Digimon.CurrentHP);
-        return defender.Digimon.CurrentHP <= 0;
+        Debug.Log(defender.Digimon.currentHP);
+        return defender.Digimon.currentHP <= 0;
     }
 
     protected int CalculateHeal(Move move, BattleEntity attacker, BattleEntity defender)
@@ -151,7 +151,7 @@ public class MoveAction : BattleAction
     {
         int heal = CalculateHeal(move, attacker, defender);
         defender.Digimon.HealDigimon(heal);
-        return defender.Digimon.CurrentHP <= 0;
+        return defender.Digimon.currentHP <= 0;
     }
 
     protected bool CalculateAccuracy(Move move, BattleEntity defender)
@@ -187,7 +187,7 @@ public class SwitchAction : BattleAction
         foreach (GameObject menu in BattleSystem.Instance.menus) menu.SetActive(false);
         BattleSystem.Instance.MenuReset();
 
-        if (player.partyData.Digimons[partyNum].CurrentHP <= 0)
+        if (player.partyData.Digimons[partyNum].currentHP <= 0)
         {
             yield return BattleSystem.Instance.BattleText($"{player.partyData.Digimons[partyNum].digimonName}은 기절해있다!", 2f);
             yield break;
@@ -333,8 +333,8 @@ public class ItemAction : BattleAction
 
     private float CalculateCatchChance(Digimon targetDigimon, float modifier)
     {
-        float maxHP = targetDigimon.MaxHP;
-        float currentHP = targetDigimon.CurrentHP;
+        float maxHP = targetDigimon.maxHP;
+        float currentHP = targetDigimon.currentHP;
         float ballModifier = modifier;
 
         // 포획률 계산 (포켓몬의 공식을 참고)

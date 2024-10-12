@@ -71,7 +71,7 @@ public class PopupButton : MonoBehaviour
         switch(BattleSystem.Instance.itemWaitForUse.Attrs[0].Kind)
         {
             case ItemAttributeKind.Heal:
-                if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP == GameManager.Instance.playerData.partyData.Digimons[num].MaxHP)
+                if (GameManager.Instance.playerData.partyData.Digimons[num].currentHP == GameManager.Instance.playerData.partyData.Digimons[num].maxHP)
                 {
                     StartCoroutine(BattleSystem.Instance.BattleText("사용해도 의미가 없다.", 2f));
                     return;
@@ -117,7 +117,7 @@ public class PopupButton : MonoBehaviour
             StartCoroutine(BattleSystem.Instance.BattleText("이미 출전해있다.", 2f));
             return;
         }
-        if (GameManager.Instance.playerData.partyData.Digimons[num].CurrentHP <= 0) //선택 디지몬의 체력이 0이면 return
+        if (GameManager.Instance.playerData.partyData.Digimons[num].currentHP <= 0) //선택 디지몬의 체력이 0이면 return
         {
             StartCoroutine(BattleSystem.Instance.BattleText($"{GameManager.Instance.playerData.partyData.Digimons[num]}은 기절해있다!", 2f));
             return;

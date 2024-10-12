@@ -23,8 +23,8 @@ public class DigimonSlot : Button
         digimonAnimator.runtimeAnimatorController = digimonData.DigimonBase.digimonSpriteAnimator;
         digimonName.text = digimonData.DigimonBase.DigimonName;
         digimonLevel.text = $"Lv.{digimonData.Level}";
-        digimonHP.text = $"{digimonData.CurrentHP} / {digimonData.MaxHP}";
-        digimonHPSlider.value = (float)digimonData.CurrentHP / digimonData.MaxHP;
+        digimonHP.text = $"{digimonData.currentHP} / {digimonData.maxHP}";
+        digimonHPSlider.value = (float)digimonData.currentHP / digimonData.maxHP;
     }
 
     public void OnClick()

@@ -9,9 +9,9 @@ public class Digimon
 
     [SerializeField] public string digimonName;
     [SerializeField] public int Level;
-    private ElementType[] types;
-    private int currentHP;
-    private int maxHP;
+    [SerializeField] private ElementType[] types;
+    [SerializeField] public int maxHP;
+    [SerializeField] public int currentHP;
     [SerializeField] private bool xAnityBody;
 
     [Range(0, 32)][SerializeField] private int[] ivs = new int[6]; //개체치
@@ -19,18 +19,20 @@ public class Digimon
 
     public int[] Ivs => ivs;
     public int[] Effort => effort;
-    public int CurrentHP => currentHP;
-    public int MaxHP => maxHP;
     public bool XAnityBody => xAnityBody;
     public ElementType[] Types => types;
     [SerializeField] public List<Move> Moves;
     
     public void Initialize()
     {
-        if (string.IsNullOrEmpty(digimonName)) digimonName = DigimonBase.DigimonName;
-        types = DigimonBase.ElementTypes;
-        maxHP = HP;
-        currentHP = maxHP;
+        if(maxHP == 0)
+        {
+            if (string.IsNullOrEmpty(digimonName)) digimonName = DigimonBase.DigimonName;
+            types = DigimonBase.ElementTypes;
+            maxHP = HP;
+            currentHP = maxHP;
+        }
+
     }
 
     public Digimon(int id, int level)

@@ -292,12 +292,12 @@ public class BattleSystem : MonoBehaviour
         bool playerDown = false;
         bool enemyDown = false;
 
-        if(playerBattleEntity.Digimon.CurrentHP <= 0)
+        if(playerBattleEntity.Digimon.currentHP <= 0)
         {
             playerDown = true;
         }
 
-        if(enemyBattleEntity.Digimon.CurrentHP <= 0)
+        if(enemyBattleEntity.Digimon.currentHP <= 0)
         {
             enemyDown = true;
         }
@@ -334,7 +334,7 @@ public class BattleSystem : MonoBehaviour
 
                 for(int i = 0; i < enemyData.partyData.Digimons.Count; i++)
                 {
-                    if(enemyData.partyData.Digimons[i].CurrentHP <= 0) continue;
+                    if(enemyData.partyData.Digimons[i].currentHP <= 0) continue;
                     else nextNum = i;
                     break;
                 }
@@ -376,7 +376,7 @@ public class BattleSystem : MonoBehaviour
         bool isAllDown = true;
         foreach (Digimon eDigimon in digimons)
         {
-            if(eDigimon.CurrentHP > 0)
+            if(eDigimon.currentHP > 0)
             {
                 isAllDown = false;
                 break;
