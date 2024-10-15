@@ -15,4 +15,9 @@ public class OWMenuButton : MonoBehaviour
     {
         SaveSystem.SaveGame();
     }
+
+    public void BackToMainMenu()
+    {
+        FadeInOutManager.Instance.SceneLoadWithFade("MainMenu");
+    }
 }

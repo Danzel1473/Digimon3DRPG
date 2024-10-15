@@ -87,8 +87,6 @@ public class FadeInOutManager : MonoBehaviour
 
         if(dataLoad)
         {
-            Debug.Log("로드 시작");
-
             SaveSystem.LoadGame();
         }
 

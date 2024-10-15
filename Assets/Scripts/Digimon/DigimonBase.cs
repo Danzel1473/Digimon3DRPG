@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEditor.Animations;
 using UnityEngine;
 
 [Serializable]
@@ -31,7 +30,7 @@ public class DigimonBase
     [Header ("Visuals")]
     [SerializeField] Sprite digimonSprite;
     [SerializeField] GameObject digimonModel;
-    [SerializeField] public AnimatorController digimonSpriteAnimator;
+    [SerializeField] public RuntimeAnimatorController digimonSpriteAnimator;
 
 
     public string DigimonName => digimonName;
@@ -51,7 +50,6 @@ public class DigimonBase
     public List<LearnableMove> LearnableMoves => learnableMoves;
     public GameObject DigimonModel => digimonModel;
     public Sprite DigimonSprite => digimonSprite;
-    public AnimatorController DigimonSpriteAnimator => digimonSpriteAnimator;
     public EvolveData[] EvoleData => evoleData;
 }
 

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -33,6 +32,20 @@ public class GameManager : MonoBehaviour
         foreach(Digimon digimon in playerData.partyData.Digimons)
         {
             digimon.Initialize();
+        }
+    }
+
+    public void Update()
+    {
+        if(state == SituState.OpenWorld) 
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else
+        {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
     
@@ -75,6 +88,18 @@ public class GameManager : MonoBehaviour
         yield return SceneManager.LoadSceneAsync("BattleScene");
     }
 
+    public IEnumerator BattelEnter(Digimon digimon)
+    {
+        PlayerData digimonParty = new PlayerData(digimon);
+        enemyData = digimonParty;
+        state = SituState.Battle;
+        InterectionUI.Instance.DisableText();
+
+        SavePlayerTransform();
+
+        yield return SceneManager.LoadSceneAsync("BattleScene");
+    }
+
     public IEnumerator BattelExit()
     {
         state = SituState.OpenWorld;
@@ -87,12 +112,7 @@ public class GameManager : MonoBehaviour
         playerPosition = GameObject.FindWithTag("Player").transform.position;
         playerRotation = GameObject.FindWithTag("Player").transform.rotation;
     }
-
-    // public NPCData GetNPCByUUID(string uuid)
-    // {
-        // return List<NPCData> npcDataList.Find(npc => npc.UUID == uuid);
-    // }
-
+    
     public enum SituState
     {
         OpenWorld,

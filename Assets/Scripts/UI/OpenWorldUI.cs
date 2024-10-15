@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class OpenWorldUI : MonoBehaviour
@@ -13,6 +14,8 @@ public class OpenWorldUI : MonoBehaviour
     }
 
     [SerializeField] GameObject[] menus;
+    [SerializeField] CinemachineFreeLook freelook;
+
     [SerializeField] List<GameObject> menuHistory = new List<GameObject>();
 
     public void Awake()
@@ -27,6 +30,8 @@ public class OpenWorldUI : MonoBehaviour
             //오픈월드 메뉴창 오픈
             if(GameManager.Instance.state != GameManager.SituState.InUI)
             {
+                freelook.gameObject.SetActive(false);
+
                 GameManager.Instance.state = GameManager.SituState.InUI;
                 menuHistory.Clear();
                 
@@ -43,8 +48,9 @@ public class OpenWorldUI : MonoBehaviour
                 foreach(GameObject menu in menus)
                 {
                     menu.SetActive(false);
-                    GameManager.Instance.state = GameManager.SituState.OpenWorld;
                 }
+                GameManager.Instance.state = GameManager.SituState.OpenWorld;
+                freelook.gameObject.SetActive(true);
             }
             else
             {
@@ -74,5 +80,5 @@ public enum OWUIMenuBtnType
     DigimonMenu,
     BagMenu,
     SaveBtn,
-    profileMenu
+    BackToMainMenu
 }
